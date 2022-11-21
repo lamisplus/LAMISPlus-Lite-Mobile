@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ededed"
+        android:fillViewport="true"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                tools:ignore="MissingConstraints">
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            app:cardCornerRadius="10dp"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:id="@+id/myClientsView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/myClientsButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/my_clients_label" />
+
+                                <TextView
+                                    android:id="@+id/createLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/myClientsButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:text="@string/my_clients_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/appointsmentsView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/appointmentsButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/appointments_label" />
+
+                                <TextView
+                                    android:id="@+id/findPatientLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/appointmentsButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:text="@string/appointments_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/unsuppressedClientsView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/unsuppressedClientsButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/unsuppressed_clients_label" />
+
+                                <TextView
+                                    android:id="@+id/unsuppressedClientsLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/unsuppressedClientsButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:text="@string/unsuppressed_clients_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/interruptedTreatmentView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/interruptedTreatmentButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/interrupted_treatment_label" />
+
+                                <TextView
+                                    android:id="@+id/commodityManagementLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/interruptedTreatmentButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:text="@string/interrupted_treatment_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/viralLoadSuppressionView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/viralLoadSuppressionButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/viral_load_suppression_label" />
+
+                                <TextView
+                                    android:id="@+id/viralLoadSuppressionLabels"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/viralLoadSuppressionButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:text="@string/viral_load_suppression_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_short"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp">
+
+                            <RelativeLayout
+                                android:id="@+id/covid19VaccinationView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:id="@+id/covid19VaccinationButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/dashboard_icon_margin"
+                                    android:contentDescription="@string/covid19_vaccination_label" />
+
+                                <TextView
+                                    android:id="@+id/commodityManagementLabels"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/covid19VaccinationButton"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
+                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:text="@string/covid19_vaccination_label"
+                                    android:textSize="@dimen/dashboard_text_size" />
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </TableRow>
+
+
+                </TableLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:weightSum="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/dashboardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/dashboardButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:contentDescription="@string/dashboard_icon_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/dashboard_icon_label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/appView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/appButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_icon_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/app_icon_label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settingsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/settingsButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:contentDescription="@string/settings_icon_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/settings_icon_label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/logoutView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logoutButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:contentDescription="@string/logout_icon_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/logout_icon_label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

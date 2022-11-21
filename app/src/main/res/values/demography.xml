@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="employment_status">
+        <item>Unemployed</item>
+        <item>Employed</item>
+        <item>Student</item>
+        <item>Retired</item>
+        <item>Freelance</item>
+    </string-array>
+
+    <string-array name="educational_level">
+        <item>None</item>
+        <item>Senior Secondary</item>
+        <item>Quranic</item>
+        <item>Junior Secondary</item>
+        <item>Post Secondary</item>
+        <item>Primary School</item>
+    </string-array>
+
+    <string-array name="marital_status">
+        <item>Single</item>
+        <item>Married</item>
+        <item>Widowed</item>
+        <item>Separated</item>
+        <item>Divorced</item>
+    </string-array>
+
+    <string-array name="relation_next_of_kin">
+        <item>Aunt</item>
+        <item>Brother</item>
+        <item>Sister</item>
+        <item>Cousin</item>
+        <item>Daughter</item>
+        <item>Father</item>
+        <item>Grand Parent</item>
+        <item>Mother</item>
+        <item>Son</item>
+        <item>Spouse</item>
+        <item>Treatment Supporter</item>
+        <item>Uncle</item>
+        <item>Partner</item>
+    </string-array>
+    
+    <string-array name="settings">
+        <item>CT</item>
+        <item>TB</item>
+        <item>STI</item>
+        <item>FP</item>
+        <item>OPD</item>
+        <item>Ward</item>
+        <item>OutReach</item>
+        <item>Standalone HTS</item>
+        <item>Others</item>
+        <item>Malnutrition Clinic</item>
+    </string-array>
+
+    <string-array name="ct">
+        <item>STI</item>
+        <item>Emergency</item>
+        <item>Index</item>
+        <item>Inpatient</item>
+        <item>PMTCT</item>
+        <item>TB</item>
+        <item>VCT</item>
+    </string-array>
+
+    <string-array name="tb">
+        <item>TB</item>
+    </string-array>
+
+    <string-array name="sti">
+        <item>STI</item>
+    </string-array>
+
+    <string-array name="fp">
+        <item>Other PITC</item>
+    </string-array>
+
+    <string-array name="opd">
+        <item>Emergency</item>
+        <item>Malnutrition</item>
+        <item>Other PITC</item>
+        <item>STI</item>
+        <item>VCT</item>
+    </string-array>
+
+    <string-array name="ward">
+        <item>Emergency</item>
+        <item>Malnutrition</item>
+        <item>Inpatient</item>
+    </string-array>
+
+    <string-array name="outreach">
+        <item>Index</item>
+        <item>Mobile</item>
+        <item>Other Community</item>
+        <item>SNS</item>
+        <item>VCT</item>
+    </string-array>
+
+    <string-array name="standalone_hts">
+        <item>Emergency</item>
+        <item>Index</item>
+        <item>Inpatient</item>
+        <item>PMTCT (ANC1 Only)</item>
+        <item>PMTCT (Post ANC1: Pregnancy/L&amp;D/BF)</item>
+        <item>SNS</item>
+        <item>STI</item>
+        <item>TB</item>
+        <item>VCT</item>
+    </string-array>
+
+    <string-array name="target_group">
+        <item>MSM</item>
+        <item>FSW</item>
+        <item>PWID</item>
+        <item>SP</item>
+        <item>Transgender</item>
+        <item>Prison</item>
+        <item>Gen Pop</item>
+        <item>Children of KP</item>
+    </string-array>
+
+    <string-array name="referred_from">
+        <item>Self</item>
+        <item>TB</item>
+        <item>STI</item>
+        <item>FP</item>
+        <item>OPD</item>
+        <item>Ward</item>
+        <item>Blood Bank</item>
+        <item>Others</item>
+        <item>Youth/Adolescent Outreach</item>
+        <item>Private/Commercial Health Facility</item>
+        <item>External HCT Center</item>
+    </string-array>
+
+    <string-array name="relationship_of_the_index_client">
+        <item>Biological</item>
+        <item>Sexual</item>
+        <item>Social</item>
+    </string-array>
+
+    <string-array name="type_of_counseling">
+        <item>Individual</item>
+        <item>Couple</item>
+        <item>Group</item>
+        <item>Previously Self Tested</item>
+    </string-array>
+
+    <string-array name="pregnant">
+        <item>Not Pregnant</item>
+        <item>Pregnant</item>
+        <item>Post Partum</item>
+        <item>Breastfeeding</item>
+    </string-array>
+
+</resources>
+
+

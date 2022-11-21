@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/locationLoadingProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="false"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/openmrsLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/lamis_plus_logo"
+                android:contentDescription="@string/lamisplus_logo" />
+
+            <LinearLayout
+                android:id="@+id/loginFormView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Server URL"
+                    app:errorEnabled="true"
+                    app:helperText="*Required">
+
+                    <EditText
+                        android:id="@+id/loginServerUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:hint="Server URL"
+                        android:text="http://"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Email/Username*"
+                    app:errorEnabled="true"
+                    app:helperText="*Required">
+
+                    <EditText
+                        android:id="@+id/loginUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:hint="Email/Username*"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Password*"
+                    app:errorEnabled="true"
+                    app:helperText="*Required">
+
+                    <EditText
+                        android:id="@+id/loginPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:hint="Password*"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Facility location appears here"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    />
+                    -->
+
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical|center_horizontal|center"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_apply"
+                    android:enabled="true"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/login_button"
+                    />
+
+
+                <TextView
+                    android:id="@+id/forgotPass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unable_to_login"
+                    android:textColor="@color/neutral_green"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/loginLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

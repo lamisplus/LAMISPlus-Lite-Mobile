@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeOrig" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="actionModeStyle">@style/LongPress</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="android:textColorPrimary">@color/dark_purple</item>
+        <item name="actionModeStyle">@style/LongPress</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/text_input_layout_stroke_color</item>
+    </style>
+
+    <style name="NoActionBarTheme" parent="AppThemeOrig">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item> <!-- For 2.x version  -->
+    </style>
+
+    <style name="LongPress" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/primary_dark</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
+
+    <style name="TextLabel" parent="">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextLabel.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AddressFields">
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextInputStyleTheme">
+        <item name="customTextInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense</item>
+    </style>
+
+    <style name="SelectInputStyleTheme">
+        <item name="customSelectInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu</item>
+    </style>
+
+</resources>

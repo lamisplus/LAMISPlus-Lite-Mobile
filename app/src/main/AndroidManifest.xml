@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".application.LamisPlus"
+        android:allowBackup="false"
+        android:fullBackupOnly="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LAMISPlus"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="@string/dbname" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="@integer/aadbversion" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="org.lamisplus.datafi.models.Encounter, org.lamisplus.datafi.models.Person, org.lamisplus.datafi.models.Codesets" />
+        <meta-data
+            android:name="buildVersion"
+            android:value="0" />
+
+        <activity
+            android:name=".activities.dashboard.DashboardActivity"
+            android:theme="@style/AppThemeOrig"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.addeditpatient.AddEditPatientActivity"
+            android:label="@string/app_create_icon_label">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.app.AppActivity" />
+        </activity>
+        <activity android:name=".activities.findpatient.FindPatientActivity"
+            android:label="@string/app_find_patient_icon_label">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.app.AppActivity" />
+        </activity>
+        <activity android:name=".activities.patientprogram.PatientProgramActivity"
+            android:label="@string/patient_program_label">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.app.AppActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+        <activity android:name=".activities.formdisplay.FormDisplayActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.rst.RSTActivity"
+            android:label="@string/rst_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.clientintake.ClientIntakeActivity"
+            android:label="@string/client_intake_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.pretest.PreTestActivity"
+            android:label="@string/pre_test_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.requestresult.RequestResultActivity"
+            android:label="@string/request_result_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.posttest.PostTestActivity"
+            android:label="@string/post_test_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.forms.hts.recency.RecencyActivity"
+            android:label="@string/recency_form">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
+        <activity android:name=".activities.patientdashboard.PatientDashboardActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.findpatient.FindPatientActivity" />
+        </activity>
+        <activity android:name=".activities.patientdashboard.details.PatientPhotoActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientdashboard.PatientDashboardActivity" />
+        </activity>
+        <activity
+            android:name=".activities.login.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:theme="@style/NoActionBarTheme" />
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="org.lamisplus.datafi"
+            android:exported="false" />
+
+        <service
+            android:name=".services.PatientService"
+            android:enabled="true" />
+        <service
+            android:name=".services.EncounterService"
+            android:enabled="true" />
+
+    </application>
+
+</manifest>
