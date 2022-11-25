@@ -13,10 +13,7 @@ public abstract class PatientDashboardPresenter extends LamisBasePresenter imple
 
     @Override
     public void deletePatient() {
-//        new PatientDAO().deletePatient(mPatient.getId());
-//        addSubscription(new VisitDAO().deleteVisitsByPatientId(mPatient.getId())
-//                .observeOn(Schedulers.io())
-//                .subscribe());
+        new PersonDAO().deletePatient(mPerson.getId());
     }
 
     @Override

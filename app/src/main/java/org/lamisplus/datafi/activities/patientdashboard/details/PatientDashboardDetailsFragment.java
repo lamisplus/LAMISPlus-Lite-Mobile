@@ -23,6 +23,7 @@ import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardFragment
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.models.Codesets;
 import org.lamisplus.datafi.models.ContactPoint;
+import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.StringUtils;
 
@@ -143,6 +144,11 @@ public class PatientDashboardDetailsFragment extends PatientDashboardFragment im
     public void setMenuTitle(String nameString, String identifier) {
         mPatientDashboardActivity.getSupportActionBar().setTitle(nameString);
         mPatientDashboardActivity.getSupportActionBar().setSubtitle("#" + identifier);
+    }
+
+    @Override
+    public void resolveFormDetailsDisplay(List<Encounter> encounterList) {
+
     }
 
     @Override

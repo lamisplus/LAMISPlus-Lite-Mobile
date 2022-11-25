@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class LamisPlusLogger {
 
-    private static String mTAG = "OpenMRS";
+    private static String mTAG = "LamisPlus";
     private static LamisPlus mLamisPlus = LamisPlus.getInstance();
     private static final boolean IS_DEBUGGING_ON = true;
     private static LamisPlusLogger logger = null;

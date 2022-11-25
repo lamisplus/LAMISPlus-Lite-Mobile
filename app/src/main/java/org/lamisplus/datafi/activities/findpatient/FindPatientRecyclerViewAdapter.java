@@ -79,7 +79,7 @@ public class FindPatientRecyclerViewAdapter extends RecyclerView.Adapter<FindPat
     public void onBindViewHolder(@NonNull FindPatientRecyclerViewAdapter.PatientViewHolder holder, int position) {
         holder.update(mItems.get(position));
         final Person person = mItems.get(position);
-        LamisCustomHandler.showJson(person);
+
         if (null != person.getIdentifier()) {
             String patientIdentifier = String.format(mContext.getResources().getString(R.string.patient_identifier),
                     person.getIdentifier());

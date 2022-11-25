@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.activeandroid.query.Select;
+
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.models.Person;
@@ -38,6 +40,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.Presenter> implements FindPatientContract.View {
 
@@ -91,6 +95,29 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
     public void updateListVisibility(boolean isVisible) {
         mProgressBar.setVisibility(View.GONE);
         mFindPatientRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void updateView(){
+        getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                List<Person> personList = new Select().from(Person.class).execute();
+                updateListVisibility(true);
+                updateAdapter(personList);
+
+            }
+        });
+//        Executor executor = Executors.newSingleThreadExecutor();
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                List<Person> personList = new Select().from(Person.class).execute();
+//                updateListVisibility(true);
+//                updateAdapter(personList);
+//            }
+//        });
     }
 
     @Override

@@ -35,11 +35,12 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
     }
 
     @Override
-    public void confirmCreate(RiskStratification riskStratification) {
+    public void confirmCreate(RiskStratification riskStratification,String packageName) {
         String rstEncounter = new Gson().toJson(riskStratification);
         Encounter encounter = new Encounter();
         encounter.setName(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
-        encounter.setPersonId(patientId);
+        encounter.setPerson(patientId);
+        encounter.setPackageName(packageName);
         encounter.setDataValues(rstEncounter);
         encounter.save();
 
@@ -52,6 +53,12 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
         encounter.setDataValues(s);
         encounter.save();
         rstInfoView.startActivityForClientIntakeForm();
+    }
+
+    @Override
+    public void confirmDeleteEncounter(String formName, String patientId) {
+        EncounterDAO.deleteEncounter(formName, patientId);
+        rstInfoView.startDashboardActivity();
     }
 
 }

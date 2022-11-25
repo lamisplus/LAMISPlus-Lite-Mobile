@@ -34,25 +34,7 @@ public class FindPatientPresenter extends LamisBasePresenter implements FindPati
 
     @Override
     public void updateLocalPatientsList() {
-//        Thread thread = new Thread(){
-//            @Override
-//            public void run(){
-//                List<Person> personList =   new Select().from(Person.class).execute();
-//                findPatientsInfoView.updateListVisibility(true);
-//                findPatientsInfoView.updateAdapter(personList);
-//            }
-//        };
-//        thread.start();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<Person> personList = new Select().from(Person.class).execute();
-                LamisCustomHandler.showJson(personList);
-                findPatientsInfoView.updateListVisibility(true);
-                findPatientsInfoView.updateAdapter(personList);
-            }
-        });
+        findPatientsInfoView.updateView();
     }
 
 }

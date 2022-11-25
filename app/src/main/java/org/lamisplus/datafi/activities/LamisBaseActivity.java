@@ -129,7 +129,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
                     LamisPlus.getInstance().setSyncState(true);
                     setSyncButtonState(true);
 
-//                    Intent intent = new Intent("org.openmrs.mobile.intent.action.SYNC_PATIENTS");
+//                    Intent intent = new Intent("org.lamisplus.mobile.intent.action.SYNC_PATIENTS");
 //                    getApplicationContext().sendBroadcast(intent);
                     //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     Intent ii = new Intent(getApplicationContext(), PatientService.class);
@@ -139,7 +139,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
                     Intent i1 = new Intent(getApplicationContext(), EncounterService.class);
                     getApplicationContext().startService(i1);
 //                    }else{
-//                        Intent intent = new Intent("org.openmrs.mobile.intent.action.SYNC_PATIENTS");
+//                        Intent intent = new Intent("org.lamisplus.mobile.intent.action.SYNC_PATIENTS");
 //                        getApplicationContext().sendBroadcast(intent);
 //                    }
 
@@ -169,8 +169,8 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
 
     public void showMultiDeletePatientDialog(ArrayList<Person> selectedItems) {
 //        CustomDialogBundle bundle = new CustomDialogBundle();
-//        bundle.setTitleViewMessage(getString(org.openmrs.mobile.R.string.delete_multiple_patients));
-//        bundle.setTextViewMessage(getString(org.openmrs.mobile.R.string.delete_multiple_patients_dialog_message));
+//        bundle.setTitleViewMessage(getString(org.lamisplus.mobile.R.string.delete_multiple_patients));
+//        bundle.setTextViewMessage(getString(org.lamisplus.mobile.R.string.delete_multiple_patients_dialog_message));
 //        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.MULTI_DELETE_PATIENT);
 //        bundle.setRightButtonText(getString(R.string.dialog_button_confirm));
 //        bundle.setSelectedItems(selectedItems);

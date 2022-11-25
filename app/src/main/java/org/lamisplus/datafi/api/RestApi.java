@@ -1,5 +1,9 @@
 package org.lamisplus.datafi.api;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.lamisplus.datafi.models.Person;
 
 import retrofit2.Call;
@@ -12,7 +16,7 @@ public interface RestApi {
     Call<Object> getToken(@Body Object json);
 
     @POST("patient")
-    Call<Person> createPatient(@Body Person person);
+    Call<Object> createPatient(@Body Object personPayload);
 
 
 }

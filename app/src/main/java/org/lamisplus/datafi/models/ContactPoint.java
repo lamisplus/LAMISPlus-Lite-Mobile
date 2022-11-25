@@ -10,10 +10,15 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class ContactPoint implements Serializable{
+public class ContactPoint implements Serializable {
 
+    @SerializedName("type")
+    @Expose
     String type;
+    @SerializedName("value")
+    @Expose
     String value;
+
 
     public String getType() {
         return type;

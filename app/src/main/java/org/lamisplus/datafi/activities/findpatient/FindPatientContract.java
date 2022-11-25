@@ -18,6 +18,8 @@ public class FindPatientContract {
 
         void updateListVisibility(boolean isVisible, @NonNull String replacementWord);
 
+        void updateView();
+
     }
 
     interface Presenter extends LamisBasePresenterContract{

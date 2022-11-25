@@ -39,7 +39,6 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
 
     @Override
     public void confirmRegister(Person person) {
-        LamisCustomHandler.showJson(person);
         person.save();
         mAddEditPatientInfoView.startPatientDashbordActivity(person);
     }
@@ -48,7 +47,6 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
     public void confirmUpdate(Person person) {
         mAddEditPatientInfoView.scrollToTop();
         mAddEditPatientInfoView.setProgressBarVisibility(true);
-        LamisCustomHandler.showJson(person);
         person.save();
         mAddEditPatientInfoView.startPatientDashbordActivity(person);
     }

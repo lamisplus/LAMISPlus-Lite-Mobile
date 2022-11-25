@@ -83,7 +83,6 @@ public class RestServiceBuilder {
                 try {
                     Response response = client.newCall(request).execute();
                     tokenRequest = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), TokenRequest.class);
-                    Log.v("Baron", tokenRequest.getId_token());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -126,8 +125,8 @@ public class RestServiceBuilder {
     private static GsonConverterFactory buildGsonConverter() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson myGson = gsonBuilder
+                .setPrettyPrinting().setLenient()
                 .excludeFieldsWithoutExposeAnnotation()
-                .registerTypeHierarchyAdapter(Resource.class, new ResourceSerializer()).setLenient()
                 .create();
 
         return GsonConverterFactory.create(myGson);

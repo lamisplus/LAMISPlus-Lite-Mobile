@@ -18,14 +18,14 @@ public class RequestResultActivity extends LamisBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rst);
+        setContentView(R.layout.activity_request_result);
 
-        requestResultFragment = (RequestResultFragment) getSupportFragmentManager().findFragmentById(R.id.rstContentFrame);
+        requestResultFragment = (RequestResultFragment) getSupportFragmentManager().findFragmentById(R.id.requestResultContentFrame);
         if (requestResultFragment == null) {
             requestResultFragment = RequestResultFragment.newInstance();
         }
         if (!requestResultFragment.isActive()) {
-            addFragmentToActivity(getSupportFragmentManager(), requestResultFragment, R.id.rstContentFrame);
+            addFragmentToActivity(getSupportFragmentManager(), requestResultFragment, R.id.requestResultContentFrame);
         }
 
         Bundle patientBundle = savedInstanceState;

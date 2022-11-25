@@ -7,6 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,6 +69,8 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     private Encounter updatedForm;
     private RiskStratification updatedRst;
 
+    private String packageName;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +80,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             setHasOptionsMenu(true);
             setListeners();
             showDatePickers();
+            packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()));
             }
@@ -121,8 +127,6 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
                 if (resourceId != 0) {
                     String[] allModality = getResources().getStringArray(resourceId);
-
-                    LamisCustomHandler.showJson(allModality);
 
                     ArrayAdapter<String> adapterModality = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, allModality);
                     autoModality.setAdapter(adapterModality);
@@ -202,7 +206,6 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!ViewUtils.isEmpty(edAge) && Integer.parseInt(ViewUtils.getInput(edAge)) >= ApplicationConstants.RST_AGE) {
-                    Log.v("Baron", "I have left the field");
                     isAdult = true;
                     riskAssessmentLayoutView.setVisibility(View.VISIBLE);
                 } else {
@@ -220,9 +223,32 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
     public void fillFields(RiskStratification riskStratification){
         if(riskStratification != null){
+
+            LamisCustomHandler.showJson(riskStratification);
+
             isUpdateRst = true;
             updatedRst = riskStratification;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+
+            autoSettings.setText(riskStratification.getTestingSetting(), false);
+            autoModality.setText(riskStratification.getModality(), false);
+            autoTargetGroup.setText(riskStratification.getTargetGroup(), false);
+            edVisitDate.setText(riskStratification.getVisitDate());
+            if(riskStratification.getDob() == null){
+                edDob.setText(DateUtils.getAgeFromBirthdate(riskStratification.getAge()));
+            }else {
+                edDob.setText(riskStratification.getDob());
+            }
+            edAge.setText(String.valueOf(riskStratification.getAge()));
+
+//            autoAbdPain.setText(riskStratification.getRiskAssessments().;
+//            autoWithoutCondom = root.findViewById(R.id.autoWithoutCondom);
+//            autoCondomBurst = root.findViewById(R.id.autoCondomBurst);
+//            autoShareNeedle = root.findViewById(R.id.autoShareNeedle);
+//            autoBloodTransfusion = root.findViewById(R.id.autoBloodTransfusion);
+//            autoCough = root.findViewById(R.id.autoCough);
+//            autoPaidSex = root.findViewById(R.id.autoPaidSex);
+
         }
     }
 
@@ -253,6 +279,8 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
         if (!ViewUtils.isEmpty(edDob)) {
             riskStratification.setDob(ViewUtils.getInput(edDob));
+        }else{
+            riskStratification.setDob(DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge))));
         }
 
 
@@ -273,6 +301,24 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         return riskStratification;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(isUpdateRst) {
+            inflater.inflate(R.menu.delete_multi_patient_menu, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_delete:
+                mPresenter.confirmDeleteEncounter(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -286,11 +332,10 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                 if(isUpdateRst){
                     mPresenter.confirmUpdate(updateEncounter(updatedRst), updatedForm);
                 }else{
-                    mPresenter.confirmCreate(createEncounter());
+                    mPresenter.confirmCreate(createEncounter(), packageName);
                 }
                 break;
             default:
-
                 break;
         }
     }
@@ -304,10 +349,15 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(clientIntakeProgram);
         }else{
-            Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
-            preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                    String.valueOf(mPresenter.getPatientId()));
-            startActivity(preTestProgram);
+            startDashboardActivity();
         }
+    }
+
+    @Override
+    public void startDashboardActivity() {
+        Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
+        preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                String.valueOf(mPresenter.getPatientId()));
+        startActivity(preTestProgram);
     }
 }

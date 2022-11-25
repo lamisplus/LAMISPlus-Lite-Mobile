@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -52,6 +55,8 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
     private Encounter updatedForm;
     private ClientIntake updatedClientIntake;
 
+    private String packageName;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,11 +66,31 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             setHasOptionsMenu(true);
             setListeners();
             showDatePickers();
+            packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId()));
             }
         }
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(isUpdateClientIntake) {
+            inflater.inflate(R.menu.delete_multi_patient_menu, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_delete:
+                mPresenter.confirmDeleteEncounterClientIntake(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public static ClientIntakeFragment newInstance() {
@@ -240,7 +265,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                 if (isUpdateClientIntake) {
                     mPresenter.confirmUpdate(updateEncounter(updatedClientIntake), updatedForm);
                 } else {
-                    mPresenter.confirmCreate(createEncounter());
+                    mPresenter.confirmCreate(createEncounter(), packageName);
                 }
                 break;
             default:
@@ -265,10 +290,15 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(preTestProgram);
         }else{
-            Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
-            preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                    String.valueOf(mPresenter.getPatientId()));
-            startActivity(preTestProgram);
+            startDashboardActivity();
         }
+    }
+
+    @Override
+    public void startDashboardActivity() {
+        Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
+        preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                String.valueOf(mPresenter.getPatientId()));
+        startActivity(preTestProgram);
     }
 }

@@ -17,8 +17,11 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardContract;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardFragment;
+import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.StringUtils;
+
+import java.util.List;
 
 public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragment implements PatientDashboardContract.ViewPatientDetails {
 
@@ -108,6 +111,11 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     public void setMenuTitle(String nameString, String identifier) {
         mPatientDashboardActivity.getSupportActionBar().setTitle(nameString);
         mPatientDashboardActivity.getSupportActionBar().setSubtitle("#" + identifier);
+    }
+
+    @Override
+    public void resolveFormDetailsDisplay(List<Encounter> encounterList) {
+
     }
 
     @Override

@@ -112,7 +112,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
     }
 
     public void addToTab(JSONObject jsonObjectSection) {
-        LamisCustomHandler.showJson(jsonObjectSection);
         AutoCompleteTextView autoCompleteTextView;
         try {
             JSONArray jsonarraySections = new JSONArray(jsonObjectSection.getString("sections"));

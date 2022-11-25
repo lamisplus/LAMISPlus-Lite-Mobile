@@ -1,9 +1,15 @@
 package org.lamisplus.datafi.application;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
@@ -24,8 +30,8 @@ import java.util.List;
 
 public class LamisPlus extends Application {
 
-    private static final String OPENMRS_DIR_NAME = "OpenMRS";
-    private static final String OPENMRS_DIR_PATH = File.separator + OPENMRS_DIR_NAME;
+    private static final String LAMIS_PLUS_DIR_NAME = "LamisPlus";
+    private static final String LAMIS_PLUS_DIR_PATH = File.separator + LAMIS_PLUS_DIR_NAME;
     private static String mExternalDirectoryPath;
     private String secretKey;
 
@@ -78,7 +84,7 @@ public class LamisPlus extends Application {
         editor.putBoolean("sync", enabled);
         editor.apply();
     }
-    public SharedPreferences getOpenMRSSharedPreferences() {
+    public SharedPreferences getLamisPlusSharedPreferences() {
         return getSharedPreferences(ApplicationConstants.LAMISPlusSharedPreferenceNames.SHARED_PREFERENCES_NAME,
                 MODE_PRIVATE);
     }
@@ -95,12 +101,12 @@ public class LamisPlus extends Application {
     }
 
     public String getUsername() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.UserKeys.USER_NAME, ApplicationConstants.EMPTY_STRING);
     }
 
     public String getPassword() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.UserKeys.PASSWORD, ApplicationConstants.EMPTY_STRING);
     }
 
@@ -109,27 +115,27 @@ public class LamisPlus extends Application {
     }
 
     public String getServerUrl() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.DEFAULT_LAMIS_PLUS_URL);
     }
 
     public String getLastLoginServerUrl() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.LAST_LOGIN_SERVER_URL, ApplicationConstants.EMPTY_STRING);
     }
 
     public String getSessionToken() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.SESSION_TOKEN, ApplicationConstants.EMPTY_STRING);
     }
 
     public String getLastSessionToken() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
         return prefs.getString(ApplicationConstants.LAST_SESSION_TOKEN, ApplicationConstants.EMPTY_STRING);
     }
 
     public void clearUserPreferencesData() {
-        SharedPreferences prefs = LamisPlus.getInstance().getOpenMRSSharedPreferences();
+        SharedPreferences prefs = LamisPlus.getInstance().getLamisPlusSharedPreferences();
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(ApplicationConstants.LAST_SESSION_TOKEN,
                 prefs.getString(ApplicationConstants.SESSION_TOKEN, ApplicationConstants.EMPTY_STRING));
@@ -142,7 +148,7 @@ public class LamisPlus extends Application {
     }
 
     public void clearCurrentLoggedInUserInfo() {
-        SharedPreferences prefs = LamisPlus.getInstance().getOpenMRSSharedPreferences();
+        SharedPreferences prefs = LamisPlus.getInstance().getLamisPlusSharedPreferences();
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(ApplicationConstants.UserKeys.USER_PERSON_NAME);
         editor.remove(ApplicationConstants.UserKeys.USER_UUID);
@@ -154,13 +160,13 @@ public class LamisPlus extends Application {
     }
 
     public void setSessionToken(String serverUrl) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
+        SharedPreferences.Editor editor = getLamisPlusSharedPreferences().edit();
         editor.putString(ApplicationConstants.SESSION_TOKEN, serverUrl);
         editor.apply();
     }
 
     public void setPasswordAndHashedPassword(String password) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
+        SharedPreferences.Editor editor = getLamisPlusSharedPreferences().edit();
         String salt = BCrypt.gensalt(ApplicationConstants.DEFAULT_BCRYPT_ROUND);
         String hashedPassword = BCrypt.hashpw(password, salt);
         editor.putString(ApplicationConstants.UserKeys.PASSWORD, password);
@@ -169,7 +175,7 @@ public class LamisPlus extends Application {
     }
 
     public void setSystemId(String systemId) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
+        SharedPreferences.Editor editor = getLamisPlusSharedPreferences().edit();
         editor.putString(ApplicationConstants.SYSTEM_ID, systemId);
         editor.apply();
     }
@@ -942,5 +948,15 @@ public class LamisPlus extends Application {
 
     public boolean isRunningKitKatVersionOrHigher() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public String getPackageName(Activity activity){
+        PackageManager packageManager = LamisPlus.getInstance().getPackageManager();
+        try {
+            ActivityInfo info =  packageManager.getActivityInfo(activity.getComponentName(), 0);
+            return info.name;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

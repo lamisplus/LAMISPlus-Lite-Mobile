@@ -129,4 +129,11 @@ public class RiskStratification implements Serializable {
     public void setVisitDate(String visitDate) {
         this.visitDate = visitDate;
     }
+
+    public RiskAssessment getRiskAssessments(){
+        if(this.getRiskAssessmentList() != null){
+            return getRiskAssessmentList().get(0);
+        }
+        return null;
+    }
 }

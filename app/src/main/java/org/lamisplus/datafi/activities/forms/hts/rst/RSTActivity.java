@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.rst;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
@@ -13,7 +14,6 @@ public class RSTActivity extends LamisBaseActivity {
 
     public RSTContract.Presenter mPresenter;
     public RSTFragment rstFragment;
-    private Encounter mforms;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

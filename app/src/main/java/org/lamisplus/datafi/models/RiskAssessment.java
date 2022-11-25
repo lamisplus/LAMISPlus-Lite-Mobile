@@ -39,6 +39,68 @@ public class RiskAssessment implements Serializable {
     @Expose
     private boolean informConsentHivTest;
 
+    public boolean isPreviousTestedHIVNegative() {
+        return previousTestedHIVNegative;
+    }
 
+    public void setPreviousTestedHIVNegative(boolean previousTestedHIVNegative) {
+        this.previousTestedHIVNegative = previousTestedHIVNegative;
+    }
+
+    public boolean isTimeLastHIVNegativeTestResult() {
+        return timeLastHIVNegativeTestResult;
+    }
+
+    public void setTimeLastHIVNegativeTestResult(boolean timeLastHIVNegativeTestResult) {
+        this.timeLastHIVNegativeTestResult = timeLastHIVNegativeTestResult;
+    }
+
+    public boolean isClientPregnant() {
+        return clientPregnant;
+    }
+
+    public void setClientPregnant(boolean clientPregnant) {
+        this.clientPregnant = clientPregnant;
+    }
+
+    public boolean isClientInformHivTransRoutes() {
+        return clientInformHivTransRoutes;
+    }
+
+    public void setClientInformHivTransRoutes(boolean clientInformHivTransRoutes) {
+        this.clientInformHivTransRoutes = clientInformHivTransRoutes;
+    }
+
+    public boolean isClientInformRiskHivTrans() {
+        return clientInformRiskHivTrans;
+    }
+
+    public void setClientInformRiskHivTrans(boolean clientInformRiskHivTrans) {
+        this.clientInformRiskHivTrans = clientInformRiskHivTrans;
+    }
+
+    public boolean isClientInformPreventingsHivTrans() {
+        return clientInformPreventingsHivTrans;
+    }
+
+    public void setClientInformPreventingsHivTrans(boolean clientInformPreventingsHivTrans) {
+        this.clientInformPreventingsHivTrans = clientInformPreventingsHivTrans;
+    }
+
+    public boolean isClientInformPossibleTestResult() {
+        return clientInformPossibleTestResult;
+    }
+
+    public void setClientInformPossibleTestResult(boolean clientInformPossibleTestResult) {
+        this.clientInformPossibleTestResult = clientInformPossibleTestResult;
+    }
+
+    public boolean isInformConsentHivTest() {
+        return informConsentHivTest;
+    }
+
+    public void setInformConsentHivTest(boolean informConsentHivTest) {
+        this.informConsentHivTest = informConsentHivTest;
+    }
 }
 

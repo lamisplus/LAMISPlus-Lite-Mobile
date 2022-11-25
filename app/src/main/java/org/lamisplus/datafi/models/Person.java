@@ -58,7 +58,7 @@ public class Person extends Model implements Serializable {
     private String contact;
 
     @SerializedName("contactPoint")
-    private List<ContactPoint> contactPointList = new ArrayList<>();
+    private transient  List<ContactPoint> contactPointList = new ArrayList<>();
 
     @Column(name = "contactPoint")
     @Expose
@@ -184,6 +184,10 @@ public class Person extends Model implements Serializable {
         return addressList;
     }
 
+    public void setAddress(List<Address> addressList) {
+        this.addressList = addressList;
+    }
+
     public Address getAddresses() {
         if (!address.isEmpty()) {
             return pullAddressList().get(0);
@@ -198,10 +202,6 @@ public class Person extends Model implements Serializable {
         } else {
             return null;
         }
-    }
-
-    public void setAddress(List<Address> addressList) {
-        this.addressList = addressList;
     }
 
     public void setAddresses(Address addresses) {
@@ -230,7 +230,9 @@ public class Person extends Model implements Serializable {
     }
 
     public List<Contact> pullContactList() {
-        List<Contact> contactList = gson.fromJson(contact, contactType);
+        Type type = new TypeToken<List<Contact>>() {
+        }.getType();
+        List<Contact> contactList = gson.fromJson(contact, type);
         return contactList;
     }
 

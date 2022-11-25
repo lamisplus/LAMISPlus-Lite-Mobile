@@ -7,6 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,10 +25,13 @@ import androidx.annotation.Nullable;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
+import org.lamisplus.datafi.activities.forms.hts.posttest.PostTestActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.PreTest;
+import org.lamisplus.datafi.models.RequestResult;
 import org.lamisplus.datafi.models.RiskAssessment;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -62,24 +68,44 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
     private Button mSaveContinueButton;
 
-    private boolean isUpdateRst = false;
+    private boolean isUpdateRequestResult = false;
     private Encounter updatedForm;
-    private RiskStratification updatedRst;
+    private RequestResult updatedRequestResult;
+    private String packageName;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_rst, container, false);
+        View root = inflater.inflate(R.layout.fragment_request_result, container, false);
         if (root != null) {
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
-            showDatePickers();
-            if(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()) != null) {
-                fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()));
+            packageName = LamisPlus.getInstance().getPackageName(getActivity());
+            if(mPresenter.patientToUpdate(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId()) != null) {
+                fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId()));
             }
         }
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(isUpdateRequestResult) {
+            inflater.inflate(R.menu.delete_multi_patient_menu, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_delete:
+                mPresenter.confirmDeleteEncounterRequestResult(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public static RequestResultFragment newInstance() {
@@ -109,40 +135,6 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
 
-        settings = getResources().getStringArray(R.array.settings);
-        ArrayAdapter<String> adapterSettings = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, settings);
-        autoSettings.setAdapter(adapterSettings);
-
-        autoSettings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String selection = (String) adapterView.getItemAtPosition(position);
-                int resourceId = getActivity().getResources().getIdentifier(selection.toLowerCase().replace(" ", "_"), "array", getContext().getPackageName());
-
-                if (resourceId != 0) {
-                    String[] allModality = getResources().getStringArray(resourceId);
-
-                    LamisCustomHandler.showJson(allModality);
-
-                    ArrayAdapter<String> adapterModality = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, allModality);
-                    autoModality.setAdapter(adapterModality);
-                }
-            }
-        });
-
-        targetGroup = getResources().getStringArray(R.array.target_group);
-        ArrayAdapter<String> adapterTargetGroup = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, targetGroup);
-        autoTargetGroup.setAdapter(adapterTargetGroup);
-
-        String[] booleanAnswers = {"Yes", "No"};
-        ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanAnswers);
-        autoAbdPain.setAdapter(adapterBooleanAnswers);
-        autoWithoutCondom.setAdapter(adapterBooleanAnswers);
-        autoCondomBurst.setAdapter(adapterBooleanAnswers);
-        autoShareNeedle.setAdapter(adapterBooleanAnswers);
-        autoBloodTransfusion.setAdapter(adapterBooleanAnswers);
-        autoCough.setAdapter(adapterBooleanAnswers);
-        autoPaidSex.setAdapter(adapterBooleanAnswers);
     }
 
     private void showDatePickers() {
@@ -218,59 +210,59 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         });
     }
 
-    public void fillFields(RiskStratification riskStratification){
-        if(riskStratification != null){
-            isUpdateRst = true;
-            updatedRst = riskStratification;
-            updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+    public void fillFields(RequestResult requestResult){
+        if(requestResult != null){
+            isUpdateRequestResult = true;
+            updatedRequestResult = requestResult;
+            updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
         }
     }
 
-    private RiskStratification createEncounter() {
-        RiskStratification riskStratification = new RiskStratification();
-        updateEncounterWithData(riskStratification);
-        return riskStratification;
+    private RequestResult createEncounter() {
+        RequestResult requestResult = new RequestResult();
+        updateEncounterWithData(requestResult);
+        return requestResult;
     }
 
-    private RiskStratification updateEncounter(RiskStratification riskStratification) {
+    private RequestResult updateEncounter(RequestResult requestResult) {
         Encounter.load(Encounter.class, updatedForm.getId());
-        updateEncounterWithData(riskStratification);
-        return riskStratification;
+        updateEncounterWithData(requestResult);
+        return requestResult;
     }
 
-    private RiskStratification updateEncounterWithData(RiskStratification riskStratification){
-        if (!ViewUtils.isEmpty(autoSettings)) {
-            riskStratification.setTestingSetting(ViewUtils.getInput(autoSettings));
-        }
+    private RequestResult updateEncounterWithData(RequestResult requestResult){
+//        if (!ViewUtils.isEmpty(autoSettings)) {
+//            riskStratification.setTestingSetting(ViewUtils.getInput(autoSettings));
+//        }
+//
+//        if (!ViewUtils.isEmpty(autoModality)) {
+//            riskStratification.setModality(ViewUtils.getInput(autoModality));
+//        }
+//
+//        if (!ViewUtils.isEmpty(autoTargetGroup)) {
+//            riskStratification.setTargetGroup(ViewUtils.getInput(autoTargetGroup));
+//        }
+//
+//        if (!ViewUtils.isEmpty(edDob)) {
+//            riskStratification.setDob(ViewUtils.getInput(edDob));
+//        }
+//
+//
+//        if (!ViewUtils.isEmpty(edVisitDate)) {
+//            riskStratification.setVisitDate(ViewUtils.getInput(edVisitDate));
+//        }
+//
+//        if (!ViewUtils.isEmpty(edAge)) {
+//            riskStratification.setAge(Integer.parseInt(ViewUtils.getInput(edAge)));
+//        }
+//
+//        RiskAssessment riskAssessment = new RiskAssessment();
+//        List<RiskAssessment> riskAssessmentList = new ArrayList<>();
+//        riskAssessmentList.add(riskAssessment);
+//
+//        riskStratification.setRiskAssessmentList(riskAssessmentList);
 
-        if (!ViewUtils.isEmpty(autoModality)) {
-            riskStratification.setModality(ViewUtils.getInput(autoModality));
-        }
-
-        if (!ViewUtils.isEmpty(autoTargetGroup)) {
-            riskStratification.setTargetGroup(ViewUtils.getInput(autoTargetGroup));
-        }
-
-        if (!ViewUtils.isEmpty(edDob)) {
-            riskStratification.setDob(ViewUtils.getInput(edDob));
-        }
-
-
-        if (!ViewUtils.isEmpty(edVisitDate)) {
-            riskStratification.setVisitDate(ViewUtils.getInput(edVisitDate));
-        }
-
-        if (!ViewUtils.isEmpty(edAge)) {
-            riskStratification.setAge(Integer.parseInt(ViewUtils.getInput(edAge)));
-        }
-
-        RiskAssessment riskAssessment = new RiskAssessment();
-        List<RiskAssessment> riskAssessmentList = new ArrayList<>();
-        riskAssessmentList.add(riskAssessment);
-
-        riskStratification.setRiskAssessmentList(riskAssessmentList);
-
-        return riskStratification;
+        return requestResult;
     }
 
 
@@ -283,10 +275,10 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.saveContinueButton:
-                if(isUpdateRst){
-                    mPresenter.confirmUpdate(updateEncounter(updatedRst), updatedForm);
+                if(isUpdateRequestResult){
+                    mPresenter.confirmUpdate(updateEncounter(updatedRequestResult), updatedForm);
                 }else{
-                    mPresenter.confirmCreate(createEncounter());
+                    mPresenter.confirmCreate(createEncounter(), packageName);
                 }
                 break;
             default:
@@ -296,18 +288,23 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     }
 
     @Override
-    public void startActivityForClientIntakeForm() {
-        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM, mPresenter.getPatientId());
+    public void startActivityForPostTestForm() {
+        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId());
         if(encounter == null) {
-            Intent clientIntakeProgram = new Intent(LamisPlus.getInstance(), ClientIntakeActivity.class);
+            Intent clientIntakeProgram = new Intent(LamisPlus.getInstance(), PostTestActivity.class);
             clientIntakeProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(clientIntakeProgram);
         }else{
-            Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
-            preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                    String.valueOf(mPresenter.getPatientId()));
-            startActivity(preTestProgram);
+            startDashboardActivity();
         }
+    }
+
+    @Override
+    public void startDashboardActivity() {
+        Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
+        preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                String.valueOf(mPresenter.getPatientId()));
+        startActivity(preTestProgram);
     }
 }

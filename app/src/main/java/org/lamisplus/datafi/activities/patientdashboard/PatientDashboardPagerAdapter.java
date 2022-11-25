@@ -16,13 +16,17 @@ import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboard
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsPresenter;
+import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsFragment;
+import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsPresenter;
 
 class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
 
-    private static final int TAB_COUNT = 2;
+    private static final int TAB_COUNT = 3;
 
     private static final int DETAILS_TAB_POS = 0;
-    private static final int FINGERPRINTS_TAB_POS = 1;
+
+    private static final int FORM_DETAILS_POS = 1;
+    private static final int FINGERPRINTS_TAB_POS = 2;
 
     private SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
@@ -43,6 +47,10 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
                 PatientDashboardDetailsFragment patientDashboardDetailsFragment = PatientDashboardDetailsFragment.newInstance();
                 new PatientDashboardDetailsPresenter(mPatientId, patientDashboardDetailsFragment);
                 return patientDashboardDetailsFragment;
+            case FORM_DETAILS_POS:
+                PatientDashboardFormDetailsFragment patientDashboardFormDetailsFragment = PatientDashboardFormDetailsFragment.newInstance();
+                new PatientDashboardFormDetailsPresenter(mPatientId, patientDashboardFormDetailsFragment);
+                return patientDashboardFormDetailsFragment;
             case FINGERPRINTS_TAB_POS:
                 PatientDashboardFingerPrintsFragment patientDashboardFingerPrintsFragment = PatientDashboardFingerPrintsFragment.newInstance();
                 new PatientDashboardFingerPrintsPresenter(mPatientId, patientDashboardFingerPrintsFragment);
@@ -59,6 +67,8 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case DETAILS_TAB_POS:
                 return context.getString(R.string.patient_scroll_tab_details_label);
+            case FORM_DETAILS_POS:
+                return context.getString(R.string.patient_scroll_tab_formdetails_label);
             case FINGERPRINTS_TAB_POS:
                 return context.getString(R.string.patient_scroll_tab_fingerprints_label);
             default:

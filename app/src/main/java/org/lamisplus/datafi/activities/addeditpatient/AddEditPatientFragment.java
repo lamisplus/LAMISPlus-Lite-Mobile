@@ -244,8 +244,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
                 if (resourceId != 0) {
                     String[] allStates = getResources().getStringArray(resourceId);
 
-                    LamisCustomHandler.showJson(allStates);
-
                     ArrayAdapter<String> adapterAllProvince = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, allStates);
                     autoProvinceLGA.setAdapter(adapterAllProvince);
                 }
@@ -355,20 +353,20 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             edNokMiddleName.setText(person.getContacts().getOtherName());
             autoNokRelationship.setText(CodesetsDAO.findCodesetsDisplayById(person.getContacts().getRelationshipId()), false);
 
-            if(person.getContacts().getContactPoint().size() >= 2 && person.getContacts().getContactPoint() != null){
-                if(person.getContacts().getContactPoint().get(0).getValue() != null && person.getContacts().getContactPoint().get(0).getType().equals("phone")) {
-                    edNokPhone.setText(person.getContacts().getContactPoint().get(0).getValue());
+            if(person.getContacts().getContactPoint() != null){
+                LamisCustomHandler.showJson(person.getContacts().getContactPoint());
+
+                if(person.getContacts().getContactPoint().getValue() != null && person.getContacts().getContactPoint().getType().equals("phone")) {
+                    edNokPhone.setText(person.getContacts().getContactPoint().getValue());
                 }
 
-                if(person.getContacts().getContactPoint().get(1).getValue() != null && person.getContacts().getContactPoint().get(1).getType().equals("email")) {
-                    edNokemail.setText(person.getContacts().getContactPoint().get(1).getValue());
-                }
             }
 
             if(person.getContacts().getAddress() != null){
-                String[] contactAddress = person.getContacts().getAddress();
-                edNokAddress.setText(contactAddress[0]);
+                Address address = person.getContacts().getAddress();
+                edNokAddress.setText(String.valueOf(address.getLine()[0]));
             }
+
         }
     }
 
@@ -467,7 +465,8 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         address.setCountryId(1);
 
         if (!ViewUtils.isEmpty(autoState)) {
-            address.setStateId(ViewUtils.getInput(autoState));
+            //address.setStateId(ViewUtils.getInput(autoState));
+            address.setStateId("20");
         }
 
         if (!ViewUtils.isEmpty(autoProvinceLGA)) {
@@ -489,32 +488,41 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         person.setAddress(addressList);
         person.setAddressList();
 
+
+
+
+
+
+
         Contact contact = new Contact();
         contact.setFirstName(ViewUtils.getInput(edNokFirstName));
         contact.setSurname(ViewUtils.getInput(edNokLastName));
         contact.setOtherName(ViewUtils.getInput(edNokMiddleName));
 
         contact.setRelationshipId(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoNokRelationship)));
-        contact.setLine(new String[]{ViewUtils.getInput(edNokAddress)});
+//        contact.setLine(new String[]{ViewUtils.getInput(edNokAddress)});
 
-
+        /** Working here **/
+        Address contactAddress = new Address();
         String[] li = new String[]{ViewUtils.getInput(edNokAddress)};
-        String jsonContactAdd = new Gson().toJson(new Contact.Address(li));
+        contactAddress.setLine(li);
 
-        contact.setAddress(jsonContactAdd);
+        contact.setAddress(contactAddress);
+
+
+
+
+        ContactPoint contactPointMe1 = new ContactPoint();
+        contactPointMe1.setType("phone");
+        contactPointMe1.setValue(ViewUtils.getInput(edNokPhone));
+
+
+
+        contact.setContactPoint(contactPointMe1);
 
         List<Contact> contactList = new ArrayList<>();
         contactList.add(contact);
 
-        List<ContactPointClass.ContactPointItems> contactPoint = new ArrayList<>();
-        contactPoint.add(new ContactPointClass.ContactPointItems("phone", ViewUtils.getInput(edNokPhone)));
-        contactPoint.add(new ContactPointClass.ContactPointItems("email", ViewUtils.getInput(edNokemail)));
-
-        String contactPointJson = new Gson().toJson(contactPoint);
-
-        contact.setContactPoint(contactPointJson);
-
-        LamisCustomHandler.showJson(contact);
 
         person.setContact(contactList);
         person.setContactList();

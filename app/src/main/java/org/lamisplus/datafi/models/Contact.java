@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import org.lamisplus.datafi.classes.ContactPointClass;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -20,13 +21,22 @@ public class Contact implements Serializable {
 
     @SerializedName("address")
     @Expose
+    private Address addressList;
+
+    @SerializedName("addressList")
     private String address;
 
     private String[] line;
 
     @SerializedName("contactPoint")
     @Expose
+    private ContactPoint contactPointList;
+
+    @SerializedName("contactPointList")
     private String contactPoint;
+
+    @SerializedName("contact")
+    private String contact;
 
     @SerializedName("firstName")
     @Expose
@@ -48,34 +58,20 @@ public class Contact implements Serializable {
     @Expose
     private String otherName;
 
-    public String[] getAddress() {
-        Type type = new TypeToken<List<Contact.Address>>() {
-        }.getType();
-        Contact.Address contactAddress = new Gson().fromJson(address, Contact.Address.class);
-        return contactAddress.line;
+    public Address getAddress() {
+        return this.addressList;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(Address address) {
+        this.addressList = address;
     }
 
-    public String[] getLine() {
-        return line;
+    public ContactPoint getContactPoint() {
+        return contactPointList;
     }
 
-    public void setLine(String[] line) {
-        this.line = line;
-    }
-
-    public List<ContactPoint> getContactPoint() {
-        Type type = new TypeToken<List<ContactPoint>>() {
-        }.getType();
-        List<ContactPoint> contactPoints = new Gson().fromJson(contactPoint, type);
-        return contactPoints;
-    }
-
-    public void setContactPoint(String contactPoint) {
-        this.contactPoint = contactPoint;
+    public void setContactPoint(ContactPoint contactPoint) {
+        this.contactPointList = contactPoint;
     }
 
     public String getFirstName() {
@@ -118,20 +114,20 @@ public class Contact implements Serializable {
         this.otherName = otherName;
     }
 
-    public static class Address {
-        private String[] line;
-
-        public Address(String[] line) {
-            this.line = line;
-        }
-
-        public void setLine(String[] line) {
-            this.line = line;
-        }
-
-        public String[] getLine() {
-            return line;
-        }
-    }
+//    public static class Address {
+//        private String[] line;
+//
+//        public Address(String[] line) {
+//            this.line = line;
+//        }
+//
+//        public void setLine(String[] line) {
+//            this.line = line;
+//        }
+//
+//        public String[] getLine() {
+//            return line;
+//        }
+//    }
 
 }

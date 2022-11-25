@@ -3,6 +3,7 @@ package org.lamisplus.datafi.activities.app;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
+import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.utilities.ImageUtils;
 
 public class AppFragment extends LamisBaseFragment<AppContract.Presenter> implements AppContract.View, View.OnClickListener {

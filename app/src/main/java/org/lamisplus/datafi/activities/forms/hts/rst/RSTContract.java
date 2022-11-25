@@ -11,6 +11,7 @@ public class RSTContract {
 
         void startActivityForClientIntakeForm();
 
+        void startDashboardActivity();
     }
 
     interface Presenter extends LamisBasePresenterContract{
@@ -19,8 +20,9 @@ public class RSTContract {
 
         RiskStratification patientToUpdate(String formName, String patientId);
 
-        void confirmCreate(RiskStratification riskStratification);
+        void confirmCreate(RiskStratification riskStratification, String packageName);
 
         void confirmUpdate(RiskStratification riskStratification, Encounter encounter);
+        void confirmDeleteEncounter(String formName, String patientId);
     }
 }

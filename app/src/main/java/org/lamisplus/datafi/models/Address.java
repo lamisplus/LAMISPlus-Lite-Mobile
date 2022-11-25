@@ -3,6 +3,8 @@ package org.lamisplus.datafi.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.lamisplus.datafi.R;
+
 import java.io.Serializable;
 
 public class Address implements Serializable {
@@ -13,7 +15,7 @@ public class Address implements Serializable {
 
     @SerializedName("countryId")
     @Expose
-    private int countryId;
+    private int countryId = 1;
 
     @SerializedName("district")
     @Expose

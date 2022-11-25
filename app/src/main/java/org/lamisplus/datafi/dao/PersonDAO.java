@@ -24,7 +24,7 @@ public class PersonDAO {
         person.save();
     }
 
-    public void deletePatient(String id){
+    public void deletePatient(long id){
         new Delete().from(Person.class).where("id=?", id).executeSingle();
     }
 

@@ -1,5 +1,20 @@
 package org.lamisplus.datafi.utilities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
+import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
+import org.lamisplus.datafi.models.PostTest;
+import org.lamisplus.datafi.models.PreTest;
+import org.lamisplus.datafi.models.Recency;
+import org.lamisplus.datafi.models.RequestResult;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class ApplicationConstants {
 
     public abstract static class LAMISPlusSharedPreferenceNames {
@@ -46,4 +61,12 @@ public class ApplicationConstants {
         public static final String HIV_RECENCY_FORM = "HIV Recency Form";
     }
 
+    public abstract static class FormClasses{
+        public static final Class RISK_STRATIFICATION_FORM = RSTActivity.class;
+        public static final Class CLIENT_INTAKE_FORM = ClientIntakeActivity.class;
+        public static final Class PRE_TEST_COUNSELING_FORM = PreTest.class;
+        public static final Class REQUEST_RESULT_FORM = RequestResult.class;
+        public static final Class POST_TEST_COUNSELING_FORM = PostTest.class;
+        public static final Class HIV_RECENCY_FORM = Recency.class;
+    }
 }

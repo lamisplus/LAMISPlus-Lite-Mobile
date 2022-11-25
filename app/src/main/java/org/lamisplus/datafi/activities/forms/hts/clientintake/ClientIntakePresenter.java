@@ -1,8 +1,11 @@
 package org.lamisplus.datafi.activities.forms.hts.clientintake;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.activities.LamisBasePresenter;
+import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
@@ -35,11 +38,12 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
     }
 
     @Override
-    public void confirmCreate(ClientIntake clientIntake) {
+    public void confirmCreate(ClientIntake clientIntake, String packageName) {
         String clientIntakeEncounter = new Gson().toJson(clientIntake);
         Encounter encounter = new Encounter();
         encounter.setName(ApplicationConstants.Forms.CLIENT_INTAKE_FORM);
-        encounter.setPersonId(patientId);
+        encounter.setPerson(patientId);
+        encounter.setPackageName(packageName);
         encounter.setDataValues(clientIntakeEncounter);
         encounter.save();
 
@@ -52,6 +56,12 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
         encounter.setDataValues(s);
         encounter.save();
         clientIntakeInfoView.startActivityForPreTestForm();
+    }
+
+    @Override
+    public void confirmDeleteEncounterClientIntake(String formName, String patientId) {
+        EncounterDAO.deleteEncounter(formName, patientId);
+        clientIntakeInfoView.startDashboardActivity();
     }
 
 }

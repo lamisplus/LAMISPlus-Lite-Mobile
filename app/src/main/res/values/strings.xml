@@ -58,6 +58,7 @@
     <string name="action_update_patient_data">Update Patient</string>
     <string name="fab_label_delete">Delete</string>
     <string name="patient_scroll_tab_details_label">Details</string>
+    <string name="patient_scroll_tab_formdetails_label">Form Details</string>
     <string name="patient_scroll_tab_fingerprints_label">Fingerprints</string>
     <string name="patient_photo">Patient Photo</string>
 

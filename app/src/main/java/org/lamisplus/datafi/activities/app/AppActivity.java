@@ -1,11 +1,15 @@
 package org.lamisplus.datafi.activities.app;
 
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
+import org.lamisplus.datafi.application.LamisPlus;
 
 public class AppActivity extends LamisBaseActivity {
 
@@ -29,7 +33,6 @@ public class AppActivity extends LamisBaseActivity {
         if (!appFragment.isActive()) {
             addFragmentToActivity(getSupportFragmentManager(), appFragment, R.id.appContentFrame);
         }
-
         mPresenter = new AppPresenter(appFragment);
     }
 

@@ -21,14 +21,6 @@ import org.lamisplus.datafi.utilities.ImageUtils;
 public class PatientDashboardFragment extends LamisBaseFragment<PatientDashboardContract.PatientDashboardMainPresenter> implements PatientDashboardContract.ViewPatientMain, View.OnClickListener {
 
     private SparseArray<Bitmap> mBitmapCache;
-    private ImageView mDashboardButton;
-    private ImageView mAppButton;
-    private ImageView mSettingsButton;
-    private ImageView mLogoutButton;
-    private LinearLayout mDashboardView;
-    private LinearLayout mAppView;
-    private LinearLayout mSettingsView;
-    private LinearLayout mLogoutView;
 
 
 

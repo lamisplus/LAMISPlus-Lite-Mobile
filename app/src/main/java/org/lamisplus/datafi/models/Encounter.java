@@ -23,6 +23,14 @@ public class Encounter extends Model implements Serializable {
     @Expose
     private String name;
 
+    @Column(name = "person")
+    @SerializedName("person")
+    private String person;
+
+    @Column(name = "packageName")
+    @SerializedName("packageName")
+    private String packageName;
+
     @Column(name = "personId")
     @SerializedName("personId")
     @Expose
@@ -70,5 +78,19 @@ public class Encounter extends Model implements Serializable {
         this.synced = synced;
     }
 
+    public String getPerson() {
+        return person;
+    }
 
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 }
