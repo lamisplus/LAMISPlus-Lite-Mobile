@@ -34,6 +34,8 @@ import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Iterator;
 
 import retrofit2.Call;
@@ -68,12 +70,16 @@ public class PatientRepository extends RetrofitRepository {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if (response.isSuccessful()) {
-                        Log.v("Baron", "Success is achieved");
+                        Log.v("Baron", "Patient Details Synced successfully");
                         LamisCustomHandler.showJson(response.body());
 
                         try {
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            String id = jsonObject.getString("id");
+                            String serverId =  jsonObject.getString("id");
+                            //The Id from the server is a string so we had to convert it using the Number format to int
+                            NumberFormat defForm = NumberFormat.getInstance();
+                            Number d = defForm.parse(serverId);
+                            int id = d.intValue();
 
                             person.setPersonId(id);
                             person.setSynced(true);
@@ -82,10 +88,11 @@ public class PatientRepository extends RetrofitRepository {
                             EncounterDAO.updateAllEncountersWithPatientId(id, person.getId().toString());
 
                             Log.v("Baron", "The id is now " + id);
-                        } catch (JSONException e) {
+                        } catch (JSONException | ParseException e) {
                             throw new RuntimeException(e);
                         }
                     }
+                    Log.v("Baron", "Am called next" + response.message());
                 }
 
                 @Override
@@ -97,7 +104,6 @@ public class PatientRepository extends RetrofitRepository {
                 }
             });
         }
-        Log.v("Baron", "Am here for u 222");
     }
 
 

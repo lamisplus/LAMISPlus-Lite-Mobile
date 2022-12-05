@@ -36,7 +36,7 @@ public class Person extends Model implements Serializable {
 
     @Column(name = "personId")
     @SerializedName("personId")
-    private String personId;
+    private int personId;
 
     @Column(name = "active")
     @SerializedName("active")
@@ -164,11 +164,11 @@ public class Person extends Model implements Serializable {
         this.synced = synced;
     }
 
-    public String getPersonId() {
+    public int getPersonId() {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(int personId) {
         this.personId = personId;
     }
 

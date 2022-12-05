@@ -20,7 +20,7 @@ public class PatientDashboardDetailsPresenter extends PatientDashboardPresenter 
     public PatientDashboardDetailsPresenter(String id, PatientDashboardContract.ViewPatientDetails mPatientDetailsView) {
         this.mPatientDetailsView = mPatientDetailsView;
         this.mPersonDAO = new PersonDAO();
-        this.mPerson = this.mPersonDAO.findPersonById(id);
+        this.mPerson = PersonDAO.findPersonById(id);
         setPersonId(id);
         this.mPatientDetailsView.setPresenter(this);
     }
@@ -116,8 +116,8 @@ public class PatientDashboardDetailsPresenter extends PatientDashboardPresenter 
     @Override
     public void subscribe() {
         updatePatientDataFromServer();
-        mPerson = mPersonDAO.findPersonById(personId);
-        mPatientDetailsView.resolvePatientDataDisplay(mPersonDAO.findPersonById(this.personId));
+        mPerson = PersonDAO.findPersonById(personId);
+        mPatientDetailsView.resolvePatientDataDisplay(PersonDAO.findPersonById(this.personId));
         mPatientDetailsView.setMenuTitle(mPerson.getFirstName(), mPerson.getIdentifiers().getValue());
     }
 }

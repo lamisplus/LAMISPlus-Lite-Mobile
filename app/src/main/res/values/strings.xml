@@ -89,6 +89,7 @@
     <string name="request_result_form">Request Result Form</string>
     <string name="post_test_form">Post Test Form</string>
     <string name="recency_form">Recency Form</string>
+    <string name="elicitation">Index Notification Services - Elicitation</string>
 
     <!-- Layout strings -->
     <string name="sync">Sync</string>

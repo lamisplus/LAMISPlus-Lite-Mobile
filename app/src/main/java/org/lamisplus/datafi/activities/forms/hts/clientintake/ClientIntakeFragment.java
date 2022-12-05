@@ -17,15 +17,23 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.activeandroid.util.Log;
+
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.forms.hts.pretest.PreTestActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
+import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.ClientIntake;
+import org.lamisplus.datafi.models.Codesets;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
+import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
 import java.util.Calendar;
@@ -61,6 +69,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_client_intake, container, false);
+        Log.v("Baron", "The number of wives is Mens");
         if (root != null) {
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
@@ -176,6 +185,21 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             isUpdateClientIntake = true;
             updatedClientIntake = clientIntake;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
+
+            autoTargetGroup.setText(CodesetsDAO.findCodesetsDisplayByCode(clientIntake.getTargetGroup()), false);
+            autoReferredFrom.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getReferredFrom()), false);
+            autoSettings.setText(CodesetsDAO.findCodesetsDisplayByCode(clientIntake.getTestingSetting()), false);
+            autoIndexTesting.setText(StringUtils.changeBooleanToString(clientIntake.isIndexClient()), false);
+            autoRelationshipIndex.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getRelationWithIndexClient()), false);
+            autoFirstimeVisit.setText(StringUtils.changeBooleanToString(clientIntake.isFirstTimeVisit()), false);
+            autoPreviouslyTested.setText(StringUtils.changeBooleanToString(clientIntake.getPreviouslyTested()), false);
+            autoTypeCounseling.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getTypeCounseling()), false);
+            edNoWives.setText(String.valueOf(clientIntake.getNumWives()));
+            autoPregnant.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getPregnant()), false);
+            autoBreastfeeding.setText(StringUtils.changeBooleanToString(clientIntake.isBreastFeeding()), false);
+            edClientCode.setText(clientIntake.getClientCode());
+            edVisitDate.setText(clientIntake.getDateVisit());
+            edNumberOfChildren.setText(String.valueOf(clientIntake.getNumChildren()));
         }
     }
 
@@ -193,7 +217,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
 
     private ClientIntake updateEncounterWithData(ClientIntake clientIntake) {
         if (!ViewUtils.isEmpty(autoTargetGroup)) {
-            clientIntake.setTargetGroup(ViewUtils.getInput(autoTargetGroup));
+            clientIntake.setTargetGroup(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoTargetGroup)));
         }
 
         if (!ViewUtils.isEmpty(edClientCode)) {
@@ -201,11 +225,11 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         }
 
         if (!ViewUtils.isEmpty(autoReferredFrom)) {
-            clientIntake.setReferredFrom(ViewUtils.getInput(autoReferredFrom));
+            clientIntake.setReferredFrom(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoReferredFrom)));
         }
 
         if (!ViewUtils.isEmpty(autoSettings)) {
-            clientIntake.setTestingSetting(ViewUtils.getInput(autoSettings));
+            clientIntake.setTestingSetting(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoSettings)));
         }
 
         if (!ViewUtils.isEmpty(edVisitDate)) {
@@ -217,7 +241,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         }
 
         if (!ViewUtils.isEmpty(autoIndexTesting)) {
-            clientIntake.setIndexClient(Boolean.valueOf(ViewUtils.getInput(autoReferredFrom)));
+            clientIntake.setIndexClient(StringUtils.changeStringToBoolean(ViewUtils.getInput(autoReferredFrom)));
         }
 
         if (!ViewUtils.isEmpty(edNoWives)) {
@@ -225,36 +249,49 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         }
 
         if (!ViewUtils.isEmpty(autoPregnant)) {
-            clientIntake.setPregnant(ViewUtils.getInput(autoPregnant));
+            clientIntake.setPregnant(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoPregnant)));
         }
 
         if (!ViewUtils.isEmpty(autoBreastfeeding)) {
-            clientIntake.setBreastFeeding(Boolean.valueOf(ViewUtils.getInput(autoBreastfeeding)));
+            clientIntake.setBreastFeeding(StringUtils.changeStringToBoolean(ViewUtils.getInput(autoBreastfeeding)));
         }
 
         if (!ViewUtils.isEmpty(autoFirstimeVisit)) {
-            clientIntake.setFirstTimeVisit(Boolean.valueOf(ViewUtils.getInput(autoFirstimeVisit)));
+            clientIntake.setFirstTimeVisit(StringUtils.changeStringToBoolean(ViewUtils.getInput(autoFirstimeVisit)));
         }
 
         if (!ViewUtils.isEmpty(autoPreviouslyTested)) {
-            clientIntake.setPreviouslyTested(Boolean.valueOf(ViewUtils.getInput(autoPreviouslyTested)));
+            clientIntake.setPreviouslyTested(StringUtils.changeStringToBoolean(ViewUtils.getInput(autoPreviouslyTested)));
         }
 
 
         if (!ViewUtils.isEmpty(autoTypeCounseling)) {
-            clientIntake.setTypeCounseling(ViewUtils.getInput(autoTypeCounseling));
+            clientIntake.setTypeCounseling(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoTypeCounseling)));
         }
 
         if (!ViewUtils.isEmpty(autoRelationshipIndex)) {
-            clientIntake.setRelationWithIndexClient(ViewUtils.getInput(autoRelationshipIndex));
+            clientIntake.setRelationWithIndexClient(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoRelationshipIndex)));
         }
 
-        clientIntake.setPersonId("");
-
-        clientIntake.setPersonDto("{}");
+        if(updatedForm != null){
+            if(updatedForm.getPersonId() != 0) {
+                clientIntake.setPersonId(updatedForm.getPersonId());
+            }else{
+                clientIntake.setPersonId(0);
+            }
+        }else {
+            clientIntake.setPersonId(0);
+        }
 
         clientIntake.setExtra("{}");
 
+        RiskStratification rst = EncounterDAO.findRstFromForm(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+        if(rst != null) {
+            clientIntake.setRiskStratificationCode(rst.getCode());
+        }else{
+            clientIntake.setRiskStratificationCode("");
+        }
+        LamisCustomHandler.showJson(clientIntake);
         return clientIntake;
     }
 

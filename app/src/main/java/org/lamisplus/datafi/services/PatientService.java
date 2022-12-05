@@ -4,6 +4,7 @@ import static java.lang.reflect.Modifier.TRANSIENT;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.lamisplus.datafi.R;
+import org.lamisplus.datafi.api.CustomApiCallback;
 import org.lamisplus.datafi.api.repository.PatientRepository;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.PersonDAO;
@@ -38,7 +40,7 @@ import java.util.Objects;
 
 import kotlin.jvm.Transient;
 
-public class PatientService extends IntentService {
+public class PatientService extends IntentService implements CustomApiCallback {
 
 
     public PatientService() {
@@ -53,13 +55,11 @@ public class PatientService extends IntentService {
                 final ListIterator<Person> it = personList.listIterator();
                 while (it.hasNext()) {
                     Person person = it.next();
-                    Log.v("Baron", "Hello sweet");
                     getPatientAndSync(person);
                 }
             } catch (Exception e) {
                 Log.v("Baron", "Baron Exception " +  e.toString());
             }
-
         } else {
             ToastUtil.warning(getString(R.string.activity_no_internet_connection) +
                     getString(R.string.activity_sync_after_connection));
@@ -67,7 +67,7 @@ public class PatientService extends IntentService {
     }
 
 
-    private void getPatientAndSync(Person person) {
+    private synchronized void getPatientAndSync(Person person) {
             new PatientRepository().syncPatient(person, new DefaultCallbackListener() {
                 @Override
                 public void onResponse() {
@@ -79,5 +79,15 @@ public class PatientService extends IntentService {
 
                 }
             });
+    }
+
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 }

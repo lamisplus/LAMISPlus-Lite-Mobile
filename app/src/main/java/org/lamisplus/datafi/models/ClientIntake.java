@@ -9,6 +9,10 @@ import java.util.List;
 
 public class ClientIntake implements Serializable {
 
+    @SerializedName("htsClientId")
+    @Expose
+    private int htsClientId;
+
     @SerializedName("breastFeeding")
     @Expose
     private boolean breastFeeding;
@@ -39,11 +43,11 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("personId")
     @Expose
-    private String personId;
+    private int personId;
 
     @SerializedName("pregnant")
     @Expose
-    private String pregnant;
+    private int pregnant;
 
     @SerializedName("previouslyTested")
     @Expose
@@ -51,11 +55,11 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("referredFrom")
     @Expose
-    private String referredFrom;
+    private int referredFrom;
 
     @SerializedName("relationWithIndexClient")
     @Expose
-    private String relationWithIndexClient;
+    private int relationWithIndexClient;
 
     @SerializedName("targetGroup")
     @Expose
@@ -67,15 +71,15 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("typeCounseling")
     @Expose
-    private String typeCounseling;
+    private int typeCounseling;
 
     @SerializedName("extra")
     @Expose
     private String extra;
 
-    @SerializedName("personDto")
+    @SerializedName("riskStratificationCode")
     @Expose
-    private String personDto;
+    private String riskStratificationCode;
 
 
     public boolean isBreastFeeding() {
@@ -134,19 +138,19 @@ public class ClientIntake implements Serializable {
         this.numWives = numWives;
     }
 
-    public String getPersonId() {
+    public int getPersonId() {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(int personId) {
         this.personId = personId;
     }
 
-    public String getPregnant() {
+    public int getPregnant() {
         return pregnant;
     }
 
-    public void setPregnant(String pregnant) {
+    public void setPregnant(int pregnant) {
         this.pregnant = pregnant;
     }
 
@@ -158,19 +162,19 @@ public class ClientIntake implements Serializable {
         this.previouslyTested = previouslyTested;
     }
 
-    public String getReferredFrom() {
+    public int getReferredFrom() {
         return referredFrom;
     }
 
-    public void setReferredFrom(String referredFrom) {
+    public void setReferredFrom(int referredFrom) {
         this.referredFrom = referredFrom;
     }
 
-    public String getRelationWithIndexClient() {
+    public int getRelationWithIndexClient() {
         return relationWithIndexClient;
     }
 
-    public void setRelationWithIndexClient(String relationWithIndexClient) {
+    public void setRelationWithIndexClient(int relationWithIndexClient) {
         this.relationWithIndexClient = relationWithIndexClient;
     }
 
@@ -190,11 +194,11 @@ public class ClientIntake implements Serializable {
         this.testingSetting = testingSetting;
     }
 
-    public String getTypeCounseling() {
+    public int getTypeCounseling() {
         return typeCounseling;
     }
 
-    public void setTypeCounseling(String typeCounseling) {
+    public void setTypeCounseling(int typeCounseling) {
         this.typeCounseling = typeCounseling;
     }
 
@@ -206,11 +210,19 @@ public class ClientIntake implements Serializable {
         this.extra = extra;
     }
 
-    public String getPersonDto() {
-        return personDto;
+    public String getRiskStratificationCode() {
+        return riskStratificationCode;
     }
 
-    public void setPersonDto(String personDto) {
-        this.personDto = personDto;
+    public void setRiskStratificationCode(String riskStratificationCode) {
+        this.riskStratificationCode = riskStratificationCode;
+    }
+
+    public int getHtsClientId() {
+        return htsClientId;
+    }
+
+    public void setHtsClientId(int htsClientId) {
+        this.htsClientId = htsClientId;
     }
 }

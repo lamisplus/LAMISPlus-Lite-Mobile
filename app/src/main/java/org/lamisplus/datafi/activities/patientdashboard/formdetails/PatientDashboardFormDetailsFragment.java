@@ -189,7 +189,6 @@ public class PatientDashboardFormDetailsFragment extends PatientDashboardFragmen
                 }
             });
         }
-        LamisCustomHandler.showJson(encounterList);
     }
 
 }

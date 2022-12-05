@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PersonDAO {
 
-    public Person findPersonById(String id) {
+    public static Person findPersonById(String id) {
         Person person = new Select().from(Person.class).where("id=?", id).executeSingle();
         return person;
     }
@@ -24,8 +24,8 @@ public class PersonDAO {
         person.save();
     }
 
-    public void deletePatient(long id){
-        new Delete().from(Person.class).where("id=?", id).executeSingle();
+    public static void deletePatient(long id){
+        new Delete().from(Person.class).where("id=?", id).execute();
     }
 
     public List<Person> getUnsyncedPatients(){

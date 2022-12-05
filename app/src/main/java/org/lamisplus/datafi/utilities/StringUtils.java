@@ -1,5 +1,7 @@
 package org.lamisplus.datafi.utilities;
 
+import android.util.Log;
+
 public class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
@@ -88,5 +90,59 @@ public class StringUtils {
             sb.append(ch);
         }
         return sb.toString();
+    }
+
+    public static boolean changeStringToBoolean(String s){
+        if(s.toLowerCase().equals("yes")){
+            return true;
+        }
+        return false;
+    }
+
+    public static String changeBooleanToString(boolean bool){
+        if(bool){
+            return "Yes";
+        }
+        return "No";
+    }
+
+    public static String changeYesNoToTrueFalse(String s){
+        if (s != null) {
+            if (s.toLowerCase().equals("yes")) {
+                return "true";
+            }
+            return "false";
+        }
+        return "";
+    }
+
+    public static String changeBooleanToString(String s) {
+        if (s != null) {
+            if (s.toLowerCase().equals("true")) {
+                return "Yes";
+            }
+            return "No";
+        }
+        return "";
+    }
+
+    public static String changePosNegtoBooleanString(String s){
+        if (s != null) {
+            if (s.toLowerCase().equals("positive")) {
+                return "true";
+            }
+            return "false";
+        }
+        return "";
+    }
+
+    public static String changeBooleanToPosNeg(String s){
+        if (s != null) {
+            if (s.toLowerCase().equals("true")) {
+                return "Positive";
+            }
+            return "Negative";
+        }
+        return "";
     }
 }

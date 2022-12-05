@@ -27,7 +27,7 @@
                 app:helperText="Opt Out of RTRI?*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/optOutRTRI"
+                    android:id="@+id/autoOptOutRTRI"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -37,10 +37,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/otherRecenceOptions"
+            android:id="@+id/viewOtherRecenceOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,7 +60,7 @@
                     app:helperText="Test Name *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/recencyTestName"
+                        android:id="@+id/autoOptOutRTRITestName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -67,8 +68,9 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -78,11 +80,15 @@
                     app:errorEnabled="true"
                     app:helperText="Test Date *">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/rtriTestDate"
+                    <EditText
+                        android:id="@+id/edOptOutRTRITestDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +102,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -106,12 +112,12 @@
                     app:errorEnabled="true"
                     app:helperText="Recency ID *">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/recencyID"
+                    <EditText
+                        android:id="@+id/edRencencyId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:inputType="none" />
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +133,7 @@
                     app:helperText="Control Line *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/controlLine"
+                        android:id="@+id/autoControlLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -154,7 +160,7 @@
                     app:helperText="Verification Line *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/verificationLine"
+                        android:id="@+id/autoVerififcationLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -174,7 +180,7 @@
                     app:helperText="Long Term Line *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/longTermLine"
+                        android:id="@+id/autoLongTermLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -190,7 +196,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -200,8 +206,33 @@
                     app:errorEnabled="true"
                     app:helperText="Recency Interpretation *">
 
+
+                    <EditText
+                        android:id="@+id/edRencencyInterpretation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Has viral load request been made? *"
+                    app:errorEnabled="true"
+                    app:helperText="Has viral load request been made? *">
+
                     <AutoCompleteTextView
-                        android:id="@+id/RecencyInterpretation"
+                        android:id="@+id/autoHasViralLoad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -211,6 +242,231 @@
 
 
             </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="8dp"
+                android:text="Viral Load Classification"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Sample Collected Date"
+                    app:errorEnabled="true"
+                    app:helperText="Sample Collected Date">
+
+                    <EditText
+                        android:id="@+id/edSampleCollectedDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Sample Reference Number"
+                    app:errorEnabled="true"
+                    app:helperText="Sample Reference Number">
+
+                    <EditText
+                        android:id="@+id/edSampleReferanceNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Sample Type"
+                    app:errorEnabled="true"
+                    app:helperText="Sample Type">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoSampleType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date Sample Sent to PCR Lab"
+                    app:errorEnabled="true"
+                    app:helperText="Date Sample Sent to PCR Lab">
+
+                    <EditText
+                        android:id="@+id/edDateSampleSentToPCRLab"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Sample Test Date"
+                    app:errorEnabled="true"
+                    app:helperText="Sample Test Date">
+
+                    <EditText
+                        android:id="@+id/edSampleTestDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Receiving PCR Lab"
+                    app:errorEnabled="true"
+                    app:helperText="Receiving PCR Lab">
+
+                    <EditText
+                        android:id="@+id/edReceivingPcrLab"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Viral Load Result Classification and Result (copies/ml)"
+                    app:errorEnabled="true"
+                    app:helperText="Viral Load Result Classification and Result (copies/ml)">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoViralLoadResultClassification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Final Recency Result"
+                    app:errorEnabled="true"
+                    app:helperText="Final Recency Result">
+
+                    <EditText
+                        android:id="@+id/edFinalRecencyResult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

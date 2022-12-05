@@ -19,6 +19,7 @@ import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
 import org.lamisplus.datafi.activities.formdisplay.FormDisplayActivity;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
+import org.lamisplus.datafi.activities.forms.hts.elicitation.ElicitationActivity;
 import org.lamisplus.datafi.activities.forms.hts.posttest.PostTestActivity;
 import org.lamisplus.datafi.activities.forms.hts.pretest.PreTestActivity;
 import org.lamisplus.datafi.activities.forms.hts.recency.RecencyActivity;
@@ -26,6 +27,7 @@ import org.lamisplus.datafi.activities.forms.hts.requestresult.RequestResultActi
 import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
@@ -121,10 +123,18 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
                                                 String.valueOf(mPresenter.getPatientId()));
                                         startActivity(recencyProgram);
                                     }else{
-                                        Intent patientDashboard = new Intent(getContext(), PatientDashboardActivity.class);
-                                        patientDashboard.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                                                String.valueOf(mPresenter.getPatientId()));
-                                        startActivity(patientDashboard);
+                                        Encounter elicitationForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ELICITATION, mPresenter.getPatientId());
+                                        if(elicitationForm == null) {
+                                            Intent elicitationProgram = new Intent(getContext(), ElicitationActivity.class);
+                                            elicitationProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                                                    String.valueOf(mPresenter.getPatientId()));
+                                            startActivity(elicitationProgram);
+                                        }else {
+                                            Intent patientDashboard = new Intent(getContext(), PatientDashboardActivity.class);
+                                            patientDashboard.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                                                    String.valueOf(mPresenter.getPatientId()));
+                                            startActivity(patientDashboard);
+                                        }
                                     }
                                 }
                             }

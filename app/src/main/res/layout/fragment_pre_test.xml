@@ -36,10 +36,10 @@
                 android:layout_weight="1"
                 android:hint="Previously tested HIV negative*"
                 app:errorEnabled="true"
-                app:helperText="First Time Visit">
+                app:helperText="Previously tested HIV negative*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/previouslyTestedHIVNegative"
+                    android:id="@+id/autoPreviousTestedHIVNegative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -51,14 +51,15 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Client pregnant *"
+                android:hint="Time of last HIV Negative test Result*"
                 app:errorEnabled="true"
-                app:helperText="Client pregnant">
+                app:helperText="Time of last HIV Negative test Result*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/clientPregnant"
+                    android:id="@+id/autoTimeLastHIVNegativeTestResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -67,6 +68,54 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:hint="Client pregnant *"
+            app:errorEnabled="true"
+            app:helperText="Client pregnant *">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoclientPregnant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_design"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:hint="Client informed about HIV transmission routes"
+            app:errorEnabled="true"
+            app:helperText="Client informed about HIV transmission routes">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoClientInformHivTransRoutes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_design"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,34 +126,15 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Client informed about HIV transmission routes"
-                app:errorEnabled="true"
-                app:helperText="Client informed about HIV transmission routes">
-
-                <AutoCompleteTextView
-                    android:id="@+id/Client_informed_about"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:hint="Client informed about risk factors for HIV transmission"
                 app:errorEnabled="true"
                 app:helperText="Client informed about risk factors for HIV transmission">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Client_informed_about_risk"
+                    android:id="@+id/autoClientInformRiskkHivTrans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -112,18 +142,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:hint="Client informed on preventing HIV transmission methods"
@@ -131,26 +153,7 @@
                 app:helperText="Client informed on preventing HIV transmission methods">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Client_informed_on_preventing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Client informed about possible test results"
-                app:errorEnabled="true"
-                app:helperText="Client informed about possible test results ">
-
-                <AutoCompleteTextView
-                    android:id="@+id/Client_informed_about_possible"
+                    android:id="@+id/autoClientInformPreventingsHivTrans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -169,15 +172,15 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:hint="Informed consent for HIV testing given"
+                android:hint="Client informed about possible test results"
                 app:errorEnabled="true"
-                app:helperText="Informed consent for HIV testing given">
+                app:helperText="Client informed about possible test results ">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Informed_consent_for_HIV"
+                    android:id="@+id/autoClientInformPossibleTestResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -185,7 +188,28 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="Informed consent for HIV testing given"
+                app:errorEnabled="true"
+                app:helperText="Informed consent for HIV testing given">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoInformConsentHivTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
         </LinearLayout>
+
 
 
         <TextView
@@ -217,7 +241,7 @@
                 app:helperText="Current cough *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Current_cough"
+                    android:id="@+id/autoCurrentCough"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -236,7 +260,7 @@
                 app:helperText="Weight loss *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Weight_loss"
+                    android:id="@+id/autoWeightLoss"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -263,7 +287,7 @@
                 app:helperText="Lymphadenopathy (swelling of the lymph nodes) *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Lymphadenopathy"
+                    android:id="@+id/autoLymphadenopathy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -282,7 +306,7 @@
                 app:helperText="Fever *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Fever"
+                    android:id="@+id/autoFever"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -309,7 +333,7 @@
                 app:helperText="Night sweats*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Night_sweats"
+                    android:id="@+id/autoNightSweats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -343,12 +367,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth?"
+                android:hint="Ever had sexual intercourse"
                 app:errorEnabled="true"
-                app:helperText="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth?">
+                app:helperText="Ever had sexual intercourse">
 
                 <AutoCompleteTextView
-                    android:id="@+id/abdominal_pain"
+                    android:id="@+id/autoeverHadSexualIntercourse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -362,12 +386,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *"
+                android:hint="Blood transfusion in last 3 months *"
                 app:errorEnabled="true"
-                app:helperText="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *">
+                app:helperText="Blood transfusion in last 3 months *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/sexWOCondom"
+                    android:id="@+id/autobloodtransInlastThreeMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -389,12 +413,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you had a condom burst with your partner during sexual intercourse? *"
+                android:hint="Unprotected sex with casual partner in last 3 months *"
                 app:errorEnabled="true"
-                app:helperText="Have you had a condom burst with your partner during sexual intercourse? *">
+                app:helperText="Unprotected sex with casual partner in last 3 months *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/condomBurst"
+                    android:id="@+id/autouprotectedSexWithCasualLastThreeMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -408,12 +432,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind?"
+                android:hint="Unprotected sex with regular partner in the last 3months"
                 app:errorEnabled="true"
-                app:helperText="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind?">
+                app:helperText="Unprotected sex with regular partner in the last 3months">
 
                 <AutoCompleteTextView
-                    android:id="@+id/needlesSyringes"
+                    android:id="@+id/autouprotectedSexWithRegularPartnerLastThreeMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -435,12 +459,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you/partner had any blood or blood product transfusion?"
+                android:hint="Unprotected vaginal sex"
                 app:errorEnabled="true"
-                app:helperText="Have you/partner had any blood or blood product transfusion?">
+                app:helperText="Unprotected vaginal sex">
 
                 <AutoCompleteTextView
-                    android:id="@+id/partnerBlood"
+                    android:id="@+id/autounprotectedVaginalSex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -454,12 +478,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you/partner experienced coughing, weight loss, fever, night sweats consistently?"
+                android:hint="Unprotected Anal sex"
                 app:errorEnabled="true"
-                app:helperText="Have you/partner experienced coughing, weight loss, fever, night sweats consistently?">
+                app:helperText="Unprotected Anal sex">
 
                 <AutoCompleteTextView
-                    android:id="@+id/partnerExperiencedCoughing"
+                    android:id="@+id/autoUprotectedAnalSexHivRiskAssess"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -482,12 +506,32 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Have you/partner paid or sold vaginal, anal or oral sex? *"
+                android:hint="STI in last 3 months *"
                 app:errorEnabled="true"
-                app:helperText="Have you/partner paid or sold vaginal, anal or oral sex? *">
+                app:helperText="STI in last 3 months *">
 
                 <AutoCompleteTextView
-                    android:id="@+id/paidVaginal"
+                    android:id="@+id/autostiLastThreeMonths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="Sex under the influence of drugs or alcohol*"
+                app:errorEnabled="true"
+                app:helperText="Sex under the influence of drugs or alcohol*">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autosexUnderInfluence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -496,6 +540,34 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:hint="More than 1 sex partner during last 3 months*"
+            app:errorEnabled="true"
+            app:helperText="More than 1 sex partner during last 3 months*">
+
+            <AutoCompleteTextView
+                android:id="@+id/automoreThanOneSexPartnerLastThreeMonths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_design"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -526,7 +598,7 @@
                 app:helperText="Have you had sex with a partner who is HIV positive? ">
 
                 <AutoCompleteTextView
-                    android:id="@+id/sexWithPartner"
+                    android:id="@+id/autoSexPartnerHivPositive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -553,7 +625,7 @@
                 app:helperText="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/partnerNewlyDiagnosez"
+                    android:id="@+id/autoNewDiagnosedHivlastThreeMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -572,7 +644,7 @@
                 app:helperText="Is sex partner pregnant and currently receiving ARV for PMTCT?*">
 
                 <AutoCompleteTextView
-                    android:id="@+id/partnerpregnant"
+                    android:id="@+id/autoCurrentlyArvForPmtct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -599,7 +671,7 @@
                 app:helperText="Known HIV positive partner on ARV with an unsurpressed VL">
 
                 <AutoCompleteTextView
-                    android:id="@+id/knownHIVPositive"
+                    android:id="@+id/autoKnowHivPositiveOnArv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -618,7 +690,7 @@
                 app:helperText="Known HIV positive recently returned to treatment after being lost to follow up">
 
                 <AutoCompleteTextView
-                    android:id="@+id/positiveRecentlyReturned"
+                    android:id="@+id/autoKnowHivPositiveAfterLostToFollowUp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -645,7 +717,7 @@
                 app:helperText="Have you had sex with a partner who is HIV positive? ">
 
                 <AutoCompleteTextView
-                    android:id="@+id/Unprotected_Anal_sex"
+                    android:id="@+id/autoUprotectedAnalSex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -684,7 +756,7 @@
                 app:helperText="Complaints of urethral discharge or burning when urinating?">
 
                 <AutoCompleteTextView
-                    android:id="@+id/urethralDischarge"
+                    android:id="@+id/autoUrethralDischarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -703,7 +775,7 @@
                 app:helperText="Male: Complaints of scrotal swelling and pain">
 
                 <AutoCompleteTextView
-                    android:id="@+id/complaintsScrotal"
+                    android:id="@+id/autoComplaintsOfScrotal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -730,7 +802,7 @@
                 app:helperText="Complaints of genital sore(s) or swollen inguinal lymph nodes with or without pains?">
 
                 <AutoCompleteTextView
-                    android:id="@+id/genitalSores"
+                    android:id="@+id/autoComplaintsGenitalSore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"

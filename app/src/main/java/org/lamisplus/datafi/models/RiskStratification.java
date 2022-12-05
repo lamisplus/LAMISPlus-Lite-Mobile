@@ -14,7 +14,11 @@ public class RiskStratification implements Serializable {
 
     @SerializedName("personId")
     @Expose
-    private String personId;
+    private long personId;
+
+    @SerializedName("entryPoint")
+    @Expose
+    private String entryPoint;
 
     @SerializedName("age")
     @Expose
@@ -32,11 +36,9 @@ public class RiskStratification implements Serializable {
     @Expose
     private String modality;
 
-    @SerializedName("riskAssessmentList")
+    @SerializedName("riskAssessment")
     @Expose
-    private List<RiskAssessment> riskAssessmentList = new ArrayList<>();
-
-    private String riskAssessment;
+    private RiskAssessment riskAssessmentList;
 
     @SerializedName("targetGroup")
     @Expose
@@ -50,11 +52,11 @@ public class RiskStratification implements Serializable {
     @Expose
     private String visitDate;
 
-    public String getPersonId() {
+    public long getPersonId() {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(long personId) {
         this.personId = personId;
     }
 
@@ -90,21 +92,21 @@ public class RiskStratification implements Serializable {
         this.modality = modality;
     }
 
-    public List<RiskAssessment> getRiskAssessmentList() {
+    public RiskAssessment getRiskAssessmentList() {
         return riskAssessmentList;
     }
 
-    public void setRiskAssessmentList(List<RiskAssessment> riskAssessmentList) {
+    public void setRiskAssessmentList(RiskAssessment riskAssessmentList) {
         this.riskAssessmentList = riskAssessmentList;
     }
 
-    public String getRiskAssessment() {
-        return riskAssessment;
-    }
-
-    public void setRiskAssessment(String riskAssessment) {
-        this.riskAssessment = riskAssessment;
-    }
+//    public String getRiskAssessment() {
+//        return riskAssessment;
+//    }
+//
+//    public void setRiskAssessment(String riskAssessment) {
+//        this.riskAssessment = riskAssessment;
+//    }
 
     public String getTargetGroup() {
         return targetGroup;
@@ -132,8 +134,16 @@ public class RiskStratification implements Serializable {
 
     public RiskAssessment getRiskAssessments(){
         if(this.getRiskAssessmentList() != null){
-            return getRiskAssessmentList().get(0);
+            //return getRiskAssessmentList().get(0);
         }
         return null;
+    }
+
+    public String getEntryPoint() {
+        return entryPoint;
+    }
+
+    public void setEntryPoint(String entryPoint) {
+        this.entryPoint = entryPoint;
     }
 }

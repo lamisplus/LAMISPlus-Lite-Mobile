@@ -45,21 +45,31 @@ import java.util.List;
 
 public class RequestResultFragment extends LamisBaseFragment<RequestResultContract.Presenter> implements RequestResultContract.View, View.OnClickListener {
 
-    private String[] settings, modality, targetGroup;
-    private AutoCompleteTextView autoSettings;
-    private AutoCompleteTextView autoModality;
-    private AutoCompleteTextView autoTargetGroup;
-    private EditText edDob;
-    private EditText edAge;
-    private EditText edVisitDate;
+    private EditText edDateTest1;
+    private AutoCompleteTextView autoResultTest1;
+    private EditText edConfirmDate1;
+    private AutoCompleteTextView autoConfirmResult1;
+    private EditText edDateTieBreaker1;
+    private AutoCompleteTextView autoResultTieBreaker1;
 
-    private AutoCompleteTextView autoAbdPain;
-    private AutoCompleteTextView autoWithoutCondom;
-    private AutoCompleteTextView autoCondomBurst;
-    private AutoCompleteTextView autoShareNeedle;
-    private AutoCompleteTextView autoBloodTransfusion;
-    private AutoCompleteTextView autoCough;
-    private AutoCompleteTextView autoPaidSex;
+    private EditText edDateTest2;
+    private AutoCompleteTextView autoResultTest2;
+    private EditText edConfirmDate2;
+    private AutoCompleteTextView autoConfirmResult2;
+    private EditText edDateTieBreaker2;
+    private AutoCompleteTextView autoTieBreakerResult2;
+
+    private AutoCompleteTextView autoSyphilis;
+
+    private AutoCompleteTextView autoHepatitisB;
+    private AutoCompleteTextView autoHepatitisC;
+
+    private EditText edOthersLongitude;
+    private EditText edOthersLatitude;
+    private EditText edOthersAdhocCode;
+
+    private AutoCompleteTextView autoCd4Count;
+    private EditText edcd4SemiQuantitative;
 
     private LinearLayout riskAssessmentLayoutView;
 
@@ -81,8 +91,9 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            showDatePickers();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
-            if(mPresenter.patientToUpdate(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId()) != null) {
+            if (mPresenter.patientToUpdate(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId()));
             }
         }
@@ -91,7 +102,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(isUpdateRequestResult) {
+        if (isUpdateRequestResult) {
             inflater.inflate(R.menu.delete_multi_patient_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -113,32 +124,59 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     }
 
     private void initiateFragmentViews(View root) {
-        autoSettings = root.findViewById(R.id.autoSettings);
-        autoModality = root.findViewById(R.id.autoModality);
-        autoTargetGroup = root.findViewById(R.id.autoTargetGroup);
-        edVisitDate = root.findViewById(R.id.edVisitDate);
-        edDob = root.findViewById(R.id.edDateofBirth);
-        edAge = root.findViewById(R.id.edAge);
+        edDateTest1 = root.findViewById(R.id.edDateTest1);
+        autoResultTest1 = root.findViewById(R.id.autoResultTest1);
+        edConfirmDate1 = root.findViewById(R.id.edConfirmDate1);
+        autoConfirmResult1 = root.findViewById(R.id.autoConfirmResult1);
+        edDateTieBreaker1 = root.findViewById(R.id.edTieBreaker1);
+        autoResultTieBreaker1 = root.findViewById(R.id.autoResultTieBreaker1);
 
-        autoAbdPain = root.findViewById(R.id.autoAbdPain);
-        autoWithoutCondom = root.findViewById(R.id.autoWithoutCondom);
-        autoCondomBurst = root.findViewById(R.id.autoCondomBurst);
-        autoShareNeedle = root.findViewById(R.id.autoShareNeedle);
-        autoBloodTransfusion = root.findViewById(R.id.autoBloodTransfusion);
-        autoCough = root.findViewById(R.id.autoCough);
-        autoPaidSex = root.findViewById(R.id.autoPaidSex);
+         autoCd4Count = root.findViewById(R.id.autoCd4Count);
+        edcd4SemiQuantitative = root.findViewById(R.id.edcd4SemiQuantitative);
 
-        riskAssessmentLayoutView = root.findViewById(R.id.riskAssessmentLayout);
+        edDateTest2 = root.findViewById(R.id.edDateTest2);
+        autoResultTest2 = root.findViewById(R.id.autoResultTest2);
+        edConfirmDate2 = root.findViewById(R.id.edConfirmDate2);
+        autoConfirmResult2 = root.findViewById(R.id.autoConfirmResult2);
+        edDateTieBreaker2 = root.findViewById(R.id.edDateTieBreaker2);
+        autoTieBreakerResult2 = root.findViewById(R.id.autoTieBreakerResult2);
+
+        autoSyphilis = root.findViewById(R.id.autoSyphilis);
+
+        autoHepatitisB = root.findViewById(R.id.autoHepatitisB);
+        autoHepatitisC = root.findViewById(R.id.autoHepatitisC);
+
+        edOthersLongitude = root.findViewById(R.id.edOthersLongitude);
+        edOthersLatitude = root.findViewById(R.id.edOthersLatitude);
+        edOthersAdhocCode = root.findViewById(R.id.edOthersAdhocCode);
+
+
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
     }
 
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
 
+        String[] autoCd4CountAnswers = {"Semi-Quantitative","Flow Cyteometry"};
+        ArrayAdapter<String> adapterCd4CountAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, autoCd4CountAnswers);
+        autoCd4Count.setAdapter(adapterCd4CountAnswers);
+
+        String[] booleanAnswers = {"Reactive", "Non Reactive"};
+        ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanAnswers);
+        autoResultTest1.setAdapter(adapterBooleanAnswers);
+        autoResultTest1.setAdapter(adapterBooleanAnswers);
+        autoConfirmResult1.setAdapter(adapterBooleanAnswers);
+        autoResultTieBreaker1.setAdapter(adapterBooleanAnswers);
+        autoResultTest2.setAdapter(adapterBooleanAnswers);
+        autoConfirmResult2.setAdapter(adapterBooleanAnswers);
+        autoTieBreakerResult2.setAdapter(adapterBooleanAnswers);
+        autoSyphilis.setAdapter(adapterBooleanAnswers);
+        autoHepatitisB.setAdapter(adapterBooleanAnswers);
+        autoHepatitisC.setAdapter(adapterBooleanAnswers);
     }
 
     private void showDatePickers() {
-        edVisitDate.setOnClickListener(v -> {
+        edDateTest1.setOnClickListener(v -> {
             int cYear;
             int cMonth;
             int cDay;
@@ -150,14 +188,14 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edVisitDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                edDateTest1.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
 
-        edDob.setOnClickListener(v -> {
+        edConfirmDate1.setOnClickListener(v -> {
             int cYear;
             int cMonth;
             int cDay;
@@ -169,15 +207,87 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edDob.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                edConfirmDate1.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
 
-                long age = DateUtils.getAgeFromBirthdate(selectedYear, selectedMonth, selectedDay);
+            }, cYear, cMonth, cDay);
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.setTitle(getString(R.string.date_picker_title));
+            mDatePicker.show();
+        });
 
-                edAge.setText(String.valueOf(age));
-                if (age >= ApplicationConstants.RST_AGE) {
-                    isAdult = true;
-                    riskAssessmentLayoutView.setVisibility(View.VISIBLE);
-                }
+        edDateTieBreaker1.setOnClickListener(v -> {
+            int cYear;
+            int cMonth;
+            int cDay;
+
+            Calendar currentDate = Calendar.getInstance();
+            cYear = currentDate.get(Calendar.YEAR);
+            cMonth = currentDate.get(Calendar.MONTH);
+            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                int adjustedMonth = selectedMonth + 1;
+                edDateTieBreaker1.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+
+            }, cYear, cMonth, cDay);
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.setTitle(getString(R.string.date_picker_title));
+            mDatePicker.show();
+        });
+
+        edDateTest2.setOnClickListener(v -> {
+            int cYear;
+            int cMonth;
+            int cDay;
+
+            Calendar currentDate = Calendar.getInstance();
+            cYear = currentDate.get(Calendar.YEAR);
+            cMonth = currentDate.get(Calendar.MONTH);
+            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                int adjustedMonth = selectedMonth + 1;
+                edDateTest2.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+
+            }, cYear, cMonth, cDay);
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.setTitle(getString(R.string.date_picker_title));
+            mDatePicker.show();
+        });
+
+        edConfirmDate2.setOnClickListener(v -> {
+            int cYear;
+            int cMonth;
+            int cDay;
+
+            Calendar currentDate = Calendar.getInstance();
+            cYear = currentDate.get(Calendar.YEAR);
+            cMonth = currentDate.get(Calendar.MONTH);
+            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                int adjustedMonth = selectedMonth + 1;
+                edConfirmDate2.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+
+            }, cYear, cMonth, cDay);
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.setTitle(getString(R.string.date_picker_title));
+            mDatePicker.show();
+        });
+
+        edDateTieBreaker2.setOnClickListener(v -> {
+            int cYear;
+            int cMonth;
+            int cDay;
+
+            Calendar currentDate = Calendar.getInstance();
+            cYear = currentDate.get(Calendar.YEAR);
+            cMonth = currentDate.get(Calendar.MONTH);
+            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                int adjustedMonth = selectedMonth + 1;
+                edDateTieBreaker2.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
 
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -186,32 +296,10 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         });
 
 
-        edAge.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!ViewUtils.isEmpty(edAge) && Integer.parseInt(ViewUtils.getInput(edAge)) >= ApplicationConstants.RST_AGE) {
-                    Log.v("Baron", "I have left the field");
-                    isAdult = true;
-                    riskAssessmentLayoutView.setVisibility(View.VISIBLE);
-                } else {
-                    isAdult = false;
-                    riskAssessmentLayoutView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
     }
 
-    public void fillFields(RequestResult requestResult){
-        if(requestResult != null){
+    public void fillFields(RequestResult requestResult) {
+        if (requestResult != null) {
             isUpdateRequestResult = true;
             updatedRequestResult = requestResult;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
@@ -230,37 +318,132 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         return requestResult;
     }
 
-    private RequestResult updateEncounterWithData(RequestResult requestResult){
-//        if (!ViewUtils.isEmpty(autoSettings)) {
-//            riskStratification.setTestingSetting(ViewUtils.getInput(autoSettings));
-//        }
-//
-//        if (!ViewUtils.isEmpty(autoModality)) {
-//            riskStratification.setModality(ViewUtils.getInput(autoModality));
-//        }
-//
-//        if (!ViewUtils.isEmpty(autoTargetGroup)) {
-//            riskStratification.setTargetGroup(ViewUtils.getInput(autoTargetGroup));
-//        }
-//
-//        if (!ViewUtils.isEmpty(edDob)) {
-//            riskStratification.setDob(ViewUtils.getInput(edDob));
-//        }
-//
-//
-//        if (!ViewUtils.isEmpty(edVisitDate)) {
-//            riskStratification.setVisitDate(ViewUtils.getInput(edVisitDate));
-//        }
-//
-//        if (!ViewUtils.isEmpty(edAge)) {
-//            riskStratification.setAge(Integer.parseInt(ViewUtils.getInput(edAge)));
-//        }
-//
-//        RiskAssessment riskAssessment = new RiskAssessment();
-//        List<RiskAssessment> riskAssessmentList = new ArrayList<>();
-//        riskAssessmentList.add(riskAssessment);
-//
-//        riskStratification.setRiskAssessmentList(riskAssessmentList);
+    private RequestResult updateEncounterWithData(RequestResult requestResult) {
+        //Cd4
+        RequestResult.CD4 cd4 = new RequestResult.CD4();
+        if (!ViewUtils.isEmpty(autoCd4Count)) {
+            cd4.setCd4Count(ViewUtils.getInput(autoCd4Count));
+        }
+
+        if (!ViewUtils.isEmpty(autoCd4Count)) {
+            cd4.setCd4SemiQuantitative(ViewUtils.getInput(autoCd4Count));
+        }
+
+        requestResult.setCd4(cd4);
+
+        //Test1
+        RequestResult.Test1  test1 = new RequestResult.Test1();
+        if (!ViewUtils.isEmpty(edDateTest1)) {
+            test1.setDate(ViewUtils.getInput(edDateTest1));
+        }
+
+        if (!ViewUtils.isEmpty(autoResultTest1)) {
+            test1.setResult(ViewUtils.getInput(autoResultTest1));
+        }
+        requestResult.setTest1(test1);
+
+        //Confirmatory Test1
+        RequestResult.ConfirmatoryTest confirmatoryTest = new RequestResult.ConfirmatoryTest();
+
+        if (!ViewUtils.isEmpty(edConfirmDate1)) {
+            confirmatoryTest.setDate(ViewUtils.getInput(edConfirmDate1));
+        }
+
+        if (!ViewUtils.isEmpty(autoConfirmResult1)) {
+            confirmatoryTest.setResult(ViewUtils.getInput(autoConfirmResult1));
+        }
+
+        requestResult.setConfirmatoryTest(confirmatoryTest);
+
+        //Tie Breaker Test1
+        RequestResult.TieBreakerTest tieBreakerTest = new RequestResult.TieBreakerTest();
+
+        if (!ViewUtils.isEmpty(edDateTieBreaker1)) {
+            tieBreakerTest.setDate(ViewUtils.getInput(edDateTieBreaker1));
+        }
+
+        if (!ViewUtils.isEmpty(autoResultTieBreaker1)) {
+            tieBreakerTest.setResult(ViewUtils.getInput(autoResultTieBreaker1));
+        }
+
+        requestResult.setTieBreakerTest(tieBreakerTest);
+
+        //Test2
+        RequestResult.Test2 test2 = new RequestResult.Test2();
+
+        if (!ViewUtils.isEmpty(edDateTest2)) {
+            test2.setDate2(ViewUtils.getInput(edDateTest2));
+        }
+
+        if (!ViewUtils.isEmpty(autoResultTest2)) {
+            test2.setResult2(ViewUtils.getInput(autoResultTest2));
+        }
+
+        requestResult.setTest2(test2);
+
+        //Confirmatory Test 2
+        RequestResult.ConfirmatoryTest2 confirmatoryTest2 = new RequestResult.ConfirmatoryTest2();
+
+        if (!ViewUtils.isEmpty(edConfirmDate2)) {
+            confirmatoryTest2.setDate2(ViewUtils.getInput(edConfirmDate2));
+        }
+
+        if (!ViewUtils.isEmpty(autoConfirmResult2)) {
+            confirmatoryTest2.setResult2(ViewUtils.getInput(autoConfirmResult2));
+        }
+
+        requestResult.setConfirmatoryTest2(confirmatoryTest2);
+
+        //TieBreaker 2
+        RequestResult.TieBreakerTest2 tieBreakerTest2 = new RequestResult.TieBreakerTest2();
+
+        if (!ViewUtils.isEmpty(edDateTieBreaker2)) {
+            tieBreakerTest2.setDate2(ViewUtils.getInput(edDateTieBreaker2));
+        }
+
+        if (!ViewUtils.isEmpty(autoTieBreakerResult2)) {
+            tieBreakerTest2.setResult2(ViewUtils.getInput(autoTieBreakerResult2));
+        }
+
+        requestResult.setTieBreakerTest2(tieBreakerTest2);
+
+        //Syphylis
+        RequestResult.SyphilisTesting syphilisTesting = new RequestResult.SyphilisTesting();
+
+        if (!ViewUtils.isEmpty(autoSyphilis)) {
+            syphilisTesting.setSyphilisTestResult(ViewUtils.getInput(autoSyphilis));
+        }
+
+        requestResult.setSyphilisTesting(syphilisTesting);
+
+        //Hepatitis
+        RequestResult.HepatitisTesting hepatitisTesting = new RequestResult.HepatitisTesting();
+
+        if (!ViewUtils.isEmpty(autoHepatitisB)) {
+            hepatitisTesting.setHepatitisBTestResult(ViewUtils.getInput(autoHepatitisB));
+        }
+
+        if (!ViewUtils.isEmpty(autoHepatitisC)) {
+            hepatitisTesting.setHepatitisCTestResult(ViewUtils.getInput(autoHepatitisC));
+        }
+
+        requestResult.setHepatitisTesting(hepatitisTesting);
+
+        //Others
+        RequestResult.Others others = new RequestResult.Others();
+        if (!ViewUtils.isEmpty(edOthersLatitude)) {
+            others.setLatitude(ViewUtils.getInput(edOthersLatitude));
+        }
+
+        if (!ViewUtils.isEmpty(edOthersLongitude)) {
+            others.setLongitude(ViewUtils.getInput(edOthersLongitude));
+        }
+
+        if (!ViewUtils.isEmpty(edOthersAdhocCode)) {
+            others.setAdhocCode(ViewUtils.getInput(edOthersLongitude));
+        }
+
+        requestResult.setOthers(others);
 
         return requestResult;
     }
@@ -275,9 +458,9 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.saveContinueButton:
-                if(isUpdateRequestResult){
+                if (isUpdateRequestResult) {
                     mPresenter.confirmUpdate(updateEncounter(updatedRequestResult), updatedForm);
-                }else{
+                } else {
                     mPresenter.confirmCreate(createEncounter(), packageName);
                 }
                 break;
@@ -290,12 +473,12 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     @Override
     public void startActivityForPostTestForm() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId());
-        if(encounter == null) {
+        if (encounter == null) {
             Intent clientIntakeProgram = new Intent(LamisPlus.getInstance(), PostTestActivity.class);
             clientIntakeProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(clientIntakeProgram);
-        }else{
+        } else {
             startDashboardActivity();
         }
     }

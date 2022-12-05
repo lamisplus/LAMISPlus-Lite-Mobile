@@ -126,6 +126,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.patientprogram.PatientProgramActivity" />
         </activity>
+        <activity android:name=".activities.forms.hts.elicitation.ElicitationActivity"
+            android:label="@string/elicitation">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientprogram.PatientProgramActivity" />
+        </activity>
         <activity android:name=".activities.patientdashboard.PatientDashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -158,6 +166,11 @@
         <service
             android:name=".services.EncounterService"
             android:enabled="true" />
+
+        <service
+            android:name=".services.SyncServices"
+            android:enabled="true" />
+
 
     </application>
 

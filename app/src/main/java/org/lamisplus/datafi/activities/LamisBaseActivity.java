@@ -1,6 +1,9 @@
 package org.lamisplus.datafi.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,10 +27,13 @@ import org.lamisplus.datafi.activities.login.LoginActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.auth.AuthorizationManager;
+import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.services.EncounterService;
 import org.lamisplus.datafi.services.PatientService;
+import org.lamisplus.datafi.services.SyncServices;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
@@ -85,6 +91,15 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+//        FormServices broadcastReceiver = new FormServices();
+//        IntentFilter intentFilter = new IntentFilter("org.lamisplus.datafi.FormServices");
+//        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+//        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
     private void setSyncButtonState(boolean syncState) {
         if (syncState) {
             mSyncbutton.setIcon(R.drawable.ic_sync_on);
@@ -129,19 +144,16 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
                     LamisPlus.getInstance().setSyncState(true);
                     setSyncButtonState(true);
 
-//                    Intent intent = new Intent("org.lamisplus.mobile.intent.action.SYNC_PATIENTS");
-//                    getApplicationContext().sendBroadcast(intent);
-                    //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    Intent ii = new Intent(getApplicationContext(), PatientService.class);
+                    Intent ii = new Intent(getApplicationContext(), SyncServices.class);
                     getApplicationContext().startService(ii);
 
-                    //This is to handle android sync version 10
-                    Intent i1 = new Intent(getApplicationContext(), EncounterService.class);
-                    getApplicationContext().startService(i1);
-//                    }else{
-//                        Intent intent = new Intent("org.lamisplus.mobile.intent.action.SYNC_PATIENTS");
-//                        getApplicationContext().sendBroadcast(intent);
-//                    }
+//                    Intent ii = new Intent(getApplicationContext(), PatientService.class);
+//                    getApplicationContext().startService(ii);
+//
+//                    //This is to handle android sync version 10
+//                    Intent i1 = new Intent(getApplicationContext(), EncounterService.class);
+//                    getApplicationContext().startService(i1);
+
 
                     ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.NOTICE, R.string.reconn_server);
                     if (snackbar != null)
@@ -157,7 +169,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showDeletePatientDialog() {
+    public void showDeletePatientDialog(long patientId) {
         Log.v("Baron", "Delete this patient?");
     }
 

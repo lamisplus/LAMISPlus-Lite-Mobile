@@ -5,102 +5,198 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class RiskAssessment implements Serializable {
+public class  RiskAssessment implements Serializable {
 
-    @SerializedName("previousTestedHIVNegative")
+    @SerializedName("abuseDrug")
     @Expose
-    private boolean previousTestedHIVNegative;
+    private String abuseDrug;
 
-    @SerializedName("timeLastHIVNegativeTestResult")
+    @SerializedName("bloodTransfusion")
     @Expose
-    private boolean timeLastHIVNegativeTestResult;
+    private String bloodTransfusion;
 
-    @SerializedName("clientPregnant")
+    @SerializedName("bloodtransInlastThreeMonths")
     @Expose
-    private boolean clientPregnant;
+    private String bloodtransInlastThreeMonths;
 
-    @SerializedName("clientInformHivTransRoutes")
+    @SerializedName("consistentWeightFeverNightCough")
     @Expose
-    private boolean clientInformHivTransRoutes;
+    private String consistentWeightFeverNightCough;
 
-    @SerializedName("clientInformRiskHivTrans")
+    @SerializedName("everHadSexualIntercourse")
     @Expose
-    private boolean clientInformRiskHivTrans;
+    private String everHadSexualIntercourse;
 
-    @SerializedName("clientInformPreventingsHivTrans")
+    @SerializedName("experiencePain")
     @Expose
-    private boolean clientInformPreventingsHivTrans;
+    private String experiencePain;
 
-    @SerializedName("clientInformPossibleTestResult")
+    @SerializedName("haveCondomBurst")
     @Expose
-    private boolean clientInformPossibleTestResult;
+    private String haveCondomBurst;
 
-    @SerializedName("informConsentHivTest")
+    @SerializedName("haveSexWithoutCondom")
     @Expose
-    private boolean informConsentHivTest;
+    private String haveSexWithoutCondom;
 
-    public boolean isPreviousTestedHIVNegative() {
-        return previousTestedHIVNegative;
+    @SerializedName("moreThanOneSexPartnerLastThreeMonths")
+    @Expose
+    private String moreThanOneSexPartnerLastThreeMonths;
+
+    @SerializedName("sexUnderInfluence")
+    @Expose
+    private String sexUnderInfluence;
+
+    @SerializedName("soldPaidVaginalSex")
+    @Expose
+    private String soldPaidVaginalSex;
+
+    @SerializedName("stiLastThreeMonths")
+    @Expose
+    private String stiLastThreeMonths;
+
+    @SerializedName("unprotectedVaginalSex")
+    @Expose
+    private String unprotectedVaginalSex;
+
+    @SerializedName("uprotectedAnalSex")
+    @Expose
+    private String uprotectedAnalSex;
+
+    @SerializedName("uprotectedSexWithCasualLastThreeMonths")
+    @Expose
+    private String uprotectedSexWithCasualLastThreeMonths;
+
+    @SerializedName("uprotectedSexWithRegularPartnerLastThreeMonths")
+    @Expose
+    private String uprotectedSexWithRegularPartnerLastThreeMonths;
+
+    public String isAbuseDrug() {
+        return abuseDrug;
     }
 
-    public void setPreviousTestedHIVNegative(boolean previousTestedHIVNegative) {
-        this.previousTestedHIVNegative = previousTestedHIVNegative;
+    public void setAbuseDrug(String abuseDrug) {
+        this.abuseDrug = abuseDrug;
     }
 
-    public boolean isTimeLastHIVNegativeTestResult() {
-        return timeLastHIVNegativeTestResult;
+    public String isBloodTransfusion() {
+        return bloodTransfusion;
     }
 
-    public void setTimeLastHIVNegativeTestResult(boolean timeLastHIVNegativeTestResult) {
-        this.timeLastHIVNegativeTestResult = timeLastHIVNegativeTestResult;
+    public void setBloodTransfusion(String bloodTransfusion) {
+        this.bloodTransfusion = bloodTransfusion;
     }
 
-    public boolean isClientPregnant() {
-        return clientPregnant;
+    public String isBloodtransInlastThreeMonths() {
+        return bloodtransInlastThreeMonths;
     }
 
-    public void setClientPregnant(boolean clientPregnant) {
-        this.clientPregnant = clientPregnant;
+    public void setBloodtransInlastThreeMonths(String bloodtransInlastThreeMonths) {
+        this.bloodtransInlastThreeMonths = bloodtransInlastThreeMonths;
     }
 
-    public boolean isClientInformHivTransRoutes() {
-        return clientInformHivTransRoutes;
+    public String isConsistentWeightFeverNightCough() {
+        return consistentWeightFeverNightCough;
     }
 
-    public void setClientInformHivTransRoutes(boolean clientInformHivTransRoutes) {
-        this.clientInformHivTransRoutes = clientInformHivTransRoutes;
+    public void setConsistentWeightFeverNightCough(String consistentWeightFeverNightCough) {
+        this.consistentWeightFeverNightCough = consistentWeightFeverNightCough;
     }
 
-    public boolean isClientInformRiskHivTrans() {
-        return clientInformRiskHivTrans;
+    public String isEverHadSexualIntercourse() {
+        return everHadSexualIntercourse;
     }
 
-    public void setClientInformRiskHivTrans(boolean clientInformRiskHivTrans) {
-        this.clientInformRiskHivTrans = clientInformRiskHivTrans;
+    public void setEverHadSexualIntercourse(String everHadSexualIntercourse) {
+        this.everHadSexualIntercourse = everHadSexualIntercourse;
     }
 
-    public boolean isClientInformPreventingsHivTrans() {
-        return clientInformPreventingsHivTrans;
+    public String isExperiencePain() {
+        return experiencePain;
     }
 
-    public void setClientInformPreventingsHivTrans(boolean clientInformPreventingsHivTrans) {
-        this.clientInformPreventingsHivTrans = clientInformPreventingsHivTrans;
+    public void setExperiencePain(String experiencePain) {
+        this.experiencePain = experiencePain;
     }
 
-    public boolean isClientInformPossibleTestResult() {
-        return clientInformPossibleTestResult;
+    public String isHaveCondomBurst() {
+        return haveCondomBurst;
     }
 
-    public void setClientInformPossibleTestResult(boolean clientInformPossibleTestResult) {
-        this.clientInformPossibleTestResult = clientInformPossibleTestResult;
+    public void setHaveCondomBurst(String haveCondomBurst) {
+        this.haveCondomBurst = haveCondomBurst;
     }
 
-    public boolean isInformConsentHivTest() {
-        return informConsentHivTest;
+    public String isHaveSexWithoutCondom() {
+        return haveSexWithoutCondom;
     }
 
-    public void setInformConsentHivTest(boolean informConsentHivTest) {
-        this.informConsentHivTest = informConsentHivTest;
+    public void setHaveSexWithoutCondom(String haveSexWithoutCondom) {
+        this.haveSexWithoutCondom = haveSexWithoutCondom;
+    }
+
+    public String isMoreThanOneSexPartnerLastThreeMonths() {
+        return moreThanOneSexPartnerLastThreeMonths;
+    }
+
+    public void setMoreThanOneSexPartnerLastThreeMonths(String moreThanOneSexPartnerLastThreeMonths) {
+        this.moreThanOneSexPartnerLastThreeMonths = moreThanOneSexPartnerLastThreeMonths;
+    }
+
+    public String isSexUnderInfluence() {
+        return sexUnderInfluence;
+    }
+
+    public void setSexUnderInfluence(String sexUnderInfluence) {
+        this.sexUnderInfluence = sexUnderInfluence;
+    }
+
+    public String isSoldPaidVaginalSex() {
+        return soldPaidVaginalSex;
+    }
+
+    public void setSoldPaidVaginalSex(String soldPaidVaginalSex) {
+        this.soldPaidVaginalSex = soldPaidVaginalSex;
+    }
+
+    public String isStiLastThreeMonths() {
+        return stiLastThreeMonths;
+    }
+
+    public void setStiLastThreeMonths(String stiLastThreeMonths) {
+        this.stiLastThreeMonths = stiLastThreeMonths;
+    }
+
+    public String isUnprotectedVaginalSex() {
+        return unprotectedVaginalSex;
+    }
+
+    public void setUnprotectedVaginalSex(String unprotectedVaginalSex) {
+        this.unprotectedVaginalSex = unprotectedVaginalSex;
+    }
+
+    public String isUprotectedAnalSex() {
+        return uprotectedAnalSex;
+    }
+
+    public void setUprotectedAnalSex(String uprotectedAnalSex) {
+        this.uprotectedAnalSex = uprotectedAnalSex;
+    }
+
+    public String isUprotectedSexWithCasualLastThreeMonths() {
+        return uprotectedSexWithCasualLastThreeMonths;
+    }
+
+    public void setUprotectedSexWithCasualLastThreeMonths(String uprotectedSexWithCasualLastThreeMonths) {
+        this.uprotectedSexWithCasualLastThreeMonths = uprotectedSexWithCasualLastThreeMonths;
+    }
+
+    public String isUprotectedSexWithRegularPartnerLastThreeMonths() {
+        return uprotectedSexWithRegularPartnerLastThreeMonths;
+    }
+
+    public void setUprotectedSexWithRegularPartnerLastThreeMonths(String uprotectedSexWithRegularPartnerLastThreeMonths) {
+        this.uprotectedSexWithRegularPartnerLastThreeMonths = uprotectedSexWithRegularPartnerLastThreeMonths;
     }
 }
 

@@ -19,7 +19,7 @@ public class PatientDashboardFormDetailsPresenter extends PatientDashboardPresen
     public PatientDashboardFormDetailsPresenter(String id, PatientDashboardContract.ViewPatientDetails mPatientDetailsView) {
         this.mPatientDetailsView = mPatientDetailsView;
         this.mPersonDAO = new PersonDAO();
-        this.mPerson = this.mPersonDAO.findPersonById(id);
+        this.mPerson = PersonDAO.findPersonById(id);
         this.personId = id;
         this.mPatientDetailsView.setPresenter(this);
     }

@@ -48,6 +48,7 @@ import org.lamisplus.datafi.models.ContactPoint;
 import org.lamisplus.datafi.models.PatientIdentifier;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.DateUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -354,7 +355,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             autoNokRelationship.setText(CodesetsDAO.findCodesetsDisplayById(person.getContacts().getRelationshipId()), false);
 
             if(person.getContacts().getContactPoint() != null){
-                LamisCustomHandler.showJson(person.getContacts().getContactPoint());
 
                 if(person.getContacts().getContactPoint().getValue() != null && person.getContacts().getContactPoint().getType().equals("phone")) {
                     edNokPhone.setText(person.getContacts().getContactPoint().getValue());
@@ -391,7 +391,13 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             person.setOtherName(ViewUtils.getInput(edMiddleName));
         }
 
-        if (!ViewUtils.isEmpty(edDateofBirth)) {
+        if(!ViewUtils.isEmpty(edAge) && ViewUtils.isEmpty(edDateofBirth)){
+           String dateOfBirth = DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge)));
+            person.setDateOfBirth(dateOfBirth);
+            person.setDateOfBirthEstimated(true);
+        }
+
+        if (!ViewUtils.isEmpty(edDateofBirth) && ViewUtils.isEmpty(edAge)) {
             person.setDateOfBirth(ViewUtils.getInput(edDateofBirth));
         }
 
@@ -487,8 +493,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
 
         person.setAddress(addressList);
         person.setAddressList();
-
-
 
 
 

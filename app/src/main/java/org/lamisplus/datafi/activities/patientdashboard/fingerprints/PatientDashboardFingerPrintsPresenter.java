@@ -16,7 +16,7 @@ public class PatientDashboardFingerPrintsPresenter extends PatientDashboardPrese
     public PatientDashboardFingerPrintsPresenter(String id, PatientDashboardContract.ViewPatientDetails mPatientDetailsView) {
         this.mPatientDetailsView = mPatientDetailsView;
         this.mPersonDAO = new PersonDAO();
-        this.mPerson = this.mPersonDAO.findPersonById(id);
+        this.mPerson = PersonDAO.findPersonById(id);
         this.mPatientDetailsView.setPresenter(this);
     }
 

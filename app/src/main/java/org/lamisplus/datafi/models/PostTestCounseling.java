@@ -1,31 +1,19 @@
 package org.lamisplus.datafi.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class PostTest implements Serializable {
-
-    @SerializedName("htsClientId")
-    @Expose
-    private int htsClientId;
+public class PostTestCounseling implements Serializable{
 
     @SerializedName("personId")
-    @Expose
     private int personId;
 
-    @SerializedName("postTestCounselingKnowledgeAssessment")
-    @Expose
+    @SerializedName("htsClientId")
+    private int htsClientId;
+
+    @SerializedName("PostTestCounselingKnowledgeAssessment")
     private PostTestCounselingKnowledgeAssessment postTestCounselingKnowledgeAssessment;
-
-    public int getHtsClientId() {
-        return htsClientId;
-    }
-
-    public void setHtsClientId(int htsClientId) {
-        this.htsClientId = htsClientId;
-    }
 
     public int getPersonId() {
         return personId;
@@ -35,6 +23,14 @@ public class PostTest implements Serializable {
         this.personId = personId;
     }
 
+    public int getHtsClientId() {
+        return htsClientId;
+    }
+
+    public void setHtsClientId(int htsClientId) {
+        this.htsClientId = htsClientId;
+    }
+
     public PostTestCounselingKnowledgeAssessment getPostTestCounselingKnowledgeAssessment() {
         return postTestCounselingKnowledgeAssessment;
     }
@@ -42,4 +38,10 @@ public class PostTest implements Serializable {
     public void setPostTestCounselingKnowledgeAssessment(PostTestCounselingKnowledgeAssessment postTestCounselingKnowledgeAssessment) {
         this.postTestCounselingKnowledgeAssessment = postTestCounselingKnowledgeAssessment;
     }
+
+    public class PostTestCounselingKnowledgeAssessment implements Serializable{
+
+    }
+
 }
+

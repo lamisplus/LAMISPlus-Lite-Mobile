@@ -27,8 +27,11 @@ import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
+import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskAssessment;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -43,6 +46,7 @@ import java.util.List;
 public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implements RSTContract.View, View.OnClickListener {
 
     private String[] settings, modality, targetGroup;
+    private AutoCompleteTextView autoentryPoint;
     private AutoCompleteTextView autoSettings;
     private AutoCompleteTextView autoModality;
     private AutoCompleteTextView autoTargetGroup;
@@ -93,6 +97,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     }
 
     private void initiateFragmentViews(View root) {
+        autoentryPoint = root.findViewById(R.id.autoentryPoint);
         autoSettings = root.findViewById(R.id.autoSettings);
         autoModality = root.findViewById(R.id.autoModality);
         autoTargetGroup = root.findViewById(R.id.autoTargetGroup);
@@ -138,7 +143,12 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         ArrayAdapter<String> adapterTargetGroup = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, targetGroup);
         autoTargetGroup.setAdapter(adapterTargetGroup);
 
-        String[] booleanAnswers = {"Yes", "No"};
+
+        String[] entryPointDropdown = getResources().getStringArray(R.array.entry_point);
+        ArrayAdapter<String> adapterentryPoint = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, entryPointDropdown);
+        autoentryPoint.setAdapter(adapterentryPoint);
+
+        String[] booleanAnswers = getResources().getStringArray(R.array.booleanAnswers);
         ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanAnswers);
         autoAbdPain.setAdapter(adapterBooleanAnswers);
         autoWithoutCondom.setAdapter(adapterBooleanAnswers);
@@ -223,16 +233,14 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
     public void fillFields(RiskStratification riskStratification){
         if(riskStratification != null){
-
-            LamisCustomHandler.showJson(riskStratification);
-
             isUpdateRst = true;
             updatedRst = riskStratification;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
 
-            autoSettings.setText(riskStratification.getTestingSetting(), false);
-            autoModality.setText(riskStratification.getModality(), false);
-            autoTargetGroup.setText(riskStratification.getTargetGroup(), false);
+            autoentryPoint.setText(riskStratification.getEntryPoint(), false);
+            autoSettings.setText(CodesetsDAO.findCodesetsDisplayByCode(riskStratification.getTestingSetting()), false);
+            autoModality.setText(CodesetsDAO.findCodesetsDisplayByCode(riskStratification.getModality()), false);
+            autoTargetGroup.setText(CodesetsDAO.findCodesetsDisplayByCode(riskStratification.getTargetGroup()), false);
             edVisitDate.setText(riskStratification.getVisitDate());
             if(riskStratification.getDob() == null){
                 edDob.setText(DateUtils.getAgeFromBirthdate(riskStratification.getAge()));
@@ -265,16 +273,20 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     }
 
     private RiskStratification updateEncounterWithData(RiskStratification riskStratification){
+        if (!ViewUtils.isEmpty(autoentryPoint)) {
+            riskStratification.setEntryPoint(ViewUtils.getInput(autoentryPoint));
+        }
+
         if (!ViewUtils.isEmpty(autoSettings)) {
-            riskStratification.setTestingSetting(ViewUtils.getInput(autoSettings));
+            riskStratification.setTestingSetting(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoSettings)));
         }
 
         if (!ViewUtils.isEmpty(autoModality)) {
-            riskStratification.setModality(ViewUtils.getInput(autoModality));
+            riskStratification.setModality(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoModality)));
         }
 
         if (!ViewUtils.isEmpty(autoTargetGroup)) {
-            riskStratification.setTargetGroup(ViewUtils.getInput(autoTargetGroup));
+            riskStratification.setTargetGroup(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoTargetGroup)));
         }
 
         if (!ViewUtils.isEmpty(edDob)) {
@@ -292,11 +304,21 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             riskStratification.setAge(Integer.parseInt(ViewUtils.getInput(edAge)));
         }
 
-        RiskAssessment riskAssessment = new RiskAssessment();
-        List<RiskAssessment> riskAssessmentList = new ArrayList<>();
-        riskAssessmentList.add(riskAssessment);
+        riskStratification.setCode("");
 
-        riskStratification.setRiskAssessmentList(riskAssessmentList);
+        if(updatedForm != null){
+            if(updatedForm.getPersonId() != 0) {
+                riskStratification.setPersonId(updatedForm.getPersonId());
+            }else{
+                riskStratification.setPersonId(0);
+            }
+        }else {
+            riskStratification.setPersonId(0);
+        }
+
+        RiskAssessment riskAssessment = new RiskAssessment();
+
+        riskStratification.setRiskAssessmentList(riskAssessment);
 
         return riskStratification;
     }
@@ -360,4 +382,5 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                 String.valueOf(mPresenter.getPatientId()));
         startActivity(preTestProgram);
     }
+
 }

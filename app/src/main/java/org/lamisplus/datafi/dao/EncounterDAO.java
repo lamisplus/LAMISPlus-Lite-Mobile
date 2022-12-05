@@ -8,7 +8,9 @@ import com.activeandroid.query.Update;
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.models.ClientIntake;
+import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PostTest;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.models.Recency;
@@ -95,6 +97,7 @@ public class EncounterDAO {
      */
     public static RequestResult findRequestResultFromForm(String formName, String patientId){
         Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+
         if(encounter != null) {
             RequestResult requestResult = new Gson().fromJson(encounter.getDataValues(), RequestResult.class);
             return requestResult;
@@ -132,15 +135,39 @@ public class EncounterDAO {
         return null;
     }
 
+    /**
+     * This function is useful for editing Elicitation form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
+     * @param formName The name of the form
+     * @param patientId The patient id
+     * @return Recency
+     */
+    public static Elicitation findElicitationFromForm(String formName, String patientId){
+        Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+        if(encounter != null) {
+            Elicitation elicitation = new Gson().fromJson(encounter.getDataValues(), Elicitation.class);
+            return elicitation;
+        }
+        return null;
+    }
+
     public static void deleteEncounter(String formName, String patientId){
         new Delete().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).execute();
     }
 
-    public static void updateAllEncountersWithPatientId(String idFromServer, String personId){
+    public static void deleteAllEncounter(long patientId){
+        new Delete().from(Encounter.class).where("person = ?", patientId).execute();
+    }
+
+    public static void updateAllEncountersWithPatientId(int idFromServer, String personId){
         new Update(Encounter.class)
                 .set("personId = ?", idFromServer)
                 .where("person = ?", personId)
                 .execute();
+    }
+
+    public static List<Encounter> getUnsyncedEncounters(){
+        List<Encounter> encounter = new Select().from(Encounter.class).where("synced=?", 0).execute();
+        return encounter;
     }
 
 }

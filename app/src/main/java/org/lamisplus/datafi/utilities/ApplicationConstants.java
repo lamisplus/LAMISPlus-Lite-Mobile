@@ -1,20 +1,5 @@
 package org.lamisplus.datafi.utilities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
-import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
-import org.lamisplus.datafi.models.PostTest;
-import org.lamisplus.datafi.models.PreTest;
-import org.lamisplus.datafi.models.Recency;
-import org.lamisplus.datafi.models.RequestResult;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 public class ApplicationConstants {
 
     public abstract static class LAMISPlusSharedPreferenceNames {
@@ -32,7 +17,7 @@ public class ApplicationConstants {
     public static final String SESSION_TOKEN = "session_id";
     public static final String AUTHORIZATION_TOKEN = "authorisation";
     public static final String LAST_LOGIN_SERVER_URL = "last_login_server_url";
-    public static final String DEFAULT_LAMIS_PLUS_URL = "http://lamisplus.org";
+    public static final String DEFAULT_LAMIS_PLUS_URL = "http://lamisplus.org:7090";
     public static String LAMIS_TAG = "LAMISPlus Mobile";
     public static final String LAST_SESSION_TOKEN = "last_session_id";
     public static final String DB_PASSWORD_LITERAL_PEPPER = "Lamis Sesame";
@@ -59,14 +44,7 @@ public class ApplicationConstants {
         public static final String REQUEST_RESULT_FORM = "Request Result Form";
         public static final String POST_TEST_COUNSELING_FORM = "Post Test Counseling Form";
         public static final String HIV_RECENCY_FORM = "HIV Recency Form";
+        public static final String ELICITATION = "Index Notification Services - Elicitation";
     }
 
-    public abstract static class FormClasses{
-        public static final Class RISK_STRATIFICATION_FORM = RSTActivity.class;
-        public static final Class CLIENT_INTAKE_FORM = ClientIntakeActivity.class;
-        public static final Class PRE_TEST_COUNSELING_FORM = PreTest.class;
-        public static final Class REQUEST_RESULT_FORM = RequestResult.class;
-        public static final Class POST_TEST_COUNSELING_FORM = PostTest.class;
-        public static final Class HIV_RECENCY_FORM = Recency.class;
-    }
 }

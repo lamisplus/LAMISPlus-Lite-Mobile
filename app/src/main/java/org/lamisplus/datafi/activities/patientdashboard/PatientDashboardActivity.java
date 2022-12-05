@@ -21,6 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
+import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsActivity;
@@ -82,10 +83,10 @@ public class PatientDashboardActivity extends LamisBaseActivity {
 
     private void attachPresenterToFragment(Fragment fragment) {
         Bundle patientBundle = getIntent().getExtras();
-        String id =  String.valueOf(patientBundle.get(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE));
+        String id = String.valueOf(patientBundle.get(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE));
         if (fragment instanceof PatientDashboardDetailsFragment) {
             mPresenter = new PatientDashboardDetailsPresenter(id, ((PatientDashboardDetailsFragment) fragment));
-        }else if(fragment instanceof PatientDashboardFingerPrintsFragment){
+        } else if (fragment instanceof PatientDashboardFingerPrintsFragment) {
             mPresenter = new PatientDashboardFingerPrintsPresenter(id, ((PatientDashboardFingerPrintsFragment) fragment));
         }
     }
@@ -107,7 +108,8 @@ public class PatientDashboardActivity extends LamisBaseActivity {
                 closeFABMenu();
             }
         });
-        deleteFAB.setOnClickListener(v -> showDeletePatientDialog());
+        //deleteFAB.setOnClickListener(v -> showDeletePatientDialog(mPresenter.getPatientId()));
+        deleteFAB.setOnClickListener(v -> deletePatient());
         updateFAB.setOnClickListener(v -> startPatientUpdateActivity(mPresenter.getPatientId()));
         visitFAB.setOnClickListener(v -> startPatientProgramActivity(mPresenter.getPatientId()));
         pbsFAB.setOnClickListener(v -> startPatientPBSActivity(mPresenter.getPatientId()));
@@ -149,6 +151,12 @@ public class PatientDashboardActivity extends LamisBaseActivity {
                     .getDrawable(R.drawable.ic_edit_white_24dp)), 400);
         }
 
+    }
+
+    public void deletePatient() {
+        mPresenter.deletePatient();
+        Intent i = new Intent(this, FindPatientActivity.class);
+        startActivity(i);
     }
 
     public static void showFABMenu() {

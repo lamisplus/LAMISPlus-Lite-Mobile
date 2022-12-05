@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 
@@ -49,6 +51,10 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
 
     @Override
     public void confirmUpdate(RiskStratification riskStratification, Encounter encounter) {
+        Person person =  PersonDAO.findPersonById(patientId);
+        if(person.getPersonId() != 0){
+            encounter.setPersonId(person.getPersonId());
+        }
         String s = new Gson().toJson(riskStratification);
         encounter.setDataValues(s);
         encounter.save();

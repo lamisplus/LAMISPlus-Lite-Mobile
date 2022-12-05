@@ -34,7 +34,7 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
 
     @Override
     public Person patientToUpdate() {
-        return new PersonDAO().findPersonById(patientToUpdateId);
+        return PersonDAO.findPersonById(patientToUpdateId);
     }
 
     @Override
