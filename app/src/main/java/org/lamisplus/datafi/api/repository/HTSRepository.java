@@ -10,14 +10,14 @@ import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.lamisplus.datafi.api.BearerApi;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.listeners.retrofit.DefaultCallbackListener;
 import org.lamisplus.datafi.models.ClientIntake;
+import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
-import org.lamisplus.datafi.models.PostTestCounseling;
+import org.lamisplus.datafi.models.PostTest;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.models.RequestResult;
@@ -37,8 +37,8 @@ public class HTSRepository extends RetrofitRepository{
 
     private RestApi restApi;
     public HTSRepository(){
-        String token = new BearerApi("guest@lamisplus.org", "12345", true).getToken();
-        this.restApi = RestServiceBuilder.createService(RestApi.class, token);
+        //String token = new BearerApi("guest@lamisplus.org", "12345", true).getToken();
+        this.restApi = RestServiceBuilder.createService(RestApi.class);
     }
 
     public void syncRst(Encounter encounter, @Nullable final DefaultCallbackListener callbackListener) {
@@ -56,6 +56,7 @@ public class HTSRepository extends RetrofitRepository{
                         RiskStratification rst = response.body();
                         riskStratification.setCode(rst.getCode());
                         encounter.setDataValues(new Gson().toJson(riskStratification));
+                        encounter.setSynced(true);
                         encounter.save();
                         Log.v("Baron", "RST Synced");
 
@@ -107,7 +108,7 @@ public class HTSRepository extends RetrofitRepository{
                             throw new RuntimeException(e);
                         }
                         LamisCustomHandler.showJson(response.body());
-                        Log.v("Baron", "Client Intake has synced");
+                        Log.v("Baron", "Client Intake has synced. Response Code: " + response.code());
                         callbackListener.onResponse();
                     }
                 }
@@ -136,8 +137,8 @@ public class HTSRepository extends RetrofitRepository{
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if(response.isSuccessful()){
-                        Log.v("Baron", "Pre Test synced");
-                        LamisCustomHandler.showJson(response.body());
+                        encounter.setSynced(true);
+                        encounter.save();
                     }else{
                         Log.v("Baron", "Pre Test not synced");
                         LamisCustomHandler.showJson(response.errorBody() + " " + response.message() + " " + response.code());
@@ -168,10 +169,10 @@ public class HTSRepository extends RetrofitRepository{
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if(response.isSuccessful()){
-                        Log.v("Baron", "Request Result synced");
-                        LamisCustomHandler.showJson(response.body());
+                        encounter.setSynced(true);
+                        encounter.save();
                     }else{
-                        Log.v("Baron", "Request Result not synced");
+                        Log.v("Baron", "Request Result not synced . Response Code: " + response.code());
                         LamisCustomHandler.showJson(response.errorBody().toString());
                     }
                 }
@@ -186,23 +187,25 @@ public class HTSRepository extends RetrofitRepository{
 
     public void syncPostTest(Encounter encounter, @Nullable final DefaultCallbackListener callbackListener){
         if (NetworkUtils.isOnline()) {
-            PostTestCounseling postTestCounseling = new Gson().fromJson(encounter.getDataValues(), PostTestCounseling.class);
+            PostTest postTestCounseling = new Gson().fromJson(encounter.getDataValues(), PostTest.class);
             postTestCounseling.setPersonId(encounter.getPersonId());
 
             ClientIntake clientIntake = EncounterDAO.findClientIntakeFromForm(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, encounter.getPerson());
             postTestCounseling.setHtsClientId(clientIntake.getHtsClientId());
+            LamisCustomHandler.showJson(postTestCounseling);
 
             JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(postTestCounseling)).getAsJsonObject();
-
+            LamisCustomHandler.showJson(jsonObject);
+            Log.v("Baron", "Post test");
             Call<Object> preTestCounselingCall = restApi.updatePostTestCounselingKnowledgeAssessment(clientIntake.getHtsClientId(), jsonObject);
             preTestCounselingCall.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if(response.isSuccessful()){
-                        Log.v("Baron", "Post Test synced");
-                        LamisCustomHandler.showJson(response.body());
+                        encounter.setSynced(true);
+                        encounter.save();
                     }else{
-                        Log.v("Baron", "Post Test not synced");
+                        Log.v("Baron", "Post Test not synced . Response Code: " + response.code());
                         LamisCustomHandler.showJson(response.errorBody().toString());
                     }
                 }
@@ -221,7 +224,7 @@ public class HTSRepository extends RetrofitRepository{
             recency.setPersonId(encounter.getPersonId());
 
             ClientIntake clientIntake = EncounterDAO.findClientIntakeFromForm(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, encounter.getPerson());
-            recency.setHtsClientId(Integer.parseInt(clientIntake.getClientCode()));
+            recency.setHtsClientId(clientIntake.getHtsClientId());
 
             JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(recency)).getAsJsonObject();
 
@@ -230,10 +233,10 @@ public class HTSRepository extends RetrofitRepository{
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if(response.isSuccessful()){
-                        Log.v("Baron", "Recency synced");
-                        LamisCustomHandler.showJson(response.body());
+                        encounter.setSynced(true);
+                        encounter.save();
                     }else{
-                        Log.v("Baron", "Recency not synced");
+                        Log.v("Baron", "Recency not synced. Response Code: " + response.code());
                         LamisCustomHandler.showJson(response.errorBody().toString());
                     }
                 }
@@ -245,5 +248,37 @@ public class HTSRepository extends RetrofitRepository{
             });
         }
     }
+
+
+    public void syncElicitation(Encounter encounter, @Nullable final DefaultCallbackListener callbackListener){
+        if (NetworkUtils.isOnline()) {
+            Elicitation elicitation = new Gson().fromJson(encounter.getDataValues(), Elicitation.class);
+
+            ClientIntake clientIntake = EncounterDAO.findClientIntakeFromForm(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, encounter.getPerson());
+            elicitation.setHtsClientId(clientIntake.getHtsClientId());
+
+
+            JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(elicitation)).getAsJsonObject();
+            Call<Object> indexElicitationCall = restApi.createIndexElicitation(jsonObject);
+            indexElicitationCall.enqueue(new Callback<Object>() {
+                @Override
+                public void onResponse(Call<Object> call, Response<Object> response) {
+                    if(response.isSuccessful()){
+                        encounter.setSynced(true);
+                        encounter.save();
+                    }else{
+                        LamisCustomHandler.showJson(jsonObject);
+                        Log.v("Baron", "Index Elicitation not synced " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Object> call, Throwable t) {
+                    Log.v("Baron", "Index Elicitation " + t.getMessage());
+                }
+            });
+        }
+    }
+
 
 }

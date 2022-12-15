@@ -10,6 +10,10 @@ public class StringUtils {
         return null != string && !NULL_AS_STRING.equals(string.trim());
     }
 
+    public static boolean notZero(int intValue) {
+        return 0 != intValue;
+    }
+
     public static boolean isBlank(String string) {
         return null == string || SPACE_CHAR.equals(string);
     }

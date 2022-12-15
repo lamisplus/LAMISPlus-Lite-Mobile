@@ -27,8 +27,13 @@ public class BearerApi {
     private String username;
     private String password;
     private boolean rememberMe;
+    private String url;
 
-    public BearerApi(String username, String password, boolean rememberMe) {
+    private LamisPlus lamisPlus = LamisPlus.getInstance();
+
+    public BearerApi(String url, String username, String password, boolean rememberMe) {
+        Log.v("Baron", "The URL is " + url + ApplicationConstants.API.REST_ENDPOINT + "authenticate");
+        this.url = url;
         this.username = username;
         this.password = password;
         this.rememberMe = rememberMe;
@@ -52,7 +57,7 @@ public class BearerApi {
 
                 Request request = new Request.Builder()
 
-                        .url(LamisPlus.getInstance().getServerUrl() + ApplicationConstants.API.REST_ENDPOINT + "authenticate")
+                        .url(url + ApplicationConstants.API.REST_ENDPOINT + "authenticate")
 
                         .method("POST", body)
 
@@ -63,6 +68,7 @@ public class BearerApi {
                 try {
                     Response response = client.newCall(request).execute();
                     TokenRequest tokenRequest = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), TokenRequest.class);
+                    lamisPlus.setServerUrl(url);
                     return tokenRequest.getId_token();
                 } catch (IOException e) {
                     throw new RuntimeException(e);

@@ -6,7 +6,16 @@ import org.lamisplus.datafi.activities.LamisBaseView;
 public class LoginContract {
 
     interface View extends LamisBaseView<LoginContract.Presenter>{
-        void showLogin();
+        void startActivityForDashboard();
+        void finishLoginActivity();
+
+        void showLocationLoadingAnimation();
+
+        void hideLoadingAnimation();
+
+        void hideSoftKeys();
+
+        void showInvalidURLSnackbar(String message);
     }
 
     interface Presenter extends LamisBasePresenterContract{

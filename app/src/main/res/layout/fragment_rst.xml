@@ -141,125 +141,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date of Birth"
-                app:errorEnabled="true"
-                app:helperText="*Required">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:text="Date of Birth"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <RadioGroup
-                    android:id="@+id/rgdateOfBirthSelect"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton
-                        android:id="@+id/male"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Actual" />
-
-                    <RadioButton
-                        android:id="@+id/female"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Estimated" />
-
-                </RadioGroup>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-
-
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelDateofBirth"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Select Date of Birth*"
-                app:errorEnabled="true"
-                app:helperText="Select Date of Birth*">
-
-                <EditText
-                    android:id="@+id/edDateofBirth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Select Date of Birth*"
-                    android:inputType="text"></EditText>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelAge"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Age*"
-                app:errorEnabled="true"
-                app:helperText="Age*">
-
-                <EditText
-                    android:id="@+id/edAge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:hint="Age*"
-                    android:inputType="number"></EditText>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-
-
-
 
 
         <LinearLayout
@@ -294,12 +176,12 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth?"
+                    android:hint="Is this HIV test based on a Clinician/Doctor/Health Care Provider’s request? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth?">
+                    app:helperText="Is this HIV test based on a Clinician/Doctor/Health Care Provider’s request? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoAbdPain"
+                        android:id="@+id/autolastHivTestBasedOnRequest"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -313,12 +195,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *"
+                    android:hint="When was your last HIV test done? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *">
+                    app:helperText="When was your last HIV test done? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoWithoutCondom"
+                        android:id="@+id/autolastHivTestDone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -340,12 +222,12 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you had a condom burst with your partner during sexual intercourse? *"
+                    android:hint="What was the result? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you had a condom burst with your partner during sexual intercourse? *">
+                    app:helperText="What was the result? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoCondomBurst"
+                        android:id="@+id/autowhatWasTheResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -359,12 +241,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind?"
+                    android:hint="Since your last HIV test, have you had anal or vaginal or oral sex without a condom with someone who was HIV positive or unaware of their HIV status? *"
                     app:errorEnabled="true"
-                    app:helperText="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind?">
+                    app:helperText="Since your last HIV test, have you had anal or vaginal or oral sex without a condom with someone who was HIV positive or unaware of their HIV status? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoShareNeedle"
+                        android:id="@+id/autolastHivTestVaginalOral"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -386,12 +268,12 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you/partner had any blood or blood product transfusion?"
+                    android:hint="Since your last HIV test, have you had a blood or blood product transfusion? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you/partner had any blood or blood product transfusion?">
+                    app:helperText="Since your last HIV test, have you had a blood or blood product transfusion? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoBloodTransfusion"
+                        android:id="@+id/autolastHivTestBloodTransfusion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -405,12 +287,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you/partner experienced coughing, weight loss, fever, night sweats consistently?"
+                    android:hint="Since your last HIV test, have you experienced painful urination, lower abdominal pain, vaginal or penile discharge, pain during sexual intercourse, thick, cloudy, or foul smelling discharge and/or small bumps or blisters near the mouth, penis, vagina, or anal areas? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you/partner experienced coughing, weight loss, fever, night sweats consistently?">
+                    app:helperText="Since your last HIV test, have you experienced painful urination, lower abdominal pain, vaginal or penile discharge, pain during sexual intercourse, thick, cloudy, or foul smelling discharge and/or small bumps or blisters near the mouth, penis, vagina, or anal areas? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoCough"
+                        android:id="@+id/autolastHivTestPainfulUrination"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -433,12 +315,32 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Have you/partner paid or sold vaginal, anal or oral sex? *"
+                    android:hint="Have you been diagnosed with TB or currently have any of the following symptoms : cough, fever, weight loss, night sweats? *"
                     app:errorEnabled="true"
-                    app:helperText="Have you/partner paid or sold vaginal, anal or oral sex? *">
+                    app:helperText="Have you been diagnosed with TB or currently have any of the following symptoms : cough, fever, weight loss, night sweats? *">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoPaidSex"
+                        android:id="@+id/autodiagnosedWithTb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Since your last HIV test, have you ever injected drugs, shared needles or other sharp objects with someone known to be HIV positive or who you didn’t know their HIV status? *"
+                    app:errorEnabled="true"
+                    app:helperText="Since your last HIV test, have you ever injected drugs, shared needles or other sharp objects with someone known to be HIV positive or who you didn’t know their HIV status? *">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autolastHivTestInjectedDrugs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -447,6 +349,55 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Since your last HIV test, have you had anal, oral or vaginal sex in exchange for money or other benefits? *"
+                    app:errorEnabled="true"
+                    app:helperText="Since your last HIV test, have you had anal, oral or vaginal sex in exchange for money or other benefits? *">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autolastHivTestHadAnal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Since your last HIV test, have you been forced to have sex? *"
+                    app:errorEnabled="true"
+                    app:helperText="Since your last HIV test, have you been forced to have sex? *">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autolastHivTestForceToHaveSex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

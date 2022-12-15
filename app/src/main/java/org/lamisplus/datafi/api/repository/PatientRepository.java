@@ -50,8 +50,8 @@ public class PatientRepository extends RetrofitRepository {
 
     public PatientRepository() {
         this.lamisPlusLogger = new LamisPlusLogger();
-        String token = new BearerApi("guest@lamisplus.org", "12345", true).getToken();
-        this.restApi = RestServiceBuilder.createService(RestApi.class, token);
+        //String token = new BearerApi("guest@lamisplus.org", "12345", true).getToken();
+        this.restApi = RestServiceBuilder.createService(RestApi.class);
     }
 
     public void syncPatient(Person person, @Nullable final DefaultCallbackListener callbackListener) {
@@ -91,8 +91,9 @@ public class PatientRepository extends RetrofitRepository {
                         } catch (JSONException | ParseException e) {
                             throw new RuntimeException(e);
                         }
+                    }else {
+                        Log.v("Baron", "Am called next = " + new Gson().toJson(response));
                     }
-                    Log.v("Baron", "Am called next" + response.message());
                 }
 
                 @Override

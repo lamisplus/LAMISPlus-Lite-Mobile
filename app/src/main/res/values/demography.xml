@@ -6,6 +6,11 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="reactive_non_reactive">
+        <item>Reactive</item>
+        <item>Non Reactive</item>
+    </string-array>
+
     <string-array name="booleanAnswersExtra">
         <item>Yes</item>
         <item>No</item>
@@ -208,6 +213,16 @@
     <string-array name="entry_point">
         <item>Facility</item>
         <item>Community</item>
+    </string-array>
+
+    <string-array name="cd4_count_value">
+        <item>&lt;200</item>
+        <item>&gt;=200</item>
+    </string-array>
+
+    <string-array name="cd4_count">
+        <item>Semi-Quantitative</item>
+        <item>Flow Cyteometry</item>
     </string-array>
 
 </resources>

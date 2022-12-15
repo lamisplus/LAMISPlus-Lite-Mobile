@@ -44,6 +44,8 @@ public class EncounterService extends IntentService implements CustomApiCallback
                         getPostTestAndSync(encounter, this);
                     }else if(encounter.getName().equals(ApplicationConstants.Forms.HIV_RECENCY_FORM)){
                         getHivRecencyAndSync(encounter, this);
+                    } else if (encounter.getName().equals(ApplicationConstants.Forms.ELICITATION)) {
+                        getIndexElicitationAndSync(encounter, this);
                     }
                 }
 
@@ -125,6 +127,20 @@ public class EncounterService extends IntentService implements CustomApiCallback
 
     public synchronized void getHivRecencyAndSync(Encounter encounter, CustomApiCallback customApiCallback){
         new HTSRepository().syncRecency(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    public synchronized void getIndexElicitationAndSync(Encounter encounter, CustomApiCallback customApiCallback){
+        new HTSRepository().syncElicitation(encounter, new DefaultCallbackListener() {
             @Override
             public void onResponse() {
 

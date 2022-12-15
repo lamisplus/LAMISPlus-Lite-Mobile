@@ -153,6 +153,7 @@ public class PatientDashboardFormDetailsFragment extends PatientDashboardFragmen
         for(Encounter encounter : encounterList){
           //String FormName =  encounter.getName();
             LinearLayout tempLinearTextView = new LinearLayout(LamisPlus.getInstance());
+            tempLinearTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_bottom_linearlayout));
             tempLinearTextView.setOrientation(LinearLayout.VERTICAL);
             id = encounter.getId().intValue();
             tempLinearTextView.setId(encounter.getId().intValue());
@@ -160,15 +161,23 @@ public class PatientDashboardFormDetailsFragment extends PatientDashboardFragmen
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams2.setMargins(10, 0, 10, 0);
+            tempLinearTextView.setPadding(0 , 20, 0 ,20);
             tempLinearTextView.setLayoutParams(layoutParams2);
 
             TextView textViewHeader = new TextView(getContext());
             textViewHeader.setText(encounter.getName());
             //textViewHeader.setTypeface(Typeface.DEFAULT_BOLD);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(10, 20, 10, 20);
             textViewHeader.setLayoutParams(params);
             textViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            if(encounter.isSynced()) {
+                textViewHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.view_eye_grey, 0, R.drawable.check_circle_green, 0);
+            }else{
+                textViewHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.view_eye_grey, 0, R.drawable.cancel_circle_red, 0);
+            }
+            textViewHeader.setCompoundDrawablePadding(10);
+
             tempLinearTextView.addView(textViewHeader);
             mFormDetailsLayout.addView(tempLinearTextView);
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,9 @@ import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.app.AppActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.auth.AuthorizationManager;
+import org.lamisplus.datafi.dao.AccountDAO;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
+import org.lamisplus.datafi.models.Account;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
 
@@ -43,7 +46,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
     private LinearLayout mAppView;
     private LinearLayout mSettingsView;
     private LinearLayout mLogoutView;
-
+    private TextView facilityName;
 
 
     @Nullable
@@ -54,6 +57,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            setFacilityName();
         }
         return root;
     }
@@ -73,6 +77,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mInterruptedTreatmentsButton = root.findViewById(R.id.interruptedTreatmentButton);
         mViralloadSuppressionButton = root.findViewById(R.id.viralLoadSuppressionButton);
         mCovid19VaccinationButton = root.findViewById(R.id.covid19VaccinationButton);
+        facilityName = root.findViewById(R.id.facilityName);
 
         mDashboardView = root.findViewById(R.id.dashboardView);
         mAppView = root.findViewById(R.id.appView);
@@ -87,11 +92,19 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mLogoutView.setOnClickListener(this);
     }
 
+    private void setFacilityName(){
+        Account account = AccountDAO.getUserDetails();
+        if(account!= null) {
+            facilityName.setVisibility(View.VISIBLE);
+            facilityName.setText(account.getCurrentOrganisationUnitName());
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dashboardView:
-                    startNewActivity(DashboardActivity.class);
+                startNewActivity(DashboardActivity.class);
                 break;
             case R.id.appView:
                 startNewActivity(AppActivity.class);

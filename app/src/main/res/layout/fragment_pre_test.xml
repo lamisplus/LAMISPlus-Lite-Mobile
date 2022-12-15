@@ -69,53 +69,54 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="12dp"
-            android:layout_weight="1"
-            android:hint="Client pregnant *"
-            app:errorEnabled="true"
-            app:helperText="Client pregnant *">
+            android:weightSum="2">
 
-            <AutoCompleteTextView
-                android:id="@+id/autoclientPregnant"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/clientPregnantTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_design"
-                android:inputType="none" />
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="Client pregnant *"
+                app:errorEnabled="true"
+                app:helperText="Client pregnant *">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/autoclientPregnant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="12dp"
-            android:layout_weight="1"
-            android:hint="Client informed about HIV transmission routes"
-            app:errorEnabled="true"
-            app:helperText="Client informed about HIV transmission routes">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
-                android:id="@+id/autoClientInformHivTransRoutes"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_design"
-                android:inputType="none" />
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="Client informed about HIV transmission routes"
+                app:errorEnabled="true"
+                app:helperText="Client informed about HIV transmission routes">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/autoClientInformHivTransRoutes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,8 +127,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:hint="Client informed about risk factors for HIV transmission"
                 app:errorEnabled="true"
@@ -143,12 +144,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/clientInformPreventingsHivTransTIL"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:hint="Client informed on preventing HIV transmission methods"
+                android:visibility="gone"
                 app:errorEnabled="true"
                 app:helperText="Client informed on preventing HIV transmission methods">
 
@@ -172,8 +175,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:hint="Client informed about possible test results"
                 app:errorEnabled="true"
@@ -209,7 +212,6 @@
 
 
         </LinearLayout>
-
 
 
         <TextView
@@ -542,32 +544,32 @@
         </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="12dp"
-            android:layout_weight="1"
-            android:hint="More than 1 sex partner during last 3 months*"
-            app:errorEnabled="true"
-            app:helperText="More than 1 sex partner during last 3 months*">
+            android:weightSum="2">
 
-            <AutoCompleteTextView
-                android:id="@+id/automoreThanOneSexPartnerLastThreeMonths"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_design"
-                android:inputType="none" />
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="More than 1 sex partner during last 3 months*"
+                app:errorEnabled="true"
+                app:helperText="More than 1 sex partner during last 3 months*">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/automoreThanOneSexPartnerLastThreeMonths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
 
-    </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -609,121 +611,131 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/sexPartnerRiskAssessLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*"
-                app:errorEnabled="true"
-                app:helperText="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoNewDiagnosedHivlastThreeMonths"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*"
+                    app:errorEnabled="true"
+                    app:helperText="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoNewDiagnosedHivlastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Is sex partner pregnant and currently receiving ARV for PMTCT?*"
+                    app:errorEnabled="true"
+                    app:helperText="Is sex partner pregnant and currently receiving ARV for PMTCT?*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCurrentlyArvForPmtct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Is sex partner pregnant and currently receiving ARV for PMTCT?*"
-                app:errorEnabled="true"
-                app:helperText="Is sex partner pregnant and currently receiving ARV for PMTCT?*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoCurrentlyArvForPmtct"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Known HIV positive partner on ARV with an unsurpressed VL"
+                    app:errorEnabled="true"
+                    app:helperText="Known HIV positive partner on ARV with an unsurpressed VL">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoKnowHivPositiveOnArv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Known HIV positive recently returned to treatment after being lost to follow up"
+                    app:errorEnabled="true"
+                    app:helperText="Known HIV positive recently returned to treatment after being lost to follow up">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    <AutoCompleteTextView
+                        android:id="@+id/autoKnowHivPositiveAfterLostToFollowUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Known HIV positive partner on ARV with an unsurpressed VL"
-                app:errorEnabled="true"
-                app:helperText="Known HIV positive partner on ARV with an unsurpressed VL">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoKnowHivPositiveOnArv"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Unprotected Anal sex"
+                    app:errorEnabled="true"
+                    app:helperText="Have you had sex with a partner who is HIV positive? ">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoUprotectedAnalSex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Known HIV positive recently returned to treatment after being lost to follow up"
-                app:errorEnabled="true"
-                app:helperText="Known HIV positive recently returned to treatment after being lost to follow up">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoKnowHivPositiveAfterLostToFollowUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Unprotected Anal sex"
-                app:errorEnabled="true"
-                app:helperText="Have you had sex with a partner who is HIV positive? ">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoUprotectedAnalSex"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -816,15 +828,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/saveContinueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:drawableRight="@drawable/arrow_forward"
                 android:text="Save"
                 android:textAllCaps="false"
-                android:layout_gravity="right"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 

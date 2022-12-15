@@ -341,7 +341,10 @@ public class Person extends Model implements Serializable {
     }
 
     public String getOtherName() {
-        return otherName;
+        if(otherName != null) {
+            return otherName;
+        }
+        return "";
     }
 
     public void setOtherName(String otherName) {

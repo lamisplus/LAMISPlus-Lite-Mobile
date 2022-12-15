@@ -131,10 +131,10 @@ public class PatientDashboardActivity extends LamisBaseActivity {
     }
 
     public void startPatientPBSActivity(long patientId) {
-        Intent pbsProgram = new Intent(this, PatientDashboardFingerPrintsActivity.class);
-        pbsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                String.valueOf(patientId));
-        startActivity(pbsProgram);
+//        Intent pbsProgram = new Intent(this, PatientDashboardFingerPrintsActivity.class);
+//        pbsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+//                String.valueOf(patientId));
+//        startActivity(pbsProgram);
     }
 
     private static void animateFAB(boolean isFABClosed) {

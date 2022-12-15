@@ -10,7 +10,8 @@ public class RecencyContract {
 
     interface View extends LamisBaseView<Presenter>{
 
-        void startActivityForDashboard();
+        void startActivityForElicitation();
+        void startDashboardActivity();
 
     }
 

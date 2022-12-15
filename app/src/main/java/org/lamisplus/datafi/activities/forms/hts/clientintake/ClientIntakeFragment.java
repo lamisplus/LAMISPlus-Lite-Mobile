@@ -9,15 +9,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.activeandroid.util.Log;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
@@ -26,9 +30,11 @@ import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Codesets;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
@@ -65,16 +71,21 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
 
     private String packageName;
 
+    private LinearLayout indexTestingLayout;
+    private LinearLayout pregnantLayout;
+    private TextInputLayout noWivesTIL;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_client_intake, container, false);
-        Log.v("Baron", "The number of wives is Mens");
         if (root != null) {
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            dropDownClickListeners();
             showDatePickers();
+            hideFieldsDefault();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId()));
@@ -122,6 +133,9 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         edVisitDate = root.findViewById(R.id.edVisitDate);
         edNumberOfChildren = root.findViewById(R.id.edNoChildren);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
+        indexTestingLayout = root.findViewById(R.id.indexTestingLayout);
+        pregnantLayout = root.findViewById(R.id.pregnantLayout);
+        noWivesTIL = root.findViewById(R.id.noWivesTIL);
     }
 
     private void setListeners() {
@@ -159,6 +173,27 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         autoIndexTesting.setAdapter(adapterBooleanAnswers);
     }
 
+    private void hideFieldsDefault(){
+        Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
+        if(CodesetsDAO.findCodesetsDisplayById(person.getSexId()).equals("Male")){
+            pregnantLayout.setVisibility(View.GONE);
+        }else{
+            noWivesTIL.setVisibility(View.GONE);
+        }
+    }
+    private void dropDownClickListeners(){
+        autoIndexTesting.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(autoIndexTesting.getText().toString().equals("Yes")){
+                    indexTestingLayout.setVisibility(View.VISIBLE);
+                }else {
+                    indexTestingLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void showDatePickers() {
         edVisitDate.setOnClickListener(v -> {
             int cYear;
@@ -172,7 +207,9 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edVisitDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                edVisitDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -190,6 +227,13 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             autoReferredFrom.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getReferredFrom()), false);
             autoSettings.setText(CodesetsDAO.findCodesetsDisplayByCode(clientIntake.getTestingSetting()), false);
             autoIndexTesting.setText(StringUtils.changeBooleanToString(clientIntake.isIndexClient()), false);
+
+            if(autoIndexTesting.getText().equals(StringUtils.changeBooleanToString(clientIntake.isIndexClient()))){
+                indexTestingLayout.setVisibility(View.VISIBLE);
+            }else {
+                indexTestingLayout.setVisibility(View.GONE);
+            }
+
             autoRelationshipIndex.setText(CodesetsDAO.findCodesetsDisplayById(clientIntake.getRelationWithIndexClient()), false);
             autoFirstimeVisit.setText(StringUtils.changeBooleanToString(clientIntake.isFirstTimeVisit()), false);
             autoPreviouslyTested.setText(StringUtils.changeBooleanToString(clientIntake.getPreviouslyTested()), false);

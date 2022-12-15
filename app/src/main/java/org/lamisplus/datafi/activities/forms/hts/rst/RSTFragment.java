@@ -3,8 +3,6 @@ package org.lamisplus.datafi.activities.forms.hts.rst;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,14 +32,13 @@ import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskAssessment;
 import org.lamisplus.datafi.models.RiskStratification;
+import org.lamisplus.datafi.models.RstRiskAssessment;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.DateUtils;
-import org.lamisplus.datafi.utilities.LamisCustomHandler;
+import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implements RSTContract.View, View.OnClickListener {
 
@@ -50,17 +47,20 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     private AutoCompleteTextView autoSettings;
     private AutoCompleteTextView autoModality;
     private AutoCompleteTextView autoTargetGroup;
-    private EditText edDob;
-    private EditText edAge;
+    //    private EditText edDob;
+//    private EditText edAge;
     private EditText edVisitDate;
 
-    private AutoCompleteTextView autoAbdPain;
-    private AutoCompleteTextView autoWithoutCondom;
-    private AutoCompleteTextView autoCondomBurst;
-    private AutoCompleteTextView autoShareNeedle;
-    private AutoCompleteTextView autoBloodTransfusion;
-    private AutoCompleteTextView autoCough;
-    private AutoCompleteTextView autoPaidSex;
+    private AutoCompleteTextView autolastHivTestBasedOnRequest;
+    private AutoCompleteTextView autolastHivTestDone;
+    private AutoCompleteTextView autowhatWasTheResult;
+    private AutoCompleteTextView autolastHivTestVaginalOral;
+    private AutoCompleteTextView autolastHivTestBloodTransfusion;
+    private AutoCompleteTextView autolastHivTestPainfulUrination;
+    private AutoCompleteTextView autodiagnosedWithTb;
+    private AutoCompleteTextView autolastHivTestInjectedDrugs;
+    private AutoCompleteTextView autolastHivTestHadAnal;
+    private AutoCompleteTextView autolastHivTestForceToHaveSex;
 
     private LinearLayout riskAssessmentLayoutView;
 
@@ -75,6 +75,8 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
     private String packageName;
 
+    private Person person;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +87,12 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             setListeners();
             showDatePickers();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
-            if(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()) != null) {
+            person = PersonDAO.findPersonById(mPresenter.getPatientId());
+            if (DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) >= ApplicationConstants.RST_AGE) {
+                isAdult = true;
+                riskAssessmentLayoutView.setVisibility(View.VISIBLE);
+            }
+            if (mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId()));
             }
         }
@@ -102,16 +109,17 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         autoModality = root.findViewById(R.id.autoModality);
         autoTargetGroup = root.findViewById(R.id.autoTargetGroup);
         edVisitDate = root.findViewById(R.id.edVisitDate);
-        edDob = root.findViewById(R.id.edDateofBirth);
-        edAge = root.findViewById(R.id.edAge);
 
-        autoAbdPain = root.findViewById(R.id.autoAbdPain);
-        autoWithoutCondom = root.findViewById(R.id.autoWithoutCondom);
-        autoCondomBurst = root.findViewById(R.id.autoCondomBurst);
-        autoShareNeedle = root.findViewById(R.id.autoShareNeedle);
-        autoBloodTransfusion = root.findViewById(R.id.autoBloodTransfusion);
-        autoCough = root.findViewById(R.id.autoCough);
-        autoPaidSex = root.findViewById(R.id.autoPaidSex);
+        autolastHivTestBasedOnRequest = root.findViewById(R.id.autolastHivTestBasedOnRequest);
+        autolastHivTestDone = root.findViewById(R.id.autolastHivTestDone);
+        autowhatWasTheResult = root.findViewById(R.id.autowhatWasTheResult);
+        autolastHivTestVaginalOral = root.findViewById(R.id.autolastHivTestVaginalOral);
+        autolastHivTestBloodTransfusion = root.findViewById(R.id.autolastHivTestBloodTransfusion);
+        autolastHivTestPainfulUrination = root.findViewById(R.id.autolastHivTestPainfulUrination);
+        autodiagnosedWithTb = root.findViewById(R.id.autodiagnosedWithTb);
+        autolastHivTestInjectedDrugs = root.findViewById(R.id.autolastHivTestInjectedDrugs);
+        autolastHivTestHadAnal = root.findViewById(R.id.autolastHivTestHadAnal);
+        autolastHivTestForceToHaveSex = root.findViewById(R.id.autolastHivTestForceToHaveSex);
 
         riskAssessmentLayoutView = root.findViewById(R.id.riskAssessmentLayout);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
@@ -150,13 +158,17 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
         String[] booleanAnswers = getResources().getStringArray(R.array.booleanAnswers);
         ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanAnswers);
-        autoAbdPain.setAdapter(adapterBooleanAnswers);
-        autoWithoutCondom.setAdapter(adapterBooleanAnswers);
-        autoCondomBurst.setAdapter(adapterBooleanAnswers);
-        autoShareNeedle.setAdapter(adapterBooleanAnswers);
-        autoBloodTransfusion.setAdapter(adapterBooleanAnswers);
-        autoCough.setAdapter(adapterBooleanAnswers);
-        autoPaidSex.setAdapter(adapterBooleanAnswers);
+
+        autolastHivTestBasedOnRequest.setAdapter(adapterBooleanAnswers);
+        autolastHivTestDone.setAdapter(adapterBooleanAnswers);
+        autowhatWasTheResult.setAdapter(adapterBooleanAnswers);
+        autolastHivTestVaginalOral.setAdapter(adapterBooleanAnswers);
+        autolastHivTestBloodTransfusion.setAdapter(adapterBooleanAnswers);
+        autolastHivTestPainfulUrination.setAdapter(adapterBooleanAnswers);
+        autodiagnosedWithTb.setAdapter(adapterBooleanAnswers);
+        autolastHivTestInjectedDrugs.setAdapter(adapterBooleanAnswers);
+        autolastHivTestHadAnal.setAdapter(adapterBooleanAnswers);
+        autolastHivTestForceToHaveSex.setAdapter(adapterBooleanAnswers);
     }
 
     private void showDatePickers() {
@@ -172,67 +184,19 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edVisitDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay = String.format("%02d", selectedDay);
+                edVisitDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
 
-        edDob.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
-
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                edDob.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
-
-                long age = DateUtils.getAgeFromBirthdate(selectedYear, selectedMonth, selectedDay);
-
-                edAge.setText(String.valueOf(age));
-                if (age >= ApplicationConstants.RST_AGE) {
-                    isAdult = true;
-                    riskAssessmentLayoutView.setVisibility(View.VISIBLE);
-                }
-
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
-        });
-
-
-        edAge.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!ViewUtils.isEmpty(edAge) && Integer.parseInt(ViewUtils.getInput(edAge)) >= ApplicationConstants.RST_AGE) {
-                    isAdult = true;
-                    riskAssessmentLayoutView.setVisibility(View.VISIBLE);
-                } else {
-                    isAdult = false;
-                    riskAssessmentLayoutView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
     }
 
-    public void fillFields(RiskStratification riskStratification){
-        if(riskStratification != null){
+    public void fillFields(RiskStratification riskStratification) {
+        if (riskStratification != null) {
             isUpdateRst = true;
             updatedRst = riskStratification;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
@@ -242,21 +206,26 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             autoModality.setText(CodesetsDAO.findCodesetsDisplayByCode(riskStratification.getModality()), false);
             autoTargetGroup.setText(CodesetsDAO.findCodesetsDisplayByCode(riskStratification.getTargetGroup()), false);
             edVisitDate.setText(riskStratification.getVisitDate());
-            if(riskStratification.getDob() == null){
-                edDob.setText(DateUtils.getAgeFromBirthdate(riskStratification.getAge()));
-            }else {
-                edDob.setText(riskStratification.getDob());
-            }
-            edAge.setText(String.valueOf(riskStratification.getAge()));
 
-//            autoAbdPain.setText(riskStratification.getRiskAssessments().;
-//            autoWithoutCondom = root.findViewById(R.id.autoWithoutCondom);
-//            autoCondomBurst = root.findViewById(R.id.autoCondomBurst);
-//            autoShareNeedle = root.findViewById(R.id.autoShareNeedle);
-//            autoBloodTransfusion = root.findViewById(R.id.autoBloodTransfusion);
-//            autoCough = root.findViewById(R.id.autoCough);
-//            autoPaidSex = root.findViewById(R.id.autoPaidSex);
+            autolastHivTestBasedOnRequest.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestBasedOnRequest()), false);
 
+            autolastHivTestDone.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestDone()), false);
+
+            autowhatWasTheResult.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getWhatWasTheResult()), false);
+
+            autolastHivTestVaginalOral.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getWhatWasTheResult()), false);
+
+            autolastHivTestBloodTransfusion.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestBloodTransfusion()), false);
+
+            autolastHivTestPainfulUrination.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestPainfulUrination()), false);
+
+            autodiagnosedWithTb.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getDiagnosedWithTb()), false);
+
+            autolastHivTestInjectedDrugs.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestInjectedDrugs()), false);
+
+            autolastHivTestHadAnal.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestHadAnal()), false);
+
+            autolastHivTestForceToHaveSex.setText(StringUtils.changeBooleanToString(riskStratification.getRiskAssessment().getLastHivTestForceToHaveSex()), false);
         }
     }
 
@@ -272,7 +241,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         return riskStratification;
     }
 
-    private RiskStratification updateEncounterWithData(RiskStratification riskStratification){
+    private RiskStratification updateEncounterWithData(RiskStratification riskStratification) {
         if (!ViewUtils.isEmpty(autoentryPoint)) {
             riskStratification.setEntryPoint(ViewUtils.getInput(autoentryPoint));
         }
@@ -289,43 +258,78 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             riskStratification.setTargetGroup(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoTargetGroup)));
         }
 
-        if (!ViewUtils.isEmpty(edDob)) {
-            riskStratification.setDob(ViewUtils.getInput(edDob));
-        }else{
-            riskStratification.setDob(DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge))));
-        }
+
+        riskStratification.setDob(person.getDateOfBirth());
+
+        riskStratification.setAge(DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()));
 
 
         if (!ViewUtils.isEmpty(edVisitDate)) {
             riskStratification.setVisitDate(ViewUtils.getInput(edVisitDate));
         }
 
-        if (!ViewUtils.isEmpty(edAge)) {
-            riskStratification.setAge(Integer.parseInt(ViewUtils.getInput(edAge)));
-        }
-
         riskStratification.setCode("");
 
-        if(updatedForm != null){
-            if(updatedForm.getPersonId() != 0) {
+        if (updatedForm != null) {
+            if (updatedForm.getPersonId() != 0) {
                 riskStratification.setPersonId(updatedForm.getPersonId());
-            }else{
+            } else {
                 riskStratification.setPersonId(0);
             }
-        }else {
+        } else {
             riskStratification.setPersonId(0);
         }
 
-        RiskAssessment riskAssessment = new RiskAssessment();
+        RstRiskAssessment riskAssessment = new RstRiskAssessment();
 
-        riskStratification.setRiskAssessmentList(riskAssessment);
+        if (!ViewUtils.isEmpty(autolastHivTestBasedOnRequest)) {
+            riskAssessment.setLastHivTestBasedOnRequest(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestBasedOnRequest)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestDone)) {
+            riskAssessment.setLastHivTestDone(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestDone)));
+        }
+
+        if (!ViewUtils.isEmpty(autowhatWasTheResult)) {
+            riskAssessment.setWhatWasTheResult(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autowhatWasTheResult)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestVaginalOral)) {
+            riskAssessment.setLastHivTestVaginalOral(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestVaginalOral)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestBloodTransfusion)) {
+            riskAssessment.setLastHivTestBloodTransfusion(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestBloodTransfusion)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestPainfulUrination)) {
+            riskAssessment.setLastHivTestPainfulUrination(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestPainfulUrination)));
+        }
+
+        if (!ViewUtils.isEmpty(autodiagnosedWithTb)) {
+            riskAssessment.setDiagnosedWithTb(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autodiagnosedWithTb)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestInjectedDrugs)) {
+            riskAssessment.setLastHivTestInjectedDrugs(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestInjectedDrugs)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestHadAnal)) {
+            riskAssessment.setLastHivTestHadAnal(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestHadAnal)));
+        }
+
+        if (!ViewUtils.isEmpty(autolastHivTestForceToHaveSex)) {
+            riskAssessment.setLastHivTestForceToHaveSex(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolastHivTestForceToHaveSex)));
+        }
+
+        riskStratification.setRiskAssessment(riskAssessment);
 
         return riskStratification;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(isUpdateRst) {
+        if (isUpdateRst) {
             inflater.inflate(R.menu.delete_multi_patient_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -351,9 +355,9 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.saveContinueButton:
-                if(isUpdateRst){
+                if (isUpdateRst) {
                     mPresenter.confirmUpdate(updateEncounter(updatedRst), updatedForm);
-                }else{
+                } else {
                     mPresenter.confirmCreate(createEncounter(), packageName);
                 }
                 break;
@@ -365,12 +369,12 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     @Override
     public void startActivityForClientIntakeForm() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
-        if(encounter == null) {
+        if (encounter == null) {
             Intent clientIntakeProgram = new Intent(LamisPlus.getInstance(), ClientIntakeActivity.class);
             clientIntakeProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(clientIntakeProgram);
-        }else{
+        } else {
             startDashboardActivity();
         }
     }

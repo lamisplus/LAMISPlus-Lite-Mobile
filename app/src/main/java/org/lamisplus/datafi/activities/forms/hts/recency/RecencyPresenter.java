@@ -46,7 +46,7 @@ public class RecencyPresenter extends LamisBasePresenter implements RecencyContr
         encounter.setDataValues(recencyEncounter);
         encounter.save();
 
-        recencyInfoView.startActivityForDashboard();
+        recencyInfoView.startActivityForElicitation();
     }
 
     @Override
@@ -54,12 +54,12 @@ public class RecencyPresenter extends LamisBasePresenter implements RecencyContr
         String s = new Gson().toJson(recency);
         encounter.setDataValues(s);
         encounter.save();
-        recencyInfoView.startActivityForDashboard();
+        recencyInfoView.startActivityForElicitation();
     }
 
     @Override
     public void confirmDeleteEncounterRecency(String formName, String patientId) {
         EncounterDAO.deleteEncounter(formName, patientId);
-        recencyInfoView.startActivityForDashboard();
+        recencyInfoView.startDashboardActivity();
     }
 }

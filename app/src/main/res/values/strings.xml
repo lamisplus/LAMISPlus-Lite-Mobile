@@ -106,4 +106,9 @@
     <string name="activity_no_internet_connection">No internet connection. Patient Registration </string>
     <string name="activity_sync_after_connection">will sync when internet connection is restored. </string>
 
+    <string name="dialog_title_are_you_sure">Are you sure?</string>
+    <string name="dialog_message_data_lost">All patient information entered will be lost.</string>
+    <string name="dialog_button_stay">Stay</string>
+    <string name="dialog_button_leave">Leave</string>
+
 </resources>

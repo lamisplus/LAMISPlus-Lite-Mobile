@@ -1,5 +1,6 @@
 package org.lamisplus.datafi.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -7,63 +8,83 @@ import java.io.Serializable;
 public class Elicitation implements Serializable {
 
     @SerializedName("firstName")
+    @Expose
     private String firstName;
 
     @SerializedName("middleName")
+    @Expose
     private String middleName;
 
     @SerializedName("lastName")
+    @Expose
     private String lastName;
 
     @SerializedName("dob")
+    @Expose
     private String dob;
 
     @SerializedName("phoneNumber")
+    @Expose
     private String phoneNumber;
 
     @SerializedName("altPhoneNumber")
+    @Expose
     private String altPhoneNumber;
 
     @SerializedName("sex")
+    @Expose
     private int sex;
 
     @SerializedName("htsClientId")
+    @Expose
     private int htsClientId;
 
     @SerializedName("physicalHurt")
+    @Expose
     private int physicalHurt;
 
     @SerializedName("threatenToHurt")
+    @Expose
     private int threatenToHurt;
 
     @SerializedName("address")
+    @Expose
     private String address;
 
     @SerializedName("hangOutSpots")
+    @Expose
     private String hangOutSpots;
 
     @SerializedName("relativeToIndexClient")
+    @Expose
     private int relativeToIndexClient;
 
     @SerializedName("currentlyLiveWithPartner")
+    @Expose
     private int currentlyLiveWithPartner;
 
     @SerializedName("partnerTestedPositive")
+    @Expose
     private int partnerTestedPositive;
 
     @SerializedName("sexuallyUncomfortable")
+    @Expose
     private int sexuallyUncomfortable;
 
     @SerializedName("notificationMethod")
+    @Expose
     private int notificationMethod;
 
     @SerializedName("datePartnerCameForTesting")
+    @Expose
     private String datePartnerCameForTesting;
 
     @SerializedName("isDateOfBirthEstimated")
+    @Expose
     private boolean isDateOfBirthEstimated;
 
     @SerializedName("age")
+    @Expose
     private String age;
 
     public String getFirstName() {

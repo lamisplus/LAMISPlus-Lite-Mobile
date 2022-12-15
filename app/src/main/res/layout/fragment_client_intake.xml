@@ -137,6 +137,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:id="@+id/noWivesTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -215,6 +216,7 @@
 
 
         <LinearLayout
+            android:id="@+id/pregnantLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2">
@@ -263,13 +265,11 @@
         </LinearLayout>
 
 
-
-
-
-
         <LinearLayout
+            android:id="@+id/indexTestingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:weightSum="2">
 
             <com.google.android.material.textfield.TextInputLayout

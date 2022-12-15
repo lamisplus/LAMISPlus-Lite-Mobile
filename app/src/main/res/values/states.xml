@@ -3,7 +3,7 @@
 
     <string-array name="nigeria">
         <item>Abia</item>
-        <item>Abuja Federal Capital Territor</item>
+        <item>Abuja Federal Capital Territory</item>
         <item>Adamawa</item>
         <item>Akwa Ibom</item>
         <item>Anambra</item>
@@ -343,7 +343,7 @@
         <item>Uzo-Uwani</item>
         <item>Enugu South</item>
     </string-array>
-    <string-array name="fct">
+    <string-array name="abuja_federal_capital_territory">
         <item>Amac</item>
         <item>Abaji</item>
         <item>Bwari</item>

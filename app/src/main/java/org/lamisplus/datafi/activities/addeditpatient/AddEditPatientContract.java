@@ -13,6 +13,19 @@ public class AddEditPatientContract {
         boolean areFieldsNotEmpty();
 
         void setProgressBarVisibility(boolean b);
+
+        void setErrorsVisibility(boolean firstNameError,
+                                 boolean lastNameError,
+                                 boolean dateOfBirthError,
+                                 boolean dateOfRegisterError,
+                                 boolean hospitalError,
+                                 boolean genderError,
+                                 boolean employmentNull,
+                                 boolean maritalNull,
+                                 boolean educationNull,
+                                 boolean phoneNull,
+                                 boolean stateError,
+                                 boolean provinceError);
     }
 
     interface Presenter extends LamisBasePresenterContract{
@@ -20,9 +33,10 @@ public class AddEditPatientContract {
         Person patientToUpdate();
         void confirmRegister(Person person);
         void confirmUpdate(Person person);
-        void registerPatient();
+
         Long getPatientId();
 
+        boolean isRegisteringPatient();
     }
 
 }

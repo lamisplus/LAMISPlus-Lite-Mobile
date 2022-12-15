@@ -38,7 +38,7 @@ public class RiskStratification implements Serializable {
 
     @SerializedName("riskAssessment")
     @Expose
-    private RiskAssessment riskAssessmentList;
+    private RstRiskAssessment riskAssessment;
 
     @SerializedName("targetGroup")
     @Expose
@@ -92,21 +92,13 @@ public class RiskStratification implements Serializable {
         this.modality = modality;
     }
 
-    public RiskAssessment getRiskAssessmentList() {
-        return riskAssessmentList;
+    public RstRiskAssessment getRiskAssessment() {
+        return riskAssessment;
     }
 
-    public void setRiskAssessmentList(RiskAssessment riskAssessmentList) {
-        this.riskAssessmentList = riskAssessmentList;
+    public void setRiskAssessment(RstRiskAssessment riskAssessment) {
+        this.riskAssessment = riskAssessment;
     }
-
-//    public String getRiskAssessment() {
-//        return riskAssessment;
-//    }
-//
-//    public void setRiskAssessment(String riskAssessment) {
-//        this.riskAssessment = riskAssessment;
-//    }
 
     public String getTargetGroup() {
         return targetGroup;
@@ -130,13 +122,6 @@ public class RiskStratification implements Serializable {
 
     public void setVisitDate(String visitDate) {
         this.visitDate = visitDate;
-    }
-
-    public RiskAssessment getRiskAssessments(){
-        if(this.getRiskAssessmentList() != null){
-            //return getRiskAssessmentList().get(0);
-        }
-        return null;
     }
 
     public String getEntryPoint() {

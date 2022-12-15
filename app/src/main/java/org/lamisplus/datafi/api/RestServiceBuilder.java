@@ -8,30 +8,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.lamisplus.datafi.application.LamisPlus;
-import org.lamisplus.datafi.classes.LoginRequest;
 import org.lamisplus.datafi.classes.TokenRequest;
-import org.lamisplus.datafi.models.Resource;
-import org.lamisplus.datafi.models.Token;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
-import org.lamisplus.datafi.utilities.LamisCustomHandler;
-import org.lamisplus.datafi.utilities.ResourceSerializer;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -53,47 +33,7 @@ public class RestServiceBuilder {
                         .client((httpClient).build());
     }
 
-    public static void createNewBearer(String username, String password, boolean rememberMe){
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                LoginRequest loginRequest = new LoginRequest(username, password, rememberMe);
-                String loginPayload = new Gson().toJson(loginRequest);
-
-                OkHttpClient client = new OkHttpClient().newBuilder()
-
-                        .build();
-
-                MediaType mediaType = MediaType.parse("application/json");
-
-                RequestBody body = RequestBody.create(mediaType, loginPayload);
-
-                Request request = new Request.Builder()
-
-                        .url(LamisPlus.getInstance().getServerUrl() + ApplicationConstants.API.REST_ENDPOINT + "authenticate")
-
-                        .method("POST", body)
-
-                        .addHeader("Content-Type", "application/json")
-
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-                    tokenRequest = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), TokenRequest.class);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-        });
-    }
-
     public static <S> S createService(Class<S> serviceClass, String token) {
-
-
             httpClient.addInterceptor(chain -> {
                 Request original = chain.request();
 
@@ -106,10 +46,6 @@ public class RestServiceBuilder {
                 return chain.proceed(request);
 
             });
-//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-//            httpClient.addInterceptor(new SnooperInterceptor());
-//            httpClient.addInterceptor(logging);
 
         OkHttpClient client = httpClient.build();
         Retrofit retrofit = builder.client(client).build();
@@ -119,7 +55,7 @@ public class RestServiceBuilder {
     public static <S> S createService(Class<S> serviceClass) {
         String username=mLamisPlus.getUsername();
         String password=mLamisPlus.getPassword();
-        return createService(serviceClass, new BearerApi(username, password, true).getToken());
+        return createService(serviceClass, new BearerApi(mLamisPlus.getServerUrl(), username, password, true).getToken());
     }
 
     private static GsonConverterFactory buildGsonConverter() {

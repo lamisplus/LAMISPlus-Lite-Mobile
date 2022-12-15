@@ -3,6 +3,7 @@ package org.lamisplus.datafi.activities.forms.hts.elicitation;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.DateUtils;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
 import java.util.Calendar;
@@ -195,7 +197,9 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
 
             DatePickerDialog mDatePicker = new DatePickerDialog(this.getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                eddob.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                eddob.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -214,7 +218,9 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
 
             DatePickerDialog mDatePicker = new DatePickerDialog(this.getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                eddatePartnerCameForTesting.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                eddatePartnerCameForTesting.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -350,6 +356,7 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
         }
 
         if (!ViewUtils.isEmpty(autothreatenToHurt)) {
+            //Log.v("Baron", "Threaten to Hurt " + CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autothreatenToHurt)));
             elicitation.setThreatenToHurt(CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autothreatenToHurt)));
         }
 
@@ -382,6 +389,7 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
             elicitation.setDatePartnerCameForTesting(ViewUtils.getInput(eddatePartnerCameForTesting));
         }
 
+        LamisCustomHandler.showJson(elicitation);
         return elicitation;
     }
 

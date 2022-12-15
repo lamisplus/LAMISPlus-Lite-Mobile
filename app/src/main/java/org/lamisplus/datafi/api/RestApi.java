@@ -1,14 +1,10 @@
 package org.lamisplus.datafi.api;
 
-import org.lamisplus.datafi.models.ClientIntake;
-import org.lamisplus.datafi.models.PostTestCounseling;
-import org.lamisplus.datafi.models.PreTest;
-import org.lamisplus.datafi.models.Recency;
-import org.lamisplus.datafi.models.RequestResult;
 import org.lamisplus.datafi.models.RiskStratification;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -39,6 +35,10 @@ public interface RestApi {
     @PUT("hts/{id}/request-result")
     Call<Object> updateRequestResult(@Path ("id") int patientId, @Body Object recencyPayload);
 
+    @POST("index-elicitation")
+    Call<Object> createIndexElicitation(@Body Object elicitationPayload);
 
+    @GET("account")
+    Call<Object> getAccount();
 
 }

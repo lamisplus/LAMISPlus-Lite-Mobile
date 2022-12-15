@@ -21,6 +21,7 @@ import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardContract;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardFragment;
 import org.lamisplus.datafi.dao.CodesetsDAO;
+import org.lamisplus.datafi.dao.OrganizationUnitDAO;
 import org.lamisplus.datafi.models.Codesets;
 import org.lamisplus.datafi.models.ContactPoint;
 import org.lamisplus.datafi.models.Encounter;
@@ -104,8 +105,8 @@ public class PatientDashboardDetailsFragment extends PatientDashboardFragment im
 
         if (null != person.getAddress()) {
             ((TextView) rootView.findViewById(R.id.addressDetailsStreet)).setText(person.getAddresses().getCity());
-            showAddressDetailsViewElement(R.id.addressDetailsStateLabel, R.id.addressDetailsState, person.getAddresses().getStateId());
-            showAddressDetailsViewElement(R.id.addressDetailsCountryLabel, R.id.addressDetailsCountry, String.valueOf(person.getAddresses().getCountryId()));
+            showAddressDetailsViewElement(R.id.addressDetailsStateLabel, R.id.addressDetailsState, OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()));
+            showAddressDetailsViewElement(R.id.addressDetailsCountryLabel, R.id.addressDetailsCountry, OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getCountryId()));
             showAddressDetailsViewElement(R.id.addressDetailsPostalCodeLabel, R.id.addressDetailsPostalCode, person.getAddresses().getPostalCode());
             showAddressDetailsViewElement(R.id.addressDetailsCityLabel, R.id.addressDetailsCity, person.getAddresses().getDistrict());
         }

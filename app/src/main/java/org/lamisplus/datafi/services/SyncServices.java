@@ -159,6 +159,23 @@ public class SyncServices extends IntentService {
                                     getHivRecencyAndSync(encounter);
                                 }
                             }).start();
+                        }else if(encounter.getName().equals(ApplicationConstants.Forms.ELICITATION)){
+                            try {
+                                if(rstThread != null) {
+                                    rstThread.join();
+                                }
+                                if(clientIntakeThread != null) {
+                                    clientIntakeThread.join();
+                                }
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getIndexElicitationAndSync(encounter);
+                                }
+                            }).start();
                         }
                     }
 
@@ -267,6 +284,20 @@ public class SyncServices extends IntentService {
 
     public synchronized void getHivRecencyAndSync(Encounter encounter){
         new HTSRepository().syncRecency(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    public synchronized void getIndexElicitationAndSync(Encounter encounter){
+        new HTSRepository().syncElicitation(encounter, new DefaultCallbackListener() {
             @Override
             public void onResponse() {
 

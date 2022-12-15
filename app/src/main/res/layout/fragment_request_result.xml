@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Initial HIV Test 1:"
-            android:textColor="?android:attr/textColorPrimary"/>
+            android:textColor="?android:attr/textColorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -140,7 +140,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tie Breaker Test:"/>
+            android:text="Tie Breaker Test:" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -198,7 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Initial HIV Test 2:"
-            android:textColor="?android:attr/textColorPrimary"/>
+            android:textColor="?android:attr/textColorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -312,7 +312,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tie Breaker Test 2:"/>
+            android:text="Tie Breaker Test 2:" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -366,11 +366,6 @@
         </LinearLayout>
 
 
-
-
-
-
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -410,6 +405,27 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:hint="CD4 Count Value"
+                app:errorEnabled="true"
+                android:visibility="gone"
+                app:helperText="CD4 Count Value">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCd4CountSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -418,25 +434,21 @@
                 android:layout_weight="1"
                 android:hint="CD4 Count Value"
                 app:errorEnabled="true"
-                app:helperText="CD4 Count Value"/>
+                android:visibility="gone"
+                app:helperText="CD4 Count Value">
 
-            <EditText
-                android:id="@+id/edcd4SemiQuantitative"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_design"
-                android:hint="CD4 Count Value"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/edcd4SemiQuantitative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="CD4 Count Value"
+                    android:inputType="text" />
 
-
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
-
-
-
-
-
 
 
         <TextView
@@ -475,7 +487,6 @@
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
 
         </LinearLayout>

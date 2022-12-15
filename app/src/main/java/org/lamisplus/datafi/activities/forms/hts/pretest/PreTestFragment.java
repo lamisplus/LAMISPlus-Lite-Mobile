@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.R;
@@ -29,8 +31,10 @@ import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.KnowledgeAssessment;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.models.RiskAssessment;
 import org.lamisplus.datafi.models.SexPartnerRiskAssessment;
@@ -87,6 +91,9 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
     private Encounter updatedForm;
     private PreTest updatedPretest;
     private String packageName;
+    private TextInputLayout clientInformPreventingsHivTransTIL;
+    private TextInputLayout clientPregnantTIL;
+    private LinearLayout sexPartnerRiskAssessLayout;
 
     @Nullable
     @Override
@@ -96,6 +103,8 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            dropDownClickListeners();
+            hideFieldsDefault();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM, mPresenter.getPatientId()));
@@ -168,6 +177,10 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
 
 
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
+
+        clientInformPreventingsHivTransTIL = root.findViewById(R.id.clientInformPreventingsHivTransTIL);
+        clientPregnantTIL = root.findViewById(R.id.clientPregnantTIL);
+        sexPartnerRiskAssessLayout = root.findViewById(R.id.sexPartnerRiskAssessLayout);
     }
 
     private void setListeners() {
@@ -216,6 +229,54 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
         autoUrethralDischarge.setAdapter(adapterBooleanAnswers);
     }
 
+    private void hideFieldsDefaultSelected(PreTest preTest){
+        if(StringUtils.changeBooleanToString(preTest.getKnowledgeAssessment().isPreviousTestedHIVNegative()).equals("Yes")){
+            clientInformPreventingsHivTransTIL.setVisibility(View.VISIBLE);
+        }else {
+            clientInformPreventingsHivTransTIL.setVisibility(View.GONE);
+        }
+
+        if(StringUtils.changeBooleanToString(preTest.getSexPartnerRiskAssessment().isSexPartnerHivPositive()).equals("Yes")){
+            sexPartnerRiskAssessLayout.setVisibility(View.VISIBLE);
+        }else {
+            sexPartnerRiskAssessLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void hideFieldsDefault(){
+        Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
+        if(CodesetsDAO.findCodesetsDisplayById(person.getSexId()).equals("Male")){
+            clientPregnantTIL.setVisibility(View.GONE);
+        }else{
+            clientPregnantTIL.setVisibility(View.GONE);
+        }
+    }
+
+    private void dropDownClickListeners(){
+        autoPreviousTestedHIVNegative.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(ViewUtils.getInput(autoPreviousTestedHIVNegative).equals("Yes")){
+                    clientInformPreventingsHivTransTIL.setVisibility(View.VISIBLE);
+                }else {
+                    clientInformPreventingsHivTransTIL.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        autoSexPartnerHivPositive.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(ViewUtils.getInput(autoSexPartnerHivPositive).equals("Yes")){
+                    sexPartnerRiskAssessLayout.setVisibility(View.VISIBLE);
+                }else {
+                    sexPartnerRiskAssessLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -240,7 +301,8 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
 
     public void fillFields(PreTest preTest) {
         if (preTest != null) {
-            Log.v("Baron", new Gson().toJson(preTest));
+            hideFieldsDefaultSelected(preTest);
+
             isUpdatePretest = true;
             updatedPretest = preTest;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM, mPresenter.getPatientId());

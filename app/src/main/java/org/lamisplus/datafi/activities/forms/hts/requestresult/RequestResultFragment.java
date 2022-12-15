@@ -69,6 +69,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     private EditText edOthersAdhocCode;
 
     private AutoCompleteTextView autoCd4Count;
+    private AutoCompleteTextView autoCd4CountSelect;
     private EditText edcd4SemiQuantitative;
 
     private LinearLayout riskAssessmentLayoutView;
@@ -133,6 +134,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
          autoCd4Count = root.findViewById(R.id.autoCd4Count);
         edcd4SemiQuantitative = root.findViewById(R.id.edcd4SemiQuantitative);
+        autoCd4CountSelect = root.findViewById(R.id.autoCd4CountSelect);
 
         edDateTest2 = root.findViewById(R.id.edDateTest2);
         autoResultTest2 = root.findViewById(R.id.autoResultTest2);
@@ -157,11 +159,11 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
 
-        String[] autoCd4CountAnswers = {"Semi-Quantitative","Flow Cyteometry"};
+        String[] autoCd4CountAnswers = getResources().getStringArray(R.array.cd4_count);
         ArrayAdapter<String> adapterCd4CountAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, autoCd4CountAnswers);
         autoCd4Count.setAdapter(adapterCd4CountAnswers);
 
-        String[] booleanAnswers = {"Reactive", "Non Reactive"};
+        String[] booleanAnswers = getResources().getStringArray(R.array.reactive_non_reactive);
         ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanAnswers);
         autoResultTest1.setAdapter(adapterBooleanAnswers);
         autoResultTest1.setAdapter(adapterBooleanAnswers);
@@ -173,6 +175,10 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         autoSyphilis.setAdapter(adapterBooleanAnswers);
         autoHepatitisB.setAdapter(adapterBooleanAnswers);
         autoHepatitisC.setAdapter(adapterBooleanAnswers);
+
+        String[] cd4CountValues = getResources().getStringArray(R.array.cd4_count_value);
+        ArrayAdapter<String> adapterCd4Values = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, cd4CountValues);
+        autoCd4CountSelect.setAdapter(adapterCd4Values);
     }
 
     private void showDatePickers() {

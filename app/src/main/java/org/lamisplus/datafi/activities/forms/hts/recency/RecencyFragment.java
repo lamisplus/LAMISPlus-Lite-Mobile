@@ -28,9 +28,12 @@ import com.google.gson.Gson;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientFragment;
+import org.lamisplus.datafi.activities.forms.hts.elicitation.ElicitationActivity;
+import org.lamisplus.datafi.activities.forms.hts.requestresult.RequestResultActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -185,7 +188,9 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edOptOutRTRITestDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                edOptOutRTRITestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -204,7 +209,9 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edSampleCollectedDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                edSampleCollectedDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -223,7 +230,9 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edDateSampleSentToPCRLab.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                edDateSampleSentToPCRLab.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -242,7 +251,9 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
-                edSampleTestDate.setText(selectedYear + "-" + adjustedMonth + "-" + selectedDay);
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay =  String.format("%02d", selectedDay);
+                edSampleTestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -412,11 +423,24 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
 
     @Override
-    public void startActivityForDashboard() {
-        Intent DashboardProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
-        DashboardProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+    public void startActivityForElicitation() {
+        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ELICITATION, mPresenter.getPatientId());
+        if (encounter == null) {
+            Intent preTestProgram = new Intent(LamisPlus.getInstance(), ElicitationActivity.class);
+            preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                    String.valueOf(mPresenter.getPatientId()));
+            startActivity(preTestProgram);
+        } else {
+            startDashboardActivity();
+        }
+    }
+
+    @Override
+    public void startDashboardActivity() {
+        Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
+        preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(mPresenter.getPatientId()));
-        startActivity(DashboardProgram);
+        startActivity(preTestProgram);
     }
 
 }

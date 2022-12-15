@@ -35,7 +35,7 @@ public class Address implements Serializable {
 
     @SerializedName("stateId")
     @Expose
-    private String stateId;
+    private int stateId;
 
     public String getCity() {
         return city;
@@ -85,11 +85,11 @@ public class Address implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public String getStateId() {
+    public int getStateId() {
         return stateId;
     }
 
-    public void setStateId(String stateId) {
+    public void setStateId(int stateId) {
         this.stateId = stateId;
     }
 }
