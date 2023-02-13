@@ -10,9 +10,10 @@ public class RecencyContract {
 
     interface View extends LamisBaseView<Presenter>{
 
+        void scrollToTop();
         void startActivityForElicitation();
         void startDashboardActivity();
-
+        void setErrorsVisibility(boolean optOutRTRI, boolean testName, boolean testDate, boolean rencencyId, boolean controlLine, boolean verififcationLine, boolean longTermLine, boolean hasViralLoad, boolean sampleReferanceNumber, boolean sampleType);
     }
 
     interface Presenter extends LamisBasePresenterContract{

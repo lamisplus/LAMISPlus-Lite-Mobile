@@ -1,6 +1,8 @@
 package org.lamisplus.datafi.activities.login;
 
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +16,8 @@ public class LoginActivity extends LamisBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
         loginFragment = (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.loginContentFrame);

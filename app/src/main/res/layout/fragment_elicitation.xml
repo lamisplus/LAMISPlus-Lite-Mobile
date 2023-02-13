@@ -238,6 +238,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
                     android:hint="Phone Number*"
+                    android:maxLength="11"
                     android:inputType="phone" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -256,6 +257,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
                     android:hint="Alt. Phone Number"
+                    android:maxLength="11"
                     android:inputType="phone" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -498,9 +500,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="1"
-            android:hint="If contract by which date will partner come for testing?"
+            android:hint="If contracted, by which date will partner come for testing?"
             app:errorEnabled="true"
-            app:helperText="If contract by which date will partner come for testing?">
+            app:helperText="If contracted, by which date will partner come for testing?">
 
             <EditText
                 android:id="@+id/eddatePartnerCameForTesting"

@@ -5,7 +5,7 @@ import org.lamisplus.datafi.activities.LamisBaseView;
 
 public class DashboardContract {
 
-    interface View extends LamisBaseView<DashboardContract.Presenter>{
+    interface View extends LamisBaseView<Presenter>{
 
         void bindDrawableResources();
     }

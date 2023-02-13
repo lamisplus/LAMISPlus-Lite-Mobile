@@ -41,6 +41,11 @@ public class Account extends Model implements Serializable {
     @Expose
     private String serverUrl;
 
+    @SerializedName("selected")
+    @Column(name = "selected")
+    @Expose
+    private int selected;
+
     public String getUsername() {
         return username;
     }
@@ -87,5 +92,13 @@ public class Account extends Model implements Serializable {
 
     public void setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

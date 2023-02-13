@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +24,9 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
+import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.URLValidator;
 
 public class LoginFragment extends LamisBaseFragment<LoginContract.Presenter> implements LoginContract.View{
@@ -87,10 +91,8 @@ public class LoginFragment extends LamisBaseFragment<LoginContract.Presenter> im
 
             if (hasFocus) {
                 mServerUrl.setHint("");
-                Log.v("Baron", "I am url");
                 //mUrlInput.setHint(Html.fromHtml(getString(R.string.login_url_hint)));
             } else if (mServerUrl.getText().toString().equals("")) {
-                Log.v("Baron", "I am not ur url");
                 //mUrl.setHint(Html.fromHtml(getString(R.string.login_url_hint) + getString(R.string.req_star)));
                 //mUrlInput.setHint("");
             }
@@ -101,12 +103,10 @@ public class LoginFragment extends LamisBaseFragment<LoginContract.Presenter> im
     public void hideLoadingAnimation() {
         mLocationLoadingProgressBar.setVisibility(View.INVISIBLE);
         loginBtn.setEnabled(true);
-        Log.v("Baron", "Loading animation is closed");
     }
 
     @Override
     public void showLocationLoadingAnimation() {
-        Log.v("Baron", "Loading animation is called");
         mLocationLoadingProgressBar.setVisibility(View.VISIBLE);
         loginBtn.setEnabled(false);
     }
@@ -130,6 +130,11 @@ public class LoginFragment extends LamisBaseFragment<LoginContract.Presenter> im
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void hideURLInputField() {
+        mServerUrl.setVisibility(View.GONE);
+    }
+
     private Snackbar createSnackbar(String message) {
         return Snackbar
                 .make(root, message, Snackbar.LENGTH_LONG);
@@ -145,7 +150,7 @@ public class LoginFragment extends LamisBaseFragment<LoginContract.Presenter> im
         URLValidator.ValidationResult result = URLValidator.validate(url);
 
         if (result.isURLValid()) {
-           Log.v("Baron", "URL is valid");
+           Log.v(ApplicationConstants.LAMIS_TAG, "URL is valid");
         } else {
             showInvalidURLSnackbar("Invalid URL");
         }

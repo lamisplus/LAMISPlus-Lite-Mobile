@@ -5,7 +5,7 @@ import org.lamisplus.datafi.activities.LamisBaseView;
 
 public class HTSFormContract {
 
-    interface View extends LamisBaseView<HTSFormContract.Presenter>{
+    interface View extends LamisBaseView<Presenter>{
 
     }
 

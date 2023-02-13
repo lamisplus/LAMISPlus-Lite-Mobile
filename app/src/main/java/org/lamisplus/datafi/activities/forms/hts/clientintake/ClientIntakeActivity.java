@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.clientintake;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,9 @@ public class ClientIntakeActivity extends LamisBaseActivity {
     public ClientIntakeContract.Presenter mPresenter;
     public ClientIntakeFragment clientIntakeFragment;
     private Encounter mforms;
+
+    String patientID = "";
+    String rstForm = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,12 +38,32 @@ public class ClientIntakeActivity extends LamisBaseActivity {
         } else {
             patientBundle = getIntent().getExtras();
         }
-        String patientID = "";
+
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
+            rstForm = patientBundle.getString(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
         }
 
-        mPresenter = new ClientIntakePresenter(clientIntakeFragment, patientID);
+        mPresenter = new ClientIntakePresenter(clientIntakeFragment, patientID, rstForm);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientID);
+        bundle.putString(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, rstForm);
+        onSaveInstanceState(bundle);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

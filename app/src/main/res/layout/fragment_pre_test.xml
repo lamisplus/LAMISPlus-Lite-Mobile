@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,9 +35,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Previously tested HIV negative*"
+                android:hint="Previously tested HIV negative"
                 app:errorEnabled="true"
-                app:helperText="Previously tested HIV negative*">
+                app:helperText="Previously tested HIV negative">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoPreviousTestedHIVNegative"
@@ -54,9 +55,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Time of last HIV Negative test Result*"
+                android:hint="Time of last HIV Negative test Result"
                 app:errorEnabled="true"
-                app:helperText="Time of last HIV Negative test Result*">
+                app:helperText="Time of last HIV Negative test Result">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoTimeLastHIVNegativeTestResult"
@@ -82,9 +83,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Client pregnant *"
+                android:hint="Client pregnant"
                 app:errorEnabled="true"
-                app:helperText="Client pregnant *">
+                app:helperText="Client pregnant">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoclientPregnant"
@@ -240,7 +241,7 @@
                 android:layout_weight="1"
                 android:hint="Current cough"
                 app:errorEnabled="true"
-                app:helperText="Current cough *">
+                app:helperText="Current cough">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCurrentCough"
@@ -257,9 +258,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Weight loss *"
+                android:hint="Weight loss"
                 app:errorEnabled="true"
-                app:helperText="Weight loss *">
+                app:helperText="Weight loss">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoWeightLoss"
@@ -284,9 +285,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Lymphadenopathy (swelling of the lymph nodes) *"
+                android:hint="Lymphadenopathy (swelling of the lymph nodes)"
                 app:errorEnabled="true"
-                app:helperText="Lymphadenopathy (swelling of the lymph nodes) *">
+                app:helperText="Lymphadenopathy (swelling of the lymph nodes)">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoLymphadenopathy"
@@ -303,9 +304,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Fever *"
+                android:hint="Fever"
                 app:errorEnabled="true"
-                app:helperText="Fever *">
+                app:helperText="Fever">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoFever"
@@ -330,9 +331,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Night sweats*"
+                android:hint="Night sweats"
                 app:errorEnabled="true"
-                app:helperText="Night sweats*">
+                app:helperText="Night sweats">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoNightSweats"
@@ -364,14 +365,15 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/everHadSexualIntercourseTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Ever had sexual intercourse"
+                android:hint="Ever had sexual intercourse*"
                 app:errorEnabled="true"
-                app:helperText="Ever had sexual intercourse">
+                app:helperText="Ever had sexual intercourse*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoeverHadSexualIntercourse"
@@ -384,13 +386,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/bloodtransInlastThreeMonthsTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Blood transfusion in last 3 months *"
+                android:hint="Blood transfusion in last 3 months*"
                 app:errorEnabled="true"
-                app:helperText="Blood transfusion in last 3 months *">
+                app:helperText="Blood transfusion in last 3 months*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autobloodtransInlastThreeMonths"
@@ -410,14 +413,15 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/uprotectedSexWithCasualLastThreeMonthsTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Unprotected sex with casual partner in last 3 months *"
+                android:hint="Unprotected sex with casual partner in last 3 months*"
                 app:errorEnabled="true"
-                app:helperText="Unprotected sex with casual partner in last 3 months *">
+                app:helperText="Unprotected sex with casual partner in last 3 months*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autouprotectedSexWithCasualLastThreeMonths"
@@ -430,13 +434,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/uprotectedSexWithRegularPartnerLastThreeMonthsTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Unprotected sex with regular partner in the last 3months"
+                android:hint="Unprotected sex with regular partner in the last 3months*"
                 app:errorEnabled="true"
-                app:helperText="Unprotected sex with regular partner in the last 3months">
+                app:helperText="Unprotected sex with regular partner in the last 3months*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autouprotectedSexWithRegularPartnerLastThreeMonths"
@@ -456,14 +461,15 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/autounprotectedVaginalSexTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Unprotected vaginal sex"
+                android:hint="Unprotected vaginal sex*"
                 app:errorEnabled="true"
-                app:helperText="Unprotected vaginal sex">
+                app:helperText="Unprotected vaginal sex*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autounprotectedVaginalSex"
@@ -476,13 +482,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/uprotectedAnalSexHivRiskAssessTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Unprotected Anal sex"
+                android:hint="Unprotected Anal sex*"
                 app:errorEnabled="true"
-                app:helperText="Unprotected Anal sex">
+                app:helperText="Unprotected Anal sex*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoUprotectedAnalSexHivRiskAssess"
@@ -503,14 +510,15 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/stiLastThreeMonthsTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="STI in last 3 months *"
+                android:hint="STI in last 3 months*"
                 app:errorEnabled="true"
-                app:helperText="STI in last 3 months *">
+                app:helperText="STI in last 3 months*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autostiLastThreeMonths"
@@ -523,6 +531,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/sexUnderInfluenceTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -551,6 +560,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/moreThanOneSexPartnerLastThreeMonthsTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -630,9 +640,9 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*"
+                    android:hint="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?"
                     app:errorEnabled="true"
-                    app:helperText="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?*">
+                    app:helperText="Is sex partner newly diagnosed with HIV and started treatment less than 3-6 months ago?">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoNewDiagnosedHivlastThreeMonths"
@@ -649,9 +659,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:hint="Is sex partner pregnant and currently receiving ARV for PMTCT?*"
+                    android:hint="Is sex partner pregnant and currently receiving ARV for PMTCT?"
                     app:errorEnabled="true"
-                    app:helperText="Is sex partner pregnant and currently receiving ARV for PMTCT?*">
+                    app:helperText="Is sex partner pregnant and currently receiving ARV for PMTCT?">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoCurrentlyArvForPmtct"
@@ -778,6 +788,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:id="@+id/autoComplaintsOfScrotalTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"

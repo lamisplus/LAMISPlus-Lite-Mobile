@@ -1,5 +1,6 @@
 package org.lamisplus.datafi.utilities;
 
+import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -11,6 +12,7 @@ public class ViewUtils {
     public static final String ILLEGAL_CHARACTERS = "[$&+:;=\\\\?@#|/'<>^*()%!]";
 
     public static final String ILLEGAL_ADDRESS_CHARACTERS = "[$&+:;=\\\\?@|<>^%!]";
+    public static final String ILLEGAL_NAME_CHARACTERS = "[1234567890$&+:;=\\\\?@|<>^%!]";
 
     public static String getInput(EditText e) {
         if(e.getText() == null) {
@@ -50,7 +52,6 @@ public class ViewUtils {
      */
     public static boolean validateText(String toValidate, String invalidCharacters) {
         //TODO: Add more checks to the String
-
         return !containsCharacters(toValidate, invalidCharacters);
     }
 

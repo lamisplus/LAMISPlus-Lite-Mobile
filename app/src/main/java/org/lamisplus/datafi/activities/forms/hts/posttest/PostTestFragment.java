@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.forms.hts.posttest;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -17,22 +18,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.annotations.SerializedName;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.forms.hts.recency.RecencyActivity;
+import org.lamisplus.datafi.activities.hts.htsservices.HTSServicesActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PostTest;
 import org.lamisplus.datafi.models.PostTestCounselingKnowledgeAssessment;
 import org.lamisplus.datafi.models.Recency;
+import org.lamisplus.datafi.models.RequestResult;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
@@ -66,6 +73,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
     private PostTest updatedPostTest;
 
     private String packageName;
+    private TextInputLayout autoHivTestResultTIL;
 
     @Nullable
     @Override
@@ -75,12 +83,27 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            autoPopulateFields();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId()));
             }
         }
         return root;
+    }
+
+    private void autoPopulateFields() {
+        RequestResult requestResult = EncounterDAO.findRequestResultFromForm(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
+        if(requestResult != null){
+            String finalResult = "";
+            if(requestResult.getHivTestResult().equals("Non Reactive")){
+                finalResult = "Negative";
+            }else {
+                finalResult = requestResult.getHivTestResult2();
+            }
+
+            autoHivTestResult.setText(finalResult, false);
+        }
     }
 
     @Override
@@ -126,6 +149,8 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
         autoUnprotectedSex = root.findViewById(R.id.autoUnprotectedSex);
         autoRiskReduction = root.findViewById(R.id.autoRiskReduction);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
+
+        autoHivTestResultTIL = root.findViewById(R.id.autoHivTestResultTIL);
     }
 
     private void setListeners() {
@@ -305,6 +330,12 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
 
 
     @Override
+    public void scrollToTop() {
+        ScrollView scrollView = this.getActivity().findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0, scrollView.getPaddingTop());
+    }
+
+    @Override
     public void startActivityForRecencyForm() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId());
         if (encounter == null) {
@@ -312,6 +343,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             recencyProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(recencyProgram);
+            getActivity().finish();
         } else {
             startDashboardActivity();
         }
@@ -319,10 +351,19 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
 
     @Override
     public void startDashboardActivity() {
-        Intent preTestProgram = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
+        Intent preTestProgram = new Intent(LamisPlus.getInstance(), HTSServicesActivity.class);
         preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(mPresenter.getPatientId()));
         startActivity(preTestProgram);
+        getActivity().finish();
+    }
+
+    @Override
+    public void setErrorsVisibility(boolean hivTestResult) {
+        if (hivTestResult) {
+            autoHivTestResultTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoHivTestResultTIL.setError("Select HIV Test Result");
+        }
     }
 
 

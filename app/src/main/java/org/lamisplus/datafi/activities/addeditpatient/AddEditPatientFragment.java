@@ -1,11 +1,16 @@
 package org.lamisplus.datafi.activities.addeditpatient;
 
+import static androidx.core.app.ActivityCompat.finishAffinity;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -40,7 +46,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
+import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
+import org.lamisplus.datafi.activities.patientprofile.PatientProfileActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.classes.ContactPointClass;
 import org.lamisplus.datafi.dao.AccountDAO;
@@ -58,6 +66,7 @@ import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -112,6 +121,7 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     private TextInputLayout edhospitalNumberTIL;
     private TextInputLayout edfirstNameTIL;
     private TextInputLayout edLastNameTIL;
+    private TextInputLayout edMiddleNameTIL;
     private TextInputLayout fillGenderTIL;
     private TextInputLayout edDateofBirthTIL;
     private TextInputLayout fillMaritalStatusTIL;
@@ -185,7 +195,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         autoNokRelationship = root.findViewById(R.id.edNokfillRelationshipType);
 
         rpDateofBirth = root.findViewById(R.id.rgdateOfBirthSelect);
-        edDateofBirthTIL = root.findViewById(R.id.edDateofBirthTIL);
         labelAge = root.findViewById(R.id.labelAge);
 
         edRegistrationDate = root.findViewById(R.id.registrationDate);
@@ -205,8 +214,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         edLandmark = root.findViewById(R.id.edLandMark);
 
         rgDateOfBirthSelect = root.findViewById(R.id.rgdateOfBirthSelect);
-        edDateofBirth = root.findViewById(R.id.edDateofBirth);
-        edAge = root.findViewById(R.id.edAge);
 
         edNokFirstName = root.findViewById(R.id.edNokFirstName);
         edNokMiddleName = root.findViewById(R.id.edNokMiddleName);
@@ -221,6 +228,7 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         edhospitalNumberTIL = root.findViewById(R.id.edhospitalNumberTIL);
         edfirstNameTIL = root.findViewById(R.id.edfirstNameTIL);
         edLastNameTIL = root.findViewById(R.id.edLastNameTIL);
+        edMiddleNameTIL = root.findViewById(R.id.edMiddleNameTIL);
         fillGenderTIL = root.findViewById(R.id.fillGenderTIL);
         edDateofBirthTIL = root.findViewById(R.id.edDateofBirthTIL);
         fillMaritalStatusTIL = root.findViewById(R.id.fillMaritalStatusTIL);
@@ -267,6 +275,36 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
 //                Toast.makeText(getActivity(), autoGender.getText().toString(), Toast.LENGTH_LONG).show();
 //            }
 //        });
+
+        edAge.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String strEnteredVal = ViewUtils.getInput(edAge);
+                int max_age = 60;
+                if (strEnteredVal != null && !strEnteredVal.equals("")) {
+                    int num = Integer.parseInt(strEnteredVal);
+                    if (num > max_age) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                getContext());
+                        alertDialogBuilder.setTitle("Age Pop up alert");
+                        // set dialog message
+                        alertDialogBuilder
+                                .setMessage("You have entered an age greater than " + max_age + " years, Are you Sure of the Age entered?")
+                                .setCancelable(false)
+                                .setPositiveButton("Ok", (dialog, id) -> dialog.cancel());
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+                }
+            }
+        });
+
 
         autoState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -337,6 +375,10 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
                 String stringMonth = String.format("%02d", adjustedMonth);
                 String stringDay = String.format("%02d", selectedDay);
                 edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+
+                int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
+
+                edAge.setText(age + "");
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -385,24 +427,26 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
                 }
             }
 
-            edNokFirstName.setText(person.getContacts().getFirstName());
-            edNokLastName.setText(person.getContacts().getSurname());
-            edNokMiddleName.setText(person.getContacts().getOtherName());
-            if(StringUtils.notZero(person.getContacts().getRelationshipId())) {
-                autoNokRelationship.setText(CodesetsDAO.findCodesetsDisplayById(person.getContacts().getRelationshipId()), false);
-            }
-
-            if (person.getContacts().getContactPoint() != null) {
-
-                if (person.getContacts().getContactPoint().getValue() != null && person.getContacts().getContactPoint().getType().equals("phone")) {
-                    edNokPhone.setText(person.getContacts().getContactPoint().getValue());
+            if (person.getContacts() != null) {
+                edNokFirstName.setText(person.getContacts().getFirstName());
+                edNokLastName.setText(person.getContacts().getSurname());
+                edNokMiddleName.setText(person.getContacts().getOtherName());
+                if (StringUtils.notZero(person.getContacts().getRelationshipId())) {
+                    autoNokRelationship.setText(CodesetsDAO.findCodesetsDisplayById(person.getContacts().getRelationshipId()), false);
                 }
 
-            }
+                if (person.getContacts().getContactPoint() != null) {
 
-            if (person.getContacts().getAddress() != null) {
-                Address address = person.getContacts().getAddress();
-                edNokAddress.setText(String.valueOf(address.getLine()[0]));
+                    if (person.getContacts().getContactPoint().getValue() != null && person.getContacts().getContactPoint().getType().equals("phone")) {
+                        edNokPhone.setText(person.getContacts().getContactPoint().getValue());
+                    }
+
+                }
+
+                if (person.getContacts().getAddress() != null) {
+                    Address address = person.getContacts().getAddress();
+                    edNokAddress.setText(String.valueOf(address.getLine()[0]));
+                }
             }
 
         }
@@ -426,18 +470,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         }
 
         person.setOtherName(ViewUtils.getInput(edMiddleName));
-
-        //This can be true when you are regitering the patient newly. When you try to edit, the date of birth field will be populated
-        //and the age field will be empty
-//        if (!ViewUtils.isEmpty(edAge) && ViewUtils.isEmpty(edDateofBirth)) {
-//            String dateOfBirth = DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge)));
-//            person.setDateOfBirth(dateOfBirth);
-//            person.setDateOfBirthEstimated(true);
-//        }
-//
-//        if (!ViewUtils.isEmpty(edDateofBirth) && ViewUtils.isEmpty(edAge)) {
-//            person.setDateOfBirth(ViewUtils.getInput(edDateofBirth));
-//        }
 
         int radioButtonID = rpDateofBirth.getCheckedRadioButtonId();
         RadioButton radioButton = (RadioButton) rpDateofBirth.findViewById(radioButtonID);
@@ -480,19 +512,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             person.setEducationId(educationLevelId);
         }
 
-//        ContactPoint contactPoint = new ContactPoint();
-//        List<ContactPoint> contactPointList = new ArrayList<>();
-//
-//        if (!ViewUtils.isEmpty(edPhone)) {
-//            contactPoint.setPhone(ViewUtils.getInput(edPhone));
-//        }
-//        contactPoint.setAltphone(ViewUtils.getInput(edAltPhone));
-//        contactPoint.setEmail(ViewUtils.getInput(edEmail));
-//        contactPointList.add(contactPoint);
-//
-//        person.setContactPoint(contactPointList);
-//        person.setContactPointList();
-
 
         List<ContactPointClass.ContactPointItems> contactPointItems = new ArrayList<>();
         contactPointItems.add(new ContactPointClass.ContactPointItems("phone", ViewUtils.getInput(edPhone)));
@@ -501,21 +520,14 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
 
         String json = new Gson().toJson(contactPointItems);
 
-//        Type type = new TypeToken<List<ContactPoint>>(){}.getType();
-//        List<ContactPoint> contactPoints = new Gson().fromJson(json, type);
         person.setContactPoint(json);
-
-//        contactPoints.get(0).getType();
-//        LamisCustomHandler.showJson(contactPoints.get(0).getType());
-
-//        person.setContactPoint(contactPointClasses);
-//        person.setContactPointList();
 
 
         Address address = new Address();
         address.setCountryId(OrganizationUnitDAO.findOrganizationUnitIdByName(ViewUtils.getInput(autoCountry)));
 
         if (!ViewUtils.isEmpty(autoState)) {
+            //I selected Abuja as the state and the App crashed. for future references
             address.setStateId(OrganizationUnitDAO.findOrganizationUnitIdByName(ViewUtils.getInput(autoState)));
         }
 
@@ -618,10 +630,15 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     }
 
     @Override
-    public void startPatientDashbordActivity(Person person) {
-        Intent intent = new Intent(getActivity(), PatientDashboardActivity.class);
+    public void startPatientProfileActivity(Person person) {
+//        Intent intent = new Intent(getActivity(), PatientProfileActivity.class);
+//        intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, person.getId());
+//        startActivity(intent);
+
+        Intent intent = new Intent(getActivity(), FindPatientActivity.class);
         intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, person.getId());
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override
@@ -647,65 +664,70 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     }
 
     @Override
-    public void setErrorsVisibility(boolean firstNameError, boolean lastNameError, boolean dateOfBirthError, boolean dateOfRegisterError, boolean hospitalError, boolean genderError, boolean employmentNull, boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError) {
+    public void setErrorsVisibility(boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean dateOfRegisterError, boolean hospitalError, boolean genderError, boolean employmentNull, boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError) {
         if (firstNameError) {
             edfirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edfirstNameTIL.setError("Please enter the First Name");
+            edfirstNameTIL.setError("Enter the First Name or check they do not contain symbols and numbers");
         }
 
         if (lastNameError) {
             edLastNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edLastNameTIL.setError("Please enter the Last Name");
+            edLastNameTIL.setError("Enter the Last Name or check they do not contain symbols and numbers");
+        }
+
+        if (middleNameError) {
+            edMiddleNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edMiddleNameTIL.setError("Check that the Middle Name do not contain symbols and numbers");
         }
 
         if (dateOfBirthError) {
             edDateofBirthTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edDateofBirthTIL.setError("Please enter the Date of Birth");
+            edDateofBirthTIL.setError("Select the Date of Birth");
         }
 
         if (dateOfRegisterError) {
             registrationDateTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            registrationDateTIL.setError("Please enter the Date of Registration");
+            registrationDateTIL.setError("Select the Date of Registration");
         }
 
         if (hospitalError) {
             edhospitalNumberTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edhospitalNumberTIL.setError("Please enter the Hospital Number");
+            edhospitalNumberTIL.setError("Enter the Hospital Number");
         }
 
         if (genderError) {
             fillGenderTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillGenderTIL.setError("Please enter the Gender");
+            fillGenderTIL.setError("Select the Gender");
         }
 
         if (employmentNull) {
             fillEmploymentStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillEmploymentStatusTIL.setError("Please select the Employment Status");
+            fillEmploymentStatusTIL.setError("Select the Employment Status");
         }
 
         if (maritalNull) {
             fillMaritalStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillMaritalStatusTIL.setError("Please select the Marital Status");
+            fillMaritalStatusTIL.setError("Select the Marital Status");
         }
 
         if (educationNull) {
             fillEducationLevelTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillEducationLevelTIL.setError("Please select the Education Level");
+            fillEducationLevelTIL.setError("Select the Education Level");
         }
 
         if (phoneNull) {
             edPhoneTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edPhoneTIL.setError("Please enter the Phone Number");
+            edPhoneTIL.setError("Enter the Phone Number");
         }
 
         if (stateError) {
             fillStateTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillStateTIL.setError("Please select the State");
+            fillStateTIL.setError("Select the State");
         }
 
         if (provinceError) {
             fillProvinceDistrictLGATIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillProvinceDistrictLGATIL.setError("Please select the Province/LGA");
+            fillProvinceDistrictLGATIL.setError("Select the Province/LGA");
         }
 
 

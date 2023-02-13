@@ -21,6 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
+import org.lamisplus.datafi.activities.biometrics.BiometricsActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
@@ -131,10 +132,10 @@ public class PatientDashboardActivity extends LamisBaseActivity {
     }
 
     public void startPatientPBSActivity(long patientId) {
-//        Intent pbsProgram = new Intent(this, PatientDashboardFingerPrintsActivity.class);
-//        pbsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-//                String.valueOf(patientId));
-//        startActivity(pbsProgram);
+        Intent pbsProgram = new Intent(this, BiometricsActivity.class);
+        pbsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                String.valueOf(patientId));
+        startActivity(pbsProgram);
     }
 
     private static void animateFAB(boolean isFABClosed) {

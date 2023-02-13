@@ -8,7 +8,9 @@ import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.PostTest;
+import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.StringUtils;
 
 public class PostTestPresenter extends LamisBasePresenter implements PostTestContract.Presenter {
 
@@ -38,23 +40,58 @@ public class PostTestPresenter extends LamisBasePresenter implements PostTestCon
 
     @Override
     public void confirmCreate(PostTest postTest, String packageName) {
-        String postTestEncounter = new Gson().toJson(postTest);
-        Encounter encounter = new Encounter();
-        encounter.setName(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM);
-        encounter.setPerson(patientId);
-        encounter.setPackageName(packageName);
-        encounter.setDataValues(postTestEncounter);
-        encounter.save();
-
-        postTestInfoView.startActivityForRecencyForm();
+        if(validate(postTest)) {
+            String postTestEncounter = new Gson().toJson(postTest);
+            Encounter encounter = new Encounter();
+            encounter.setName(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM);
+            encounter.setPerson(patientId);
+            encounter.setPackageName(packageName);
+            encounter.setDataValues(postTestEncounter);
+            encounter.save();
+            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("Positive")) {
+                postTestInfoView.startActivityForRecencyForm();
+            }else{
+                postTestInfoView.startDashboardActivity();
+            }
+        }else {
+            postTestInfoView.scrollToTop();
+        }
     }
 
     @Override
     public void confirmUpdate(PostTest postTest, Encounter encounter) {
-        String s = new Gson().toJson(postTest);
-        encounter.setDataValues(s);
-        encounter.save();
-        postTestInfoView.startActivityForRecencyForm();
+        if(validate(postTest)) {
+            String s = new Gson().toJson(postTest);
+            encounter.setDataValues(s);
+            encounter.save();
+            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("Positive")) {
+                postTestInfoView.startActivityForRecencyForm();
+            }else{
+                postTestInfoView.startDashboardActivity();
+            }
+        }else{
+            postTestInfoView.scrollToTop();
+        }
+    }
+
+    public boolean validate(PostTest postTest) {
+        boolean hivTestResultError = false;
+
+        postTestInfoView.setErrorsVisibility(hivTestResultError);
+
+        if (StringUtils.isBlank(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult())) {
+            hivTestResultError = true;
+        }
+
+        boolean result = !hivTestResultError;
+
+        if (result) {
+            return true;
+        } else {
+            postTestInfoView.setErrorsVisibility(hivTestResultError);
+            return false;
+        }
+
     }
 
     @Override

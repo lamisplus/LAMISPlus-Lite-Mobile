@@ -41,7 +41,10 @@ public class EncounterDAO {
      */
     public static Encounter findFormByPatient(String formName, String patientId) {
         Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
-        return encounter;
+        if(encounter != null) {
+            return encounter;
+        }
+        return null;
     }
 
     /**
@@ -168,6 +171,16 @@ public class EncounterDAO {
     public static List<Encounter> getUnsyncedEncounters(){
         List<Encounter> encounter = new Select().from(Encounter.class).where("synced=?", 0).execute();
         return encounter;
+    }
+
+    public static List<Encounter> getUnsyncedEncounters(String formName){
+        List<Encounter> encounter = new Select().from(Encounter.class).where("synced=? AND name=?", 0, formName).execute();
+        return encounter;
+    }
+
+    public static int countUnsyncedEncounters(String formName){
+        List<Encounter> encounter = new Select().from(Encounter.class).where("synced = ? AND name=?", 0, formName).execute();
+        return encounter.size();
     }
 
 }

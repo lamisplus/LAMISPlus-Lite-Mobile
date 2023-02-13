@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Initial HIV Test 1:"
+            android:text="Initial Test:"
             android:textColor="?android:attr/textColorPrimary" />
 
         <LinearLayout
@@ -41,9 +41,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Date "
+                android:hint="Date* "
                 app:errorEnabled="true"
-                app:helperText="Date">
+                app:helperText="Date*">
 
                 <EditText
                     android:id="@+id/edDateTest1"
@@ -65,9 +65,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Result"
+                android:hint="Result*"
                 app:errorEnabled="true"
-                app:helperText="Result ">
+                app:helperText="Result*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoResultTest1"
@@ -80,373 +80,523 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Confirmatory Test:"
-            android:textColor="?android:attr/textColorPrimary" />
-
         <LinearLayout
+            android:id="@+id/confirmatoryTestLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date "
-                app:errorEnabled="true"
-                app:helperText="Date">
+                android:text="Confirmatory Test:"
+                android:textColor="?android:attr/textColorPrimary" />
 
-                <EditText
-                    android:id="@+id/edConfirmDate1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="Date"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Result"
-                app:errorEnabled="true"
-                app:helperText="Result">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoConfirmResult1"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date*"
+                    app:errorEnabled="true"
+                    app:helperText="Date*">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/edConfirmDate1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="Date*"
+                        android:inputType="text" />
 
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tie Breaker Test:" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date "
-                app:errorEnabled="true"
-                app:helperText="Date">
-
-                <EditText
-                    android:id="@+id/edTieBreaker1"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="Date"
-                    android:inputType="text" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Result"
+                    app:errorEnabled="true"
+                    app:helperText="Result">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoConfirmResult1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Result"
-                app:errorEnabled="true"
-                app:helperText="Result">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoResultTieBreaker1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Initial HIV Test 2:"
-            android:textColor="?android:attr/textColorPrimary" />
-
         <LinearLayout
+            android:id="@+id/tieBreakerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date "
-                app:errorEnabled="true"
-                app:helperText="Date">
+                android:text="Tie Breaker Test:" />
 
-                <EditText
-                    android:id="@+id/edDateTest2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="Date"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Result"
-                app:errorEnabled="true"
-                app:helperText="Result ">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoResultTest2"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date "
+                    app:errorEnabled="true"
+                    app:helperText="Date">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/edTieBreaker1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Result"
+                    app:errorEnabled="true"
+                    app:helperText="Result">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoResultTieBreaker1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/testResult1Message"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Confirmatory Test:"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="#fff"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
         <LinearLayout
+            android:id="@+id/initialHivTest2Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date "
-                app:errorEnabled="true"
-                app:helperText="Date">
+                android:text="Retesting:"
+                android:textColor="?android:attr/textColorPrimary" />
 
-                <EditText
-                    android:id="@+id/edConfirmDate2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="Date"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Result"
-                app:errorEnabled="true"
-                app:helperText="Result">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoConfirmResult2"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date "
+                    app:errorEnabled="true"
+                    app:helperText="Date">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/edDateTest2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Result"
+                    app:errorEnabled="true"
+                    app:helperText="Result ">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoResultTest2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tie Breaker Test 2:" />
-
         <LinearLayout
+            android:id="@+id/confirmatoryTest2Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Date "
-                app:errorEnabled="true"
-                app:helperText="Date">
+                android:text="Confirmatory Test 2:"
+                android:textColor="?android:attr/textColorPrimary" />
 
-                <EditText
-                    android:id="@+id/edDateTieBreaker2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="Date"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Result"
-                app:errorEnabled="true"
-                app:helperText="Result">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoTieBreakerResult2"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date "
+                    app:errorEnabled="true"
+                    app:helperText="Date">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/edConfirmDate2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Result"
+                    app:errorEnabled="true"
+                    app:helperText="Result">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoConfirmResult2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/tieBreakerTest2Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="8dp"
-            android:text="CD4"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tie Breaker Test 2:" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Date "
+                    app:errorEnabled="true"
+                    app:helperText="Date">
+
+                    <EditText
+                        android:id="@+id/edDateTieBreaker2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Result"
+                    app:errorEnabled="true"
+                    app:helperText="Result">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoTieBreakerResult2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/testResult2Message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+
+
+
+
+
+
+
+
 
         <LinearLayout
+            android:id="@+id/prepLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="CD4 Count"
-                app:errorEnabled="true"
-                app:helperText="CD4 Count">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoCd4Count"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Prep Offered"
+                    app:errorEnabled="true"
+                    app:helperText="Prep Offered">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoprepOffered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:id="@+id/prepAcceptedTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Prep Accepted"
+                    app:errorEnabled="true"
+                    app:helperText="Prep Accepted"
+                    android:visibility="gone">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoprepAccepted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/cd4Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="CD4 Count Value"
-                app:errorEnabled="true"
-                android:visibility="gone"
-                app:helperText="CD4 Count Value">
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="8dp"
+                android:text="CD4"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoCd4CountSelect"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="CD4 Count Value"
-                app:errorEnabled="true"
-                android:visibility="gone"
-                app:helperText="CD4 Count Value">
+                android:weightSum="2">
 
-                <EditText
-                    android:id="@+id/edcd4SemiQuantitative"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="CD4 Count"
+                    app:errorEnabled="true"
+                    app:helperText="CD4 Count">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCd4Count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:id="@+id/cd4SemiQuantitativeTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
                     android:hint="CD4 Count Value"
-                    android:inputType="text" />
+                    android:visibility="gone"
+                    app:errorEnabled="true"
+                    app:helperText="CD4 Count Value">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autocd4SemiQuantitative"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:id="@+id/edcd4FlowCyteometryTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="CD4 Count Value"
+                    android:visibility="gone"
+                    app:errorEnabled="true"
+                    app:helperText="CD4 Count Value">
+
+                    <EditText
+                        android:id="@+id/edcd4FlowCyteometry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:hint="CD4 Count Value"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -475,9 +625,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Syphilis test result *"
+                android:hint="Syphilis test result"
                 app:errorEnabled="true"
-                app:helperText="Hepatitis B virus test result *">
+                app:helperText="Syphilis test result">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoSyphilis"
@@ -516,9 +666,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Hepatitis B virus test result *"
+                android:hint="Hepatitis B virus test result"
                 app:errorEnabled="true"
-                app:helperText="Hepatitis B virus test result *">
+                app:helperText="Hepatitis B virus test result">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoHepatitisB"
@@ -585,6 +735,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
                     android:hint="Longitude"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -606,6 +759,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
                     android:hint="Latitude"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>

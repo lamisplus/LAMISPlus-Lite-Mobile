@@ -31,7 +31,11 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("indexClient")
     @Expose
-    private boolean indexClient;
+    private String indexClient;
+
+    @SerializedName("indexClientCode")
+    @Expose
+    private String indexClientCode;
 
     @SerializedName("numChildren")
     @Expose
@@ -114,12 +118,20 @@ public class ClientIntake implements Serializable {
         this.firstTimeVisit = firstTimeVisit;
     }
 
-    public boolean isIndexClient() {
+    public String getIndexClient() {
         return indexClient;
     }
 
-    public void setIndexClient(boolean indexClient) {
+    public void setIndexClient(String indexClient) {
         this.indexClient = indexClient;
+    }
+
+    public String getIndexClientCode() {
+        return indexClientCode;
+    }
+
+    public void setIndexClientCode(String indexClientCode) {
+        this.indexClientCode = indexClientCode;
     }
 
     public int getNumChildren() {

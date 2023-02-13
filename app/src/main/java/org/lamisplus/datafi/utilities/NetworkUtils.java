@@ -31,7 +31,8 @@ public final class NetworkUtils {
                     = (ConnectivityManager) LamisPlus.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-            if(isConnected)
+            boolean isUrlReachable = isURLReachable();
+            if(isConnected || isUrlReachable)
                 return true;
             else
             {
@@ -49,7 +50,7 @@ public final class NetworkUtils {
 
     static public boolean isURLReachable() {
         try {
-            InetAddress.getByName("192.168.43.243").isReachable(3000); //Replace with your name
+            InetAddress.getByName("google.com").isReachable(3000); //Replace with your name
             return true;
         } catch (Exception e) {
             e.printStackTrace();

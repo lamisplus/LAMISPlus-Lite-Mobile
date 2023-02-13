@@ -5,7 +5,7 @@ import org.lamisplus.datafi.activities.LamisBaseView;
 
 public class LoginContract {
 
-    interface View extends LamisBaseView<LoginContract.Presenter>{
+    interface View extends LamisBaseView<Presenter>{
         void startActivityForDashboard();
         void finishLoginActivity();
 
@@ -14,6 +14,7 @@ public class LoginContract {
         void hideLoadingAnimation();
 
         void hideSoftKeys();
+        void hideURLInputField();
 
         void showInvalidURLSnackbar(String message);
     }

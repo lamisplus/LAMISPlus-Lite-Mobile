@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.requestresult;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,8 @@ public class RequestResultActivity extends LamisBaseActivity {
     public RequestResultContract.Presenter mPresenter;
     public RequestResultFragment requestResultFragment;
     private Encounter mforms;
+
+    private String patientID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +43,24 @@ public class RequestResultActivity extends LamisBaseActivity {
         }
 
         mPresenter = new RequestResultPresenter(requestResultFragment, patientID);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientID);
+        onSaveInstanceState(bundle);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

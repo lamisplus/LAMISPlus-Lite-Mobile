@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.findpatient;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,6 +28,7 @@ import com.activeandroid.query.Select;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
+import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskAssessment;
 import org.lamisplus.datafi.models.RiskStratification;
@@ -53,6 +56,8 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
 
     private MenuItem mAddPatientMenuItem;
 
+    private Button mCreatePatientButton;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,9 +73,9 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
 
         mEmptyList = root.findViewById(R.id.emptySyncedPatientList);
         mProgressBar = root.findViewById(R.id.findPatientsInitialProgressBar);
+        mCreatePatientButton = root.findViewById(R.id.createPatientButton);
 
-        // Font config
-        FontsUtil.setFont(this.getActivity().findViewById(android.R.id.content));
+        setListener();
         return root;
     }
 
@@ -78,6 +83,16 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
         return new FindPatientFragment();
     }
 
+    private void setListener(){
+        mCreatePatientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddEditPatientActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+    }
 
     @Override
     public void onDestroy() {
@@ -103,7 +118,7 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
             @Override
             public void run() {
 
-                List<Person> personList = new Select().from(Person.class).execute();
+                List<Person> personList = new Select().from(Person.class).orderBy("id DESC").execute();
                 updateListVisibility(true);
                 updateAdapter(personList);
 
@@ -122,9 +137,15 @@ public class FindPatientFragment extends LamisBaseFragment<FindPatientContract.P
 
     @Override
     public void updateListVisibility(boolean isVisible, @NonNull String replacementWord) {
-            if(isVisible){
-
-            }
+        mProgressBar.setVisibility(View.GONE);
+        if (isVisible) {
+            mFindPatientRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyList.setVisibility(View.GONE);
+        } else {
+            mFindPatientRecyclerView.setVisibility(View.GONE);
+            mEmptyList.setVisibility(View.VISIBLE);
+            mEmptyList.setText(getString(R.string.search_patient_no_results));
+        }
     }
 
 }

@@ -72,7 +72,7 @@ public abstract class LamisPlusSQLiteOpenHelper extends SQLiteOpenHelper {
         }
 
         @Override
-        public void postKey(net.sqlcipher.database.SQLiteDatabase database) {
+        public void postKey(SQLiteDatabase database) {
 
         }
 

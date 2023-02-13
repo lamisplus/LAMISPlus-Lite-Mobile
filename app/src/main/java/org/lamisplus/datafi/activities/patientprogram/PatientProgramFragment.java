@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
@@ -26,9 +28,13 @@ import org.lamisplus.datafi.activities.forms.hts.recency.RecencyActivity;
 import org.lamisplus.datafi.activities.forms.hts.requestresult.RequestResultActivity;
 import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
+import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
 
@@ -53,6 +59,7 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
+            checkPMTCTenabled();
         }
         return root;
     }
@@ -80,8 +87,20 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.htsView:
+                Log.v("Baron", "The patient ID is " + mPresenter.getPatientId());
                 //These checks if a form has been entered and if it has then display the next form till completed and the dashboard is shown
                 Encounter encounterRst = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+
+                if (encounterRst != null) {
+                    RiskStratification rst = new Gson().fromJson(encounterRst.getDataValues(), RiskStratification.class);
+                    if (!rst.isEligible()) {
+                        Intent patientDashboard = new Intent(getContext(), PatientDashboardActivity.class);
+                        patientDashboard.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                                String.valueOf(mPresenter.getPatientId()));
+                        startActivity(patientDashboard);
+                    }
+                }
+
                 if (encounterRst == null) {
                     Intent htsProgram = new Intent(getContext(), RSTActivity.class);
                     htsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
@@ -89,47 +108,47 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
                     startActivity(htsProgram);
                 } else {
                     Encounter encounterClientIntake = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
-                    if(encounterClientIntake == null){
+                    if (encounterClientIntake == null) {
                         Intent clientIntakeProgram = new Intent(getContext(), ClientIntakeActivity.class);
                         clientIntakeProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                 String.valueOf(mPresenter.getPatientId()));
                         startActivity(clientIntakeProgram);
-                    }else {
+                    } else {
                         Encounter encounterPretest = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM, mPresenter.getPatientId());
-                        if(encounterPretest == null){
+                        if (encounterPretest == null) {
                             Intent pretestProgram = new Intent(getContext(), PreTestActivity.class);
                             pretestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                     String.valueOf(mPresenter.getPatientId()));
                             startActivity(pretestProgram);
-                        }else {
+                        } else {
                             Encounter encounterRequestForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
-                            if(encounterRequestForm == null) {
+                            if (encounterRequestForm == null) {
                                 Intent requestResultProgram = new Intent(getContext(), RequestResultActivity.class);
                                 requestResultProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                         String.valueOf(mPresenter.getPatientId()));
                                 startActivity(requestResultProgram);
-                            }else{
+                            } else {
                                 Encounter postTestForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId());
-                                if(postTestForm == null) {
+                                if (postTestForm == null) {
                                     Intent postTestProgram = new Intent(getContext(), PostTestActivity.class);
                                     postTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                             String.valueOf(mPresenter.getPatientId()));
                                     startActivity(postTestProgram);
-                                }else{
+                                } else {
                                     Encounter recencyTestingForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId());
-                                    if(recencyTestingForm == null) {
+                                    if (recencyTestingForm == null) {
                                         Intent recencyProgram = new Intent(getContext(), RecencyActivity.class);
                                         recencyProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                                 String.valueOf(mPresenter.getPatientId()));
                                         startActivity(recencyProgram);
-                                    }else{
+                                    } else {
                                         Encounter elicitationForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ELICITATION, mPresenter.getPatientId());
-                                        if(elicitationForm == null) {
+                                        if (elicitationForm == null) {
                                             Intent elicitationProgram = new Intent(getContext(), ElicitationActivity.class);
                                             elicitationProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                                     String.valueOf(mPresenter.getPatientId()));
                                             startActivity(elicitationProgram);
-                                        }else {
+                                        } else {
                                             Intent patientDashboard = new Intent(getContext(), PatientDashboardActivity.class);
                                             patientDashboard.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                                                     String.valueOf(mPresenter.getPatientId()));
@@ -153,6 +172,7 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
                 Log.v("Baron", "Nothings was clicked " + view.getId());
                 break;
         }
+
     }
 
     @Override
@@ -210,5 +230,13 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
         }
     }
 
+    private void checkPMTCTenabled() {
+        Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
+        if (person != null) {
+            if (("Male").equals(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()))) {
+                mpmtctView.setVisibility(View.GONE);
+            }
+        }
+    }
 
 }

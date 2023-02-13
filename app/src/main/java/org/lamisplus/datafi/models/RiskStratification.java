@@ -20,6 +20,10 @@ public class RiskStratification implements Serializable {
     @Expose
     private String entryPoint;
 
+    @SerializedName("communityEntryPoint")
+    @Expose
+    private String communityEntryPoint;
+
     @SerializedName("age")
     @Expose
     private int age;
@@ -51,6 +55,10 @@ public class RiskStratification implements Serializable {
     @SerializedName("visitDate")
     @Expose
     private String visitDate;
+
+    //This variable should not be exposed as it is used to enable if a patient should go further with the other HTS forms
+    @SerializedName("eligible")
+    private boolean eligible = true;
 
     public long getPersonId() {
         return personId;
@@ -130,5 +138,21 @@ public class RiskStratification implements Serializable {
 
     public void setEntryPoint(String entryPoint) {
         this.entryPoint = entryPoint;
+    }
+
+    public boolean isEligible() {
+        return eligible;
+    }
+
+    public void setEligible(boolean eligible) {
+        this.eligible = eligible;
+    }
+
+    public String getCommunityEntryPoint() {
+        return communityEntryPoint;
+    }
+
+    public void setCommunityEntryPoint(String communityEntryPoint) {
+        this.communityEntryPoint = communityEntryPoint;
     }
 }

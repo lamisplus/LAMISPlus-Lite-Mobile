@@ -18,16 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
-import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
+import org.lamisplus.datafi.activities.patientprofile.PatientProfileActivity;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
-import org.lamisplus.datafi.utilities.FontsUtil;
-import org.lamisplus.datafi.utilities.LamisCustomHandler;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FindPatientRecyclerViewAdapter extends RecyclerView.Adapter<FindPatientRecyclerViewAdapter.PatientViewHolder> {
     private FindPatientFragment mContext;
@@ -69,14 +67,14 @@ public class FindPatientRecyclerViewAdapter extends RecyclerView.Adapter<FindPat
 
     @NonNull
     @Override
-    public FindPatientRecyclerViewAdapter.PatientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PatientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_find_synced_patients, parent, false);
-        FontsUtil.setFont((ViewGroup) itemView);
+        //FontsUtil.setFont((ViewGroup) itemView);
         return new PatientViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FindPatientRecyclerViewAdapter.PatientViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PatientViewHolder holder, int position) {
         holder.update(mItems.get(position));
         final Person person = mItems.get(position);
 
@@ -158,7 +156,7 @@ public class FindPatientRecyclerViewAdapter extends RecyclerView.Adapter<FindPat
             });
             itemView.setOnClickListener(view -> {
                 if (!multiSelect) {
-                    Intent intent = new Intent(mContext.getActivity(), PatientDashboardActivity.class);
+                    Intent intent = new Intent(mContext.getActivity(), PatientProfileActivity.class);
                     intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.getId());
                     mContext.startActivity(intent);
                 } else {

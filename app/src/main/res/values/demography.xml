@@ -55,7 +55,7 @@
         <item>Cousin</item>
         <item>Daughter</item>
         <item>Father</item>
-        <item>Grand Parent</item>
+        <item>Grand parent</item>
         <item>Mother</item>
         <item>Son</item>
         <item>Spouse</item>
@@ -71,11 +71,22 @@
         <item>FP</item>
         <item>OPD</item>
         <item>Ward</item>
-        <item>OutReach</item>
+        <item>Outreach</item>
         <item>Standalone HTS</item>
         <item>Others</item>
         <item>Malnutrition Clinic</item>
+        <item>SNT</item>
+        <item>PNS</item>
+        <item>Self Testing</item>
     </string-array>
+
+    <string-array name="community_entry_point">
+        <item>OVC</item>
+        <item>Mobile</item>
+        <item>Index</item>
+        <item>PMTCT ANC Only</item>
+    </string-array>
+
 
     <string-array name="ct">
         <item>STI</item>
@@ -138,8 +149,8 @@
         <item>FSW</item>
         <item>PWID</item>
         <item>SP</item>
-        <item>Transgender</item>
-        <item>Prison</item>
+        <item>TRANSGENDER</item>
+        <item>PRISON</item>
         <item>Gen Pop</item>
         <item>Children of KP</item>
     </string-array>
@@ -223,6 +234,19 @@
     <string-array name="cd4_count">
         <item>Semi-Quantitative</item>
         <item>Flow Cyteometry</item>
+    </string-array>
+
+    <string-array name="positive_negative">
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
+
+    <string-array name="last_hiv_test_done">
+        <item>&lt; 1 month</item>
+        <item>1-3 Months</item>
+        <item>4-6 Months</item>
+        <item>&gt; 6 Months</item>
+        <item>Never</item>
     </string-array>
 
 </resources>

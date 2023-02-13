@@ -46,8 +46,8 @@ public class PatientDashboardFormDetailsFragment extends PatientDashboardFragmen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_patient_form_details, null, false);
-        FontsUtil.setFont(this.getActivity().findViewById(android.R.id.content));
-        FontsUtil.setFont((ViewGroup) rootView);
+//        FontsUtil.setFont(this.getActivity().findViewById(android.R.id.content));
+//        FontsUtil.setFont((ViewGroup) rootView);
         initViews(rootView);
         setListeners();
         return rootView;

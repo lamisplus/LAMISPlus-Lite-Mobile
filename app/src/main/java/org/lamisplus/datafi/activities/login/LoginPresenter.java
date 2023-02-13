@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.api.BearerApi;
@@ -14,6 +15,7 @@ import org.lamisplus.datafi.classes.LoginRequest;
 import org.lamisplus.datafi.classes.TokenRequest;
 import org.lamisplus.datafi.dao.AccountDAO;
 import org.lamisplus.datafi.models.Account;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.StringUtils;
@@ -21,6 +23,7 @@ import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +53,17 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
 
     @Override
     public void subscribe() {
+        if (!isFirstTimeLogin()) {
+            loginInfoView.hideURLInputField();
+        }
+    }
 
+    private boolean isFirstTimeLogin() {
+        int accounts = AccountDAO.countUsers();
+        if (accounts > 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -58,9 +71,9 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
         loginInfoView.hideSoftKeys();
         loginInfoView.showLocationLoadingAnimation();
         //If the account username is empty then this user never logged in
-        if(!username.isEmpty() && !password.isEmpty() && !url.isEmpty()) {
+        Account account = new Account();
+        if (!username.isEmpty() && !password.isEmpty() && !url.isEmpty()) {
             Account accountLogin = AccountDAO.checkUserExists(username, password);
-            Account account = new Account();
             if (AccountDAO.countUsers() <= 0) {
                 if (NetworkUtils.isOnline()) {
                     String token = new BearerApi(url, username, password, rememberMe).getToken();
@@ -84,14 +97,37 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
                                         lamisPlus.setUsername(username);
                                         lamisPlus.setServerUrl(url);
 
-                                        if(AccountDAO.countUsers() <= 0) {
+                                        if (AccountDAO.countUsers() <= 0) {
                                             account.setPassword(password);
                                             account.setUsername(username);
                                             account.setServerUrl(url);
 
                                             account.setCurrentOrganisationUnitId(currentOrganisationUnitId);
                                             account.setCurrentOrganisationUnitName(currentOrganisationUnitName);
+                                            account.setSelected(1);
                                             account.save();
+                                        }
+
+                                        //Run this function to select all Organizations in the Database and skip the one that was already selected
+                                        JSONArray jsonArray = jsonObject.getJSONArray("applicationUserOrganisationUnits");
+                                        for (int j = 0; j < jsonArray.length(); j++) {
+                                            JSONObject objSections = jsonArray.getJSONObject(j);
+
+                                            NumberFormat defFormUnitId = NumberFormat.getInstance();
+                                            Number dOther = defFormUnitId.parse(objSections.getString("organisationUnitId"));
+                                            int organisationUnitId = dOther.intValue();
+                                            String organisationUnitName = objSections.getString("organisationUnitName");
+
+                                            if (currentOrganisationUnitId != organisationUnitId) {
+                                                Account accountOther = new Account();
+                                                accountOther.setPassword(password);
+                                                accountOther.setUsername(username);
+                                                accountOther.setServerUrl(url);
+
+                                                accountOther.setCurrentOrganisationUnitId(organisationUnitId);
+                                                accountOther.setCurrentOrganisationUnitName(organisationUnitName);
+                                                accountOther.save();
+                                            }
                                         }
 
                                         lamisPlus.setSessionToken(url);
@@ -104,8 +140,7 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
                                         e.printStackTrace();
                                         throw new RuntimeException(e);
                                     }
-                                }else{
-                                    Log.v("Baron", "No response from server");
+                                } else {
                                     loginInfoView.showInvalidURLSnackbar("Failed to fetch response from the server");
                                 }
                                 loginInfoView.hideLoadingAnimation();
@@ -117,23 +152,22 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
                                 loginInfoView.hideLoadingAnimation();
                             }
                         });
-                    }else{
+                    } else {
                         loginInfoView.showInvalidURLSnackbar("Login failed. Please check your server connection string");
                         loginInfoView.hideLoadingAnimation();
                     }
                 } else {
                     loginInfoView.showInvalidURLSnackbar("Connection is needed for a first time login");
                     loginInfoView.hideLoadingAnimation();
-                    //ToastUtil.showLongToast(LamisPlus.getInstance().getBaseContext(), ToastUtil.ToastType.WARNING, "Connection is needed for a first time login");
                 }
             } else {
                 if (accountLogin == null) {
                     loginInfoView.showInvalidURLSnackbar("The login details you supplied is invalid.");
                     loginInfoView.hideLoadingAnimation();
-                    //ToastUtil.showLongToast(LamisPlus.getInstance().getBaseContext(), ToastUtil.ToastType.ERROR, "The login details you supplied is invalid.");
                 } else {
-                    account.setServerUrl(url);
-                    account.save();
+//                    Account.load(Account.class, account.getId());
+//                    account.setServerUrl(url);
+//                    account.save();
 
                     lamisPlus.setSessionToken(url);
                     lamisPlus.setPasswordAndHashedPassword(password);
@@ -143,11 +177,14 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
                     loginInfoView.finishLoginActivity();
                 }
             }
-        }else{
+        } else {
             loginInfoView.showInvalidURLSnackbar("Please enter all fields before submitting");
             loginInfoView.hideLoadingAnimation();
-            //ToastUtil.showLongToast(LamisPlus.getInstance().getBaseContext(), ToastUtil.ToastType.ERROR, "Please enter all fields before submitting");
         }
+    }
+
+    public void getLocations(JSONObject jsonObject) {
+
     }
 
 }

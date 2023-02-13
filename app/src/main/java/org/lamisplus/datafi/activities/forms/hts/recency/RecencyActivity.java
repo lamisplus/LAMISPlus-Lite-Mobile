@@ -1,6 +1,8 @@
 package org.lamisplus.datafi.activities.forms.hts.recency;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +16,7 @@ public class RecencyActivity extends LamisBaseActivity {
     public RecencyContract.Presenter mPresenter;
     public RecencyFragment recencyFragment;
     private Encounter mforms;
+    String patientID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,12 +37,30 @@ public class RecencyActivity extends LamisBaseActivity {
         } else {
             patientBundle = getIntent().getExtras();
         }
-        String patientID = "";
+
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
 
         mPresenter = new RecencyPresenter(recencyFragment, patientID);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientID);
+        onSaveInstanceState(bundle);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

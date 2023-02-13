@@ -21,12 +21,12 @@ import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashb
 
 class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
 
-    private static final int TAB_COUNT = 3;
+    private static final int TAB_COUNT = 2;
 
-    private static final int DETAILS_TAB_POS = 0;
+    //private static final int DETAILS_TAB_POS = 0;
 
-    private static final int FORM_DETAILS_POS = 1;
-    private static final int FINGERPRINTS_TAB_POS = 2;
+    private static final int FORM_DETAILS_POS = 0;
+    private static final int FINGERPRINTS_TAB_POS = 1;
 
     private SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
@@ -43,10 +43,10 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         switch (i) {
-            case DETAILS_TAB_POS:
-                PatientDashboardDetailsFragment patientDashboardDetailsFragment = PatientDashboardDetailsFragment.newInstance();
-                new PatientDashboardDetailsPresenter(mPatientId, patientDashboardDetailsFragment);
-                return patientDashboardDetailsFragment;
+//            case DETAILS_TAB_POS:
+//                PatientDashboardDetailsFragment patientDashboardDetailsFragment = PatientDashboardDetailsFragment.newInstance();
+//                new PatientDashboardDetailsPresenter(mPatientId, patientDashboardDetailsFragment);
+//                return patientDashboardDetailsFragment;
             case FORM_DETAILS_POS:
                 PatientDashboardFormDetailsFragment patientDashboardFormDetailsFragment = PatientDashboardFormDetailsFragment.newInstance();
                 new PatientDashboardFormDetailsPresenter(mPatientId, patientDashboardFormDetailsFragment);
@@ -65,8 +65,8 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case DETAILS_TAB_POS:
-                return context.getString(R.string.patient_scroll_tab_details_label);
+//            case DETAILS_TAB_POS:
+//                return context.getString(R.string.patient_scroll_tab_details_label);
             case FORM_DETAILS_POS:
                 return context.getString(R.string.patient_scroll_tab_formdetails_label);
             case FINGERPRINTS_TAB_POS:

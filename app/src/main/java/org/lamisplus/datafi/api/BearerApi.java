@@ -32,7 +32,6 @@ public class BearerApi {
     private LamisPlus lamisPlus = LamisPlus.getInstance();
 
     public BearerApi(String url, String username, String password, boolean rememberMe) {
-        Log.v("Baron", "The URL is " + url + ApplicationConstants.API.REST_ENDPOINT + "authenticate");
         this.url = url;
         this.username = username;
         this.password = password;

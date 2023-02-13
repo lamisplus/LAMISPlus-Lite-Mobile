@@ -197,11 +197,12 @@ public class Person extends Model implements Serializable {
     }
 
     public Contact getContacts() {
-        if (!contact.isEmpty()) {
-            return pullContactList().get(0);
-        } else {
-            return null;
+        if(contact != null) {
+            if (!contact.isEmpty()) {
+                return pullContactList().get(0);
+            }
         }
+        return null;
     }
 
     public void setAddresses(Address addresses) {

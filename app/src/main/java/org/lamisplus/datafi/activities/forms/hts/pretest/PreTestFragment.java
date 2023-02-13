@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.pretest;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.KnowledgeAssessment;
 import org.lamisplus.datafi.models.Person;
@@ -93,7 +96,18 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
     private String packageName;
     private TextInputLayout clientInformPreventingsHivTransTIL;
     private TextInputLayout clientPregnantTIL;
+    private TextInputLayout autoComplaintsOfScrotalTIL;
     private LinearLayout sexPartnerRiskAssessLayout;
+
+    private TextInputLayout everHadSexualIntercourseTIL;
+    private TextInputLayout bloodtransInlastThreeMonthsTIL;
+    private TextInputLayout uprotectedSexWithCasualLastThreeMonthsTIL;
+    private TextInputLayout uprotectedSexWithRegularPartnerLastThreeMonthsTIL;
+    private TextInputLayout autounprotectedVaginalSexTIL;
+    private TextInputLayout uprotectedAnalSexHivRiskAssessTIL;
+    private TextInputLayout stiLastThreeMonthsTIL;
+    private TextInputLayout sexUnderInfluenceTIL;
+    private TextInputLayout moreThanOneSexPartnerLastThreeMonthsTIL;
 
     @Nullable
     @Override
@@ -180,7 +194,18 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
 
         clientInformPreventingsHivTransTIL = root.findViewById(R.id.clientInformPreventingsHivTransTIL);
         clientPregnantTIL = root.findViewById(R.id.clientPregnantTIL);
+        autoComplaintsOfScrotalTIL = root.findViewById(R.id.autoComplaintsOfScrotalTIL);
         sexPartnerRiskAssessLayout = root.findViewById(R.id.sexPartnerRiskAssessLayout);
+
+        everHadSexualIntercourseTIL = root.findViewById(R.id.everHadSexualIntercourseTIL);
+        bloodtransInlastThreeMonthsTIL = root.findViewById(R.id.bloodtransInlastThreeMonthsTIL);
+        uprotectedSexWithCasualLastThreeMonthsTIL = root.findViewById(R.id.uprotectedSexWithCasualLastThreeMonthsTIL);
+        uprotectedSexWithRegularPartnerLastThreeMonthsTIL = root.findViewById(R.id.uprotectedSexWithRegularPartnerLastThreeMonthsTIL);
+        autounprotectedVaginalSexTIL = root.findViewById(R.id.autounprotectedVaginalSexTIL);
+        uprotectedAnalSexHivRiskAssessTIL = root.findViewById(R.id.uprotectedAnalSexHivRiskAssessTIL);
+        stiLastThreeMonthsTIL = root.findViewById(R.id.stiLastThreeMonthsTIL);
+        sexUnderInfluenceTIL = root.findViewById(R.id.sexUnderInfluenceTIL);
+        moreThanOneSexPartnerLastThreeMonthsTIL = root.findViewById(R.id.moreThanOneSexPartnerLastThreeMonthsTIL);
     }
 
     private void setListeners() {
@@ -229,36 +254,46 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
         autoUrethralDischarge.setAdapter(adapterBooleanAnswers);
     }
 
-    private void hideFieldsDefaultSelected(PreTest preTest){
-        if(StringUtils.changeBooleanToString(preTest.getKnowledgeAssessment().isPreviousTestedHIVNegative()).equals("Yes")){
+    private void hideFieldsDefaultSelected(PreTest preTest) {
+        if (StringUtils.changeBooleanToString(preTest.getKnowledgeAssessment().isPreviousTestedHIVNegative()).equals("Yes")) {
             clientInformPreventingsHivTransTIL.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             clientInformPreventingsHivTransTIL.setVisibility(View.GONE);
         }
 
-        if(StringUtils.changeBooleanToString(preTest.getSexPartnerRiskAssessment().isSexPartnerHivPositive()).equals("Yes")){
+        if (StringUtils.changeBooleanToString(preTest.getSexPartnerRiskAssessment().isSexPartnerHivPositive()).equals("Yes")) {
             sexPartnerRiskAssessLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             sexPartnerRiskAssessLayout.setVisibility(View.GONE);
         }
     }
 
-    private void hideFieldsDefault(){
+    private void hideFieldsDefault() {
         Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
-        if(CodesetsDAO.findCodesetsDisplayById(person.getSexId()).equals("Male")){
-            clientPregnantTIL.setVisibility(View.GONE);
-        }else{
-            clientPregnantTIL.setVisibility(View.GONE);
+        if (person != null) {
+            if (CodesetsDAO.findCodesetsDisplayById(person.getSexId()).equals("Female")) {
+                autoComplaintsOfScrotalTIL.setVisibility(View.GONE);
+                ClientIntake clientIntake = EncounterDAO.findClientIntakeFromForm(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
+                if (clientIntake.getPregnant() != 0) {
+                    if(CodesetsDAO.findCodesetsDisplayById(clientIntake.getPregnant()).equals("Pregnant")) {
+                        autoclientPregnant.setText("Yes", false);
+                    }
+                }
+                clientPregnantTIL.setVisibility(View.VISIBLE);
+            } else {
+                autoComplaintsOfScrotalTIL.setVisibility(View.VISIBLE);
+                clientPregnantTIL.setVisibility(View.GONE);
+            }
         }
     }
 
-    private void dropDownClickListeners(){
+    private void dropDownClickListeners() {
         autoPreviousTestedHIVNegative.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(ViewUtils.getInput(autoPreviousTestedHIVNegative).equals("Yes")){
+                if (ViewUtils.getInput(autoPreviousTestedHIVNegative).equals("Yes")) {
                     clientInformPreventingsHivTransTIL.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     clientInformPreventingsHivTransTIL.setVisibility(View.GONE);
                 }
             }
@@ -267,9 +302,9 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
         autoSexPartnerHivPositive.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(ViewUtils.getInput(autoSexPartnerHivPositive).equals("Yes")){
+                if (ViewUtils.getInput(autoSexPartnerHivPositive).equals("Yes")) {
                     sexPartnerRiskAssessLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     sexPartnerRiskAssessLayout.setVisibility(View.GONE);
                 }
             }
@@ -552,6 +587,7 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
             preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(preTestProgram);
+            getActivity().finish();
         } else {
             startDashboardActivity();
         }
@@ -563,6 +599,53 @@ public class PreTestFragment extends LamisBaseFragment<PreTestContract.Presenter
         preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(mPresenter.getPatientId()));
         startActivity(preTestProgram);
+        getActivity().finish();
+    }
+
+    @Override
+    public void scrollToTop() {
+        ScrollView scrollView = this.getActivity().findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0, scrollView.getPaddingTop());
+    }
+
+    @Override
+    public void setErrorsVisibility(boolean everHadSexualIntercourse, boolean bloodtransInlastThreeMonths, boolean uprotectedSexWithCasualLastThreeMonths, boolean uprotectedSexWithRegularPartnerLastThreeMonths,
+                                    boolean autounprotectedVaginalSex, boolean uprotectedAnalSexHivRiskAssess, boolean stiLastThreeMonths, boolean sexUnderInfluence, boolean moreThanOneSexPartnerLastThreeMonths) {
+        if(everHadSexualIntercourse){
+            everHadSexualIntercourseTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(bloodtransInlastThreeMonths){
+            bloodtransInlastThreeMonthsTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(uprotectedSexWithCasualLastThreeMonths){
+            uprotectedSexWithCasualLastThreeMonthsTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(uprotectedSexWithRegularPartnerLastThreeMonths){
+            uprotectedSexWithRegularPartnerLastThreeMonthsTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(autounprotectedVaginalSex){
+            autounprotectedVaginalSexTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(uprotectedAnalSexHivRiskAssess){
+            uprotectedAnalSexHivRiskAssessTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(stiLastThreeMonths){
+            stiLastThreeMonthsTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(sexUnderInfluence){
+            sexUnderInfluenceTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if(moreThanOneSexPartnerLastThreeMonths){
+            moreThanOneSexPartnerLastThreeMonthsTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
     }
 
 }

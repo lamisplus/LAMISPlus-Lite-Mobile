@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.elicitation;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,7 @@ public class ElicitationActivity extends LamisBaseActivity {
     public ElicitationContract.Presenter mPresenter;
     public ElicitationFragment elicitationFragment;
     private Encounter mforms;
+    String patientID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,12 +36,30 @@ public class ElicitationActivity extends LamisBaseActivity {
         } else {
             patientBundle = getIntent().getExtras();
         }
-        String patientID = "";
+
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
 
         mPresenter = new ElicitationPresenter(elicitationFragment, patientID);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientID);
+        onSaveInstanceState(bundle);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

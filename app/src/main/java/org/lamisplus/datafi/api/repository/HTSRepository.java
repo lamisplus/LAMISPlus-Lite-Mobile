@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.listeners.retrofit.DefaultCallbackListener;
 import org.lamisplus.datafi.models.ClientIntake;
@@ -58,19 +59,18 @@ public class HTSRepository extends RetrofitRepository{
                         encounter.setDataValues(new Gson().toJson(riskStratification));
                         encounter.setSynced(true);
                         encounter.save();
-                        Log.v("Baron", "RST Synced");
+                        LamisCustomFileHandler.writeLogToFile("RST Synced");
 
                         callbackListener.onResponse();
                     }else{
-                        LamisCustomHandler.showJson(response.errorBody().toString());
-                        Log.v("Baron", "Couldn't sync the RST");
+                        LamisCustomFileHandler.writeLogToFile("Couldn't sync the RST, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                         callbackListener.onErrorResponse(response.errorBody().toString() + " - " + response.message() + " - " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RiskStratification> call, Throwable t) {
-                    Log.v("Baron", "Error message is " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("RST Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -103,19 +103,20 @@ public class HTSRepository extends RetrofitRepository{
                             encounter.setDataValues(new Gson().toJson(clientIntake));
                             encounter.setSynced(true);
                             encounter.save();
-                            Log.v("Baron", "The hts id is now " + id);
+
                         } catch (JSONException | ParseException e) {
                             throw new RuntimeException(e);
                         }
-                        LamisCustomHandler.showJson(response.body());
-                        Log.v("Baron", "Client Intake has synced. Response Code: " + response.code());
+                        LamisCustomFileHandler.writeLogToFile("Client Intake Form Synced");
                         callbackListener.onResponse();
+                    }else{
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Client Intake Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Client Intake " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Client Intake Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -129,7 +130,6 @@ public class HTSRepository extends RetrofitRepository{
             ClientIntake clientIntake = EncounterDAO.findClientIntakeFromForm(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, encounter.getPerson());
             preTest.setHtsClientId(clientIntake.getHtsClientId());
 
-            Log.v("Baron", "Pretest Values are " + new Gson().toJson(preTest));
             JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(preTest)).getAsJsonObject();
 
             Call<Object> preTestCounselingCall = restApi.updatePreTestCounseling(clientIntake.getHtsClientId(), jsonObject);
@@ -139,16 +139,16 @@ public class HTSRepository extends RetrofitRepository{
                     if(response.isSuccessful()){
                         encounter.setSynced(true);
                         encounter.save();
+                        LamisCustomFileHandler.writeLogToFile("Pre Test Form Synced");
                     }else{
-                        Log.v("Baron", "Pre Test not synced");
-                        LamisCustomHandler.showJson(response.errorBody() + " " + response.message() + " " + response.code());
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Pre Test Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                     callbackListener.onResponse();
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Pre Test " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Pre Test Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -171,15 +171,15 @@ public class HTSRepository extends RetrofitRepository{
                     if(response.isSuccessful()){
                         encounter.setSynced(true);
                         encounter.save();
+                        LamisCustomFileHandler.writeLogToFile("Request Result Form Synced");
                     }else{
-                        Log.v("Baron", "Request Result not synced . Response Code: " + response.code());
-                        LamisCustomHandler.showJson(response.errorBody().toString());
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Request Result Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Request Result " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Request Result Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -204,15 +204,15 @@ public class HTSRepository extends RetrofitRepository{
                     if(response.isSuccessful()){
                         encounter.setSynced(true);
                         encounter.save();
+                        LamisCustomFileHandler.writeLogToFile("Post Test Form Synced");
                     }else{
-                        Log.v("Baron", "Post Test not synced . Response Code: " + response.code());
-                        LamisCustomHandler.showJson(response.errorBody().toString());
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Post Test Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Post Test " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Post Test Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -235,15 +235,15 @@ public class HTSRepository extends RetrofitRepository{
                     if(response.isSuccessful()){
                         encounter.setSynced(true);
                         encounter.save();
+                        LamisCustomFileHandler.writeLogToFile("Recency Form Synced");
                     }else{
-                        Log.v("Baron", "Recency not synced. Response Code: " + response.code());
-                        LamisCustomHandler.showJson(response.errorBody().toString());
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Recency Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Recency " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Recency Failure, Message: " + t.getMessage());
                 }
             });
         }
@@ -266,15 +266,15 @@ public class HTSRepository extends RetrofitRepository{
                     if(response.isSuccessful()){
                         encounter.setSynced(true);
                         encounter.save();
+                        LamisCustomFileHandler.writeLogToFile("Index Elicitation Form Synced");
                     }else{
-                        LamisCustomHandler.showJson(jsonObject);
-                        Log.v("Baron", "Index Elicitation not synced " + response.code());
+                        LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Index Elicitation Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Index Elicitation " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Index Elicitation Failure, Message: " + t.getMessage());
                 }
             });
         }

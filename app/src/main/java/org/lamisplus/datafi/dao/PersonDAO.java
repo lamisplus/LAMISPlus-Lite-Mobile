@@ -14,9 +14,18 @@ import java.util.List;
 
 public class PersonDAO {
 
+
+    public static List<Person> getAllPatients(){
+        List<Person> person = new Select().from(Person.class).execute();
+        return person;
+    }
+
     public static Person findPersonById(String id) {
         Person person = new Select().from(Person.class).where("id=?", id).executeSingle();
-        return person;
+        if(person != null) {
+            return person;
+        }
+        return null;
     }
 
     public void updatePatient(Person person, String id){

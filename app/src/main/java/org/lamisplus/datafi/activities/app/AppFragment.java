@@ -103,7 +103,7 @@ public class AppFragment extends LamisBaseFragment<AppContract.Presenter> implem
     public void bindDrawableResources() {
         bindDrawableResource(mCreatePatientButton, R.drawable.create_user);
         bindDrawableResource(mFindPatientButton, R.drawable.search_icon);
-        bindDrawableResource(mSyncedStatusButton, R.drawable.synced_status);
+        bindDrawableResource(mSyncedStatusButton, R.drawable.sync_status);
         bindDrawableResource(mComodityManagementButton, R.drawable.commodity_basket);
     }
 

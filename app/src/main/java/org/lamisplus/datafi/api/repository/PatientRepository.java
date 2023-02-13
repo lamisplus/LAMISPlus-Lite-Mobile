@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import org.lamisplus.datafi.api.BearerApi;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.dao.EncounterDAO;
@@ -70,8 +71,7 @@ public class PatientRepository extends RetrofitRepository {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if (response.isSuccessful()) {
-                        Log.v("Baron", "Patient Details Synced successfully");
-                        LamisCustomHandler.showJson(response.body());
+                        LamisCustomFileHandler.writeLogToFile("Patient Details Synced successfully");
 
                         try {
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
@@ -86,19 +86,17 @@ public class PatientRepository extends RetrofitRepository {
                             person.save();
 
                             EncounterDAO.updateAllEncountersWithPatientId(id, person.getId().toString());
-
-                            Log.v("Baron", "The id is now " + id);
                         } catch (JSONException | ParseException e) {
                             throw new RuntimeException(e);
                         }
                     }else {
-                        Log.v("Baron", "Am called next = " + new Gson().toJson(response));
+                        LamisCustomFileHandler.writeLogToFile("Couldn't sync the Patient Details, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.v("Baron", "Message is " + t.getMessage());
+                    LamisCustomFileHandler.writeLogToFile("Patient Details Failure, Message: " + t.getMessage());
                     if (callbackListener != null) {
                         callbackListener.onErrorResponse(t.getMessage());
                     }

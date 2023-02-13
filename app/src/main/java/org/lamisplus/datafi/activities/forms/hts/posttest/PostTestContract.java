@@ -10,8 +10,11 @@ public class PostTestContract {
 
     interface View extends LamisBaseView<Presenter>{
 
+        void scrollToTop();
         void startActivityForRecencyForm();
         void startDashboardActivity();
+
+        void setErrorsVisibility(boolean hivTestResult);
     }
 
     interface Presenter extends LamisBasePresenterContract{

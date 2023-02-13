@@ -19,6 +19,12 @@ public class RequestResult implements Serializable {
     @SerializedName("hivTestResult2")
     private String hivTestResult2;
 
+    @SerializedName("prepAccepted")
+    private String prepAccepted;
+
+    @SerializedName("prepOffered")
+    private String prepOffered;
+
     @SerializedName("cd4")
     private CD4 cd4;
 
@@ -79,6 +85,22 @@ public class RequestResult implements Serializable {
 
     public void setHivTestResult2(String hivTestResult2) {
         this.hivTestResult2 = hivTestResult2;
+    }
+
+    public String getPrepAccepted() {
+        return prepAccepted;
+    }
+
+    public void setPrepAccepted(String prepAccepted) {
+        this.prepAccepted = prepAccepted;
+    }
+
+    public String getPrepOffered() {
+        return prepOffered;
+    }
+
+    public void setPrepOffered(String prepOffered) {
+        this.prepOffered = prepOffered;
     }
 
     public CD4 getCd4() {
@@ -186,6 +208,14 @@ public class RequestResult implements Serializable {
 
         public void setCd4SemiQuantitative(String cd4SemiQuantitative) {
             this.cd4SemiQuantitative = cd4SemiQuantitative;
+        }
+
+        public String getCd4FlowCyteometry() {
+            return cd4FlowCyteometry;
+        }
+
+        public void setCd4FlowCyteometry(String cd4FlowCyteometry) {
+            this.cd4FlowCyteometry = cd4FlowCyteometry;
         }
     }
 

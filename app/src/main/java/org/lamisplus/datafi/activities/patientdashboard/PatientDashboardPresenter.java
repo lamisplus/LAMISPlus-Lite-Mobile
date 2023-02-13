@@ -14,7 +14,6 @@ public abstract class PatientDashboardPresenter extends LamisBasePresenter imple
 
     @Override
     public void deletePatient() {
-        Log.v("BBaron", "The id is " + mPerson.getId());
         PersonDAO.deletePatient(mPerson.getId());
         EncounterDAO.deleteAllEncounter(mPerson.getId());
     }

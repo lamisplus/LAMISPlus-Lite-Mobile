@@ -222,7 +222,7 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
                 String stringDay =  String.format("%02d", selectedDay);
                 eddatePartnerCameForTesting.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -400,6 +400,7 @@ public class ElicitationFragment extends LamisBaseFragment<ElicitationContract.P
         elicitationProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(mPresenter.getPatientId()));
         startActivity(elicitationProgram);
+        getActivity().finish();
     }
 
 }

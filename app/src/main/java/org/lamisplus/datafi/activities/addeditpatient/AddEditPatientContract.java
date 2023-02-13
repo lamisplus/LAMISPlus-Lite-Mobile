@@ -6,16 +6,17 @@ import org.lamisplus.datafi.models.Person;
 
 public class AddEditPatientContract {
 
-    interface View extends LamisBaseView<AddEditPatientContract.Presenter>{
+    interface View extends LamisBaseView<Presenter>{
         void scrollToTop();
         void hideSoftKeys();
-        void startPatientDashbordActivity(Person person);
+        void startPatientProfileActivity(Person person);
         boolean areFieldsNotEmpty();
 
         void setProgressBarVisibility(boolean b);
 
         void setErrorsVisibility(boolean firstNameError,
                                  boolean lastNameError,
+                                 boolean middleNameError,
                                  boolean dateOfBirthError,
                                  boolean dateOfRegisterError,
                                  boolean hospitalError,

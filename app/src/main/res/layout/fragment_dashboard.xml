@@ -1,431 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    android:background="@color/white_smoke">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ededed"
         android:fillViewport="true"
         android:layout_marginBottom="50dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@drawable/half_rounded" />
+
+            <TextView
+                android:id="@+id/your_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Hi User!"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="5dp"
+                android:layout_below="@id/your_name"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_search" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:elevation="3dp"
+                android:src="@drawable/ic_avatar"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="3dp" />
+
+            <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="125dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_search"
+                android:elevation="50dp"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <SearchView
+                    android:id="@+id/search_recipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:iconifiedByDefault="false"
+                    android:queryBackground="@android:color/transparent"
+                    android:queryHint="Search"
+                    android:searchIcon="@drawable/ic_search"
+                    android:theme="@style/SearchView"
+                    app:queryBackground="@android:color/transparent" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical"
-                android:padding="10dp"
-                tools:ignore="MissingConstraints">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="170dp"
+                android:layout_marginRight="10dp"
+                android:elevation="50dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/facilityName"
+                <LinearLayout
+                    android:id="@+id/mHTSView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp">
 
-                <TableLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="1">
+                    <ImageView
+                        android:id="@+id/mHTSButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
 
-                    <TableRow>
+                    <TextView
+                        android:id="@+id/item_recommended_titles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="HIV Testing Services"
+                        android:textColor="@color/dark_late_gray" />
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            app:cardCornerRadius="10dp"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:id="@+id/myClientsView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
-
-                                <ImageView
-                                    android:id="@+id/myClientsButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/my_clients_label" />
-
-                                <TextView
-                                    android:id="@+id/createLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/myClientsButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:text="@string/my_clients_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp">
+                <LinearLayout
+                    android:id="@+id/mPMTCTView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp">
 
-                            <RelativeLayout
-                                android:id="@+id/appointsmentsView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
+                    <ImageView
+                        android:id="@+id/mPMTCTButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
 
-                                <ImageView
-                                    android:id="@+id/appointmentsButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/appointments_label" />
+                    <TextView
+                        android:id="@+id/item_recommended_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="PMTCT"
+                        android:textColor="@color/dark_late_gray" />
 
-                                <TextView
-                                    android:id="@+id/findPatientLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/appointmentsButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:text="@string/appointments_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                    </TableRow>
-
-                    <TableRow>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp">
-
-                            <RelativeLayout
-                                android:id="@+id/unsuppressedClientsView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
-
-                                <ImageView
-                                    android:id="@+id/unsuppressedClientsButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/unsuppressed_clients_label" />
-
-                                <TextView
-                                    android:id="@+id/unsuppressedClientsLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/unsuppressedClientsButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:text="@string/unsuppressed_clients_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp">
+                <LinearLayout
+                    android:id="@+id/mAllClientsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp">
 
-                            <RelativeLayout
-                                android:id="@+id/interruptedTreatmentView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
+                    <ImageView
+                        android:id="@+id/mAllClientsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
 
-                                <ImageView
-                                    android:id="@+id/interruptedTreatmentButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/interrupted_treatment_label" />
+                    <TextView
+                        android:id="@+id/item_all_clients_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="All Clients"
+                        android:textColor="@color/dark_late_gray" />
 
-                                <TextView
-                                    android:id="@+id/commodityManagementLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/interruptedTreatmentButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:text="@string/interrupted_treatment_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                    </TableRow>
-
-                    <TableRow>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp">
-
-                            <RelativeLayout
-                                android:id="@+id/viralLoadSuppressionView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
-
-                                <ImageView
-                                    android:id="@+id/viralLoadSuppressionButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/viral_load_suppression_label" />
-
-                                <TextView
-                                    android:id="@+id/viralLoadSuppressionLabels"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/viralLoadSuppressionButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:text="@string/viral_load_suppression_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="@dimen/margin_short"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="10dp">
+                <LinearLayout
+                    android:id="@+id/mSyncStatusView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp">
 
-                            <RelativeLayout
-                                android:id="@+id/covid19VaccinationView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true">
+                    <ImageView
+                        android:id="@+id/mSyncStatusButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"/>
 
-                                <ImageView
-                                    android:id="@+id/covid19VaccinationButton"
-                                    android:layout_width="@dimen/dashboard_icon_height_width"
-                                    android:layout_height="@dimen/dashboard_icon_height_width"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/dashboard_icon_margin"
-                                    android:contentDescription="@string/covid19_vaccination_label" />
+                    <TextView
+                        android:id="@+id/item_sync_status_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="Sync Status"
+                        android:textColor="@color/dark_late_gray" />
 
-                                <TextView
-                                    android:id="@+id/commodityManagementLabels"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/covid19VaccinationButton"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/dashboard_text_top_margin"
-                                    android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:text="@string/covid19_vaccination_label"
-                                    android:textSize="@dimen/dashboard_text_size" />
-                            </RelativeLayout>
+                </LinearLayout>
 
-                        </androidx.cardview.widget.CardView>
-
-                    </TableRow>
-
-
-                </TableLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
-    <LinearLayout
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:weightSum="4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/dashboardView"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?android:actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <nl.joery.animatedbottombar.AnimatedBottomBar
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="@drawable/bg_half_rounded"
+            android:elevation="5dp"
+            app:abb_animationDuration="500"
+            app:abb_animationInterpolator="@android:anim/overshoot_interpolator"
+            app:abb_indicatorAppearance="round"
+            app:abb_indicatorColor="@color/white"
+            app:abb_indicatorHeight="5dp"
+            app:abb_indicatorMargin="30dp"
+            app:abb_selectedIndex="1"
+            app:abb_selectedTabType="text"
+            app:abb_tabAnimation="slide"
+            app:abb_tabColor="@color/white"
+            app:abb_tabColorSelected="@color/white"
+            app:abb_tabs="@menu/navigation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/dashboardButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:contentDescription="@string/dashboard_icon_label" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/dashboard_icon_label"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/appView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/appButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_icon_label" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/app_icon_label"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/settingsView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/settingsButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:contentDescription="@string/settings_icon_label" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/settings_icon_label"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/logoutView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/logoutButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:contentDescription="@string/logout_icon_label" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/logout_icon_label"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

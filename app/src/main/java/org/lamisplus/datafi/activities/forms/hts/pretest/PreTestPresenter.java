@@ -9,6 +9,7 @@ import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.StringUtils;
 
 public class PreTestPresenter extends LamisBasePresenter implements PreTestContract.Presenter {
 
@@ -38,24 +39,95 @@ public class PreTestPresenter extends LamisBasePresenter implements PreTestContr
 
     @Override
     public void confirmCreate(PreTest preTest, String packageName) {
-        String clientIntakeEncounter = new Gson().toJson(preTest);
-        Encounter encounter = new Encounter();
-        encounter.setName(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM);
-        encounter.setPerson(patientId);
-        encounter.setPackageName(packageName);
-        encounter.setDataValues(clientIntakeEncounter);
-        encounter.save();
+        if (validate(preTest)) {
+            String clientIntakeEncounter = new Gson().toJson(preTest);
+            Encounter encounter = new Encounter();
+            encounter.setName(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM);
+            encounter.setPerson(patientId);
+            encounter.setPackageName(packageName);
+            encounter.setDataValues(clientIntakeEncounter);
+            encounter.save();
 
-        preTestInfoView.startActivityForRequestResultForm();
+            preTestInfoView.startActivityForRequestResultForm();
+        }else{
+            preTestInfoView.scrollToTop();
+        }
     }
 
     @Override
     public void confirmUpdate(PreTest preTest, Encounter encounter) {
-        String s = new Gson().toJson(preTest);
-        encounter.setDataValues(s);
-        encounter.save();
-        preTestInfoView.startActivityForRequestResultForm();
+        if (validate(preTest)) {
+            String s = new Gson().toJson(preTest);
+            encounter.setDataValues(s);
+            encounter.save();
+            preTestInfoView.startActivityForRequestResultForm();
+        }else{
+            preTestInfoView.scrollToTop();
+        }
     }
+
+    public boolean validate(PreTest preTest) {
+        boolean everHadSexualIntercourse = false;
+        boolean bloodtransInlastThreeMonths = false;
+        boolean uprotectedSexWithCasualLastThreeMonths = false;
+        boolean uprotectedSexWithRegularPartnerLastThreeMonths = false;
+        boolean autounprotectedVaginalSex = false;
+        boolean uprotectedAnalSexHivRiskAssess = false;
+        boolean stiLastThreeMonths = false;
+        boolean sexUnderInfluence = false;
+        boolean moreThanOneSexPartnerLastThreeMonths = false;
+
+        preTestInfoView.setErrorsVisibility(everHadSexualIntercourse, bloodtransInlastThreeMonths, uprotectedSexWithCasualLastThreeMonths, uprotectedSexWithRegularPartnerLastThreeMonths,
+         autounprotectedVaginalSex, uprotectedAnalSexHivRiskAssess, stiLastThreeMonths, sexUnderInfluence, moreThanOneSexPartnerLastThreeMonths);
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isEverHadSexualIntercourse())) {
+            everHadSexualIntercourse = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isBloodtransInlastThreeMonths())) {
+            bloodtransInlastThreeMonths = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isUprotectedSexWithCasualLastThreeMonths())) {
+            uprotectedSexWithCasualLastThreeMonths = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isUprotectedSexWithRegularPartnerLastThreeMonths())) {
+            uprotectedSexWithRegularPartnerLastThreeMonths = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isUnprotectedVaginalSex())) {
+            autounprotectedVaginalSex = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isUprotectedAnalSex())) {
+            uprotectedAnalSexHivRiskAssess = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isStiLastThreeMonths())) {
+            stiLastThreeMonths = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isSexUnderInfluence())) {
+            sexUnderInfluence = true;
+        }
+
+        if (StringUtils.isBlank(preTest.getRiskAssessment().isMoreThanOneSexPartnerLastThreeMonths())) {
+            moreThanOneSexPartnerLastThreeMonths = true;
+        }
+
+        boolean result = !everHadSexualIntercourse && !bloodtransInlastThreeMonths && !uprotectedSexWithCasualLastThreeMonths && !uprotectedSexWithRegularPartnerLastThreeMonths && !autounprotectedVaginalSex
+                && !uprotectedAnalSexHivRiskAssess && !stiLastThreeMonths && !sexUnderInfluence && !moreThanOneSexPartnerLastThreeMonths;
+
+        if (result) {
+            return true;
+        } else {
+            preTestInfoView.setErrorsVisibility(everHadSexualIntercourse, bloodtransInlastThreeMonths, uprotectedSexWithCasualLastThreeMonths, uprotectedSexWithRegularPartnerLastThreeMonths,
+                    autounprotectedVaginalSex, uprotectedAnalSexHivRiskAssess, stiLastThreeMonths, sexUnderInfluence, moreThanOneSexPartnerLastThreeMonths);
+            return false;
+        }
+    }
+
 
     @Override
     public void confirmDeleteEncounterPreTest(String formName, String patientId) {

@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,12 +16,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import android.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
-import org.lamisplus.datafi.activities.app.AppActivity;
+import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
+import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
+import org.lamisplus.datafi.activities.hts.htsprogram.HTSProgramActivity;
+import org.lamisplus.datafi.activities.login.LoginActivity;
+import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
+import org.lamisplus.datafi.activities.syncstatus.SyncStatusActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.auth.AuthorizationManager;
 import org.lamisplus.datafi.dao.AccountDAO;
@@ -28,25 +39,26 @@ import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Account;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
-public class DashboardFragment extends LamisBaseFragment<DashboardContract.Presenter> implements DashboardContract.View, View.OnClickListener {
+import nl.joery.animatedbottombar.AnimatedBottomBar;
+
+public class DashboardFragment extends LamisBaseFragment<DashboardContract.Presenter> implements DashboardContract.View, View.OnClickListener, SearchView.OnQueryTextListener {
 
     private SparseArray<Bitmap> mBitmapCache;
-    private ImageView mDashboardButton;
-    private ImageView mAppButton;
-    private ImageView mSettingsButton;
-    private ImageView mLogoutButton;
-    private ImageView mMyClientsButton;
-    private ImageView mAppointmentsButton;
-    private ImageView mUnsuppressedClientsButton;
-    private ImageView mInterruptedTreatmentsButton;
-    private ImageView mViralloadSuppressionButton;
-    private ImageView mCovid19VaccinationButton;
-    private LinearLayout mDashboardView;
-    private LinearLayout mAppView;
-    private LinearLayout mSettingsView;
-    private LinearLayout mLogoutView;
-    private TextView facilityName;
+    private ImageView mHTSButton;
+    private ImageView mPMTCTButton;
+    private ImageView mAllClientsButton;
+    private ImageView mSyncStatusButton;
+
+    private LinearLayout mHTSView;
+    private LinearLayout mPMTCTView;
+    private LinearLayout mAllClientsView;
+    private LinearLayout mSyncStatusView;
+
+    AnimatedBottomBar animatedBottomBar;
+
+    private SearchView searchView;
 
 
     @Nullable
@@ -67,56 +79,69 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
     }
 
     private void initiateFragmentViews(View root) {
-        mDashboardButton = root.findViewById(R.id.dashboardButton);
-        mAppButton = root.findViewById(R.id.appButton);
-        mSettingsButton = root.findViewById(R.id.settingsButton);
-        mLogoutButton = root.findViewById(R.id.logoutButton);
-        mMyClientsButton = root.findViewById(R.id.myClientsButton);
-        mAppointmentsButton = root.findViewById(R.id.appointmentsButton);
-        mUnsuppressedClientsButton = root.findViewById(R.id.unsuppressedClientsButton);
-        mInterruptedTreatmentsButton = root.findViewById(R.id.interruptedTreatmentButton);
-        mViralloadSuppressionButton = root.findViewById(R.id.viralLoadSuppressionButton);
-        mCovid19VaccinationButton = root.findViewById(R.id.covid19VaccinationButton);
-        facilityName = root.findViewById(R.id.facilityName);
+        mHTSButton = root.findViewById(R.id.mHTSButton);
+        mPMTCTButton = root.findViewById(R.id.mPMTCTButton);
+        mAllClientsButton = root.findViewById(R.id.mAllClientsButton);
+        mSyncStatusButton = root.findViewById(R.id.mSyncStatusButton);
 
-        mDashboardView = root.findViewById(R.id.dashboardView);
-        mAppView = root.findViewById(R.id.appView);
-        mSettingsView = root.findViewById(R.id.settingsView);
-        mLogoutView = root.findViewById(R.id.logoutView);
+        mHTSView = root.findViewById(R.id.mHTSView);
+        mPMTCTView = root.findViewById(R.id.mPMTCTView);
+        mAllClientsView = root.findViewById(R.id.mAllClientsView);
+        mSyncStatusView = root.findViewById(R.id.mSyncStatusView);
+        /**
+         * Menu Bottom Navigation Drawer
+         * */
+        animatedBottomBar = root.findViewById(R.id.navigation);
+
+        animatedBottomBar.setOnTabSelectListener((lastIndex, lastTab, newIndex, newTab) -> {
+            Fragment fragment = null;
+            switch (newTab.getId()) {
+                case R.id.nav_menu_home:
+                    startNewActivity(DashboardActivity.class);
+                    break;
+                case R.id.nav_menu_settings:
+                    startNewActivity(PrefrencesActivity.class);
+                    break;
+                case R.id.nav_menu_createpatient:
+                    startNewActivity(AddEditPatientActivity.class);
+                    break;
+            }
+
+        });
+
+        searchView = (SearchView) root.findViewById(R.id.search_recipe);
+        searchView.setOnQueryTextListener(this);
     }
 
     private void setListeners() {
-        mDashboardView.setOnClickListener(this);
-        mAppView.setOnClickListener(this);
-        mSettingsView.setOnClickListener(this);
-        mLogoutView.setOnClickListener(this);
+        mHTSView.setOnClickListener(this);
+        mPMTCTView.setOnClickListener(this);
+        mAllClientsView.setOnClickListener(this);
+        mSyncStatusView.setOnClickListener(this);
     }
 
-    private void setFacilityName(){
-        Account account = AccountDAO.getUserDetails();
-        if(account!= null) {
-            facilityName.setVisibility(View.VISIBLE);
-            facilityName.setText(account.getCurrentOrganisationUnitName());
-        }
+    private void setFacilityName() {
+//        Account account = AccountDAO.getUserDetails();
+//        if (account != null) {
+//            facilityName.setVisibility(View.VISIBLE);
+//            facilityName.setText(account.getCurrentOrganisationUnitName());
+//        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.dashboardView:
-                startNewActivity(DashboardActivity.class);
+            case R.id.mHTSView:
+                startNewActivity(HTSProgramActivity.class);
                 break;
-            case R.id.appView:
-                startNewActivity(AppActivity.class);
+            case R.id.pmtctView:
+                //startNewActivity(PMTCT.class);
                 break;
-            case R.id.settingsView:
-                //Do nothing for now
+            case R.id.mAllClientsView:
+                startNewActivity(FindPatientActivity.class);
                 break;
-            case R.id.logoutView:
-                LamisPlus.getInstance().clearUserPreferencesData();
-                new AuthorizationManager().moveToLoginActivity();
-                //ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.SUCCESS, R.string.logout_success);
-                LamisPlusDBOpenHelper.getInstance().closeDatabases();
+            case R.id.mSyncStatusView:
+                startNewActivity(SyncStatusActivity.class);
                 break;
             default:
 
@@ -137,16 +162,10 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
      */
     @Override
     public void bindDrawableResources() {
-        bindDrawableResource(mMyClientsButton, R.drawable.clients);
-        bindDrawableResource(mDashboardButton, R.drawable.dashboard_icon);
-        bindDrawableResource(mViralloadSuppressionButton, R.drawable.vl_suppression);
-        bindDrawableResource(mAppointmentsButton, R.drawable.appointments_icon);
-        bindDrawableResource(mCovid19VaccinationButton, R.drawable.covid19_icon);
-        bindDrawableResource(mInterruptedTreatmentsButton, R.drawable.interrupted_treatment_icon);
-        bindDrawableResource(mUnsuppressedClientsButton, R.drawable.unsurpressed_icons);
-        bindDrawableResource(mAppButton, R.drawable.app_icon);
-        bindDrawableResource(mSettingsButton, R.drawable.settings_icon);
-        bindDrawableResource(mLogoutButton, R.drawable.logout_icon);
+        bindDrawableResource(mHTSButton, R.drawable.hts);
+        bindDrawableResource(mPMTCTButton, R.drawable.pmtct);
+        bindDrawableResource(mAllClientsButton, R.drawable.all_patients);
+        bindDrawableResource(mSyncStatusButton, R.drawable.sync_status);
     }
 
     /**
@@ -183,4 +202,16 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Intent searchQuery = new Intent(LamisPlus.getInstance(), FindPatientActivity.class);
+        searchQuery.putExtra(ApplicationConstants.BundleKeys.PATIENT_QUERY_BUNDLE, query);
+        startActivity(searchQuery);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }

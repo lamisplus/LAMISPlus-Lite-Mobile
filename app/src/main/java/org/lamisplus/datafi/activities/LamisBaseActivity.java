@@ -1,11 +1,10 @@
 package org.lamisplus.datafi.activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.login.LoginActivity;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.auth.AuthorizationManager;
@@ -35,11 +36,12 @@ import org.lamisplus.datafi.services.EncounterService;
 import org.lamisplus.datafi.services.PatientService;
 import org.lamisplus.datafi.services.SyncServices;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.ForceClose;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -57,8 +59,19 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ForceClose(this));
         mFragmentManager = getSupportFragmentManager();
         authorizationManager = new AuthorizationManager();
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            Boolean flag = extras.getBoolean("flag");
+            String errorReport = extras.getString("error");
+            if (flag) {
+                showAppCrashDialog(errorReport);
+            }
+        }
     }
 
     public void addFragmentToActivity(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, int frameId) {
@@ -139,6 +152,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
                     LamisPlus.getInstance().setSyncState(false);
                     setSyncButtonState(false);
                     showNoInternetConnectionSnackbar();
+                    //getApplicationContext().stopService(new Intent(getApplicationContext(), SyncServices.class));
                     ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.NOTICE, R.string.disconn_server);
                 } else if (NetworkUtils.hasNetwork()) {
                     LamisPlus.getInstance().setSyncState(true);
@@ -191,6 +205,34 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
 //        createAndShowDialog(bundle, ApplicationConstants.DialogTAG.MULTI_DELETE_PATIENT_DIALOG_TAG);
     }
 
+    public void showAppCrashDialog(String error) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle(R.string.crash_dialog_title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(R.string.crash_dialog_message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.crash_dialog_positive_button, (dialog, id) -> dialog.cancel())
+                .setNegativeButton(R.string.crash_dialog_negative_button, (dialog, id) -> finishAffinity())
+                .setNeutralButton(R.string.crash_dialog_neutral_button, (dialog, id) -> {
+                    String filename = LamisPlus.getInstance().getLamisPlusDir()
+                            + File.separator + mLamisPlusLogger.getLogFilename();
+                    Intent email = new Intent(Intent.ACTION_SEND);
+                    email.putExtra(Intent.EXTRA_SUBJECT, R.string.error_email_subject_app_crashed);
+                    email.putExtra(Intent.EXTRA_TEXT, error);
+                    email.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://" + filename));
+                    email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    //need this to prompts email client only
+                    email.setType("message/rfc822");
+
+                    startActivity(Intent.createChooser(email, getString(R.string.choose_a_email_client)));
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     public void showNoInternetConnectionSnackbar() {
         snackbar = Snackbar.make(findViewById(android.R.id.content),
                 getString(R.string.no_internet_connection_message), Snackbar.LENGTH_INDEFINITE);
@@ -206,5 +248,4 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
         //ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.SUCCESS, R.string.logout_success);
         LamisPlusDBOpenHelper.getInstance().closeDatabases();
     }
-
 }

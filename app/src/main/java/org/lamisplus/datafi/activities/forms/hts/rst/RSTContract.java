@@ -9,9 +9,12 @@ public class RSTContract {
 
     interface View extends LamisBaseView<Presenter>{
 
-        void startActivityForClientIntakeForm();
+        void scrollToTop();
+        void startActivityForClientIntakeForm(String s);
 
-        void startDashboardActivity();
+        void startHTSActivity();
+
+        void setErrorsVisibility(boolean dateOfBirth, boolean entryPoint, boolean settings, boolean modality, boolean visitDate, boolean targetGroup, boolean autolastHivTestBasedOnRequest);
     }
 
     interface Presenter extends LamisBasePresenterContract{

@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.forms.hts.recency;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.R;
@@ -72,6 +76,17 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
     private String packageName;
 
     private LinearLayout viewOtherRecenceOptions;
+    private TextInputLayout autoOptOutRTRITIL;
+    private TextInputLayout autoOptOutRTRITestNameTIL;
+    private TextInputLayout edOptOutRTRITestDateTIL;
+    private TextInputLayout edRencencyIdTIL;
+    private TextInputLayout autoControlLineTIL;
+    private TextInputLayout autoVerififcationLineTIL;
+    private TextInputLayout autoLongTermLineTIL;
+    private TextInputLayout autoHasViralLoadTIL;
+    private TextInputLayout autoSampleTypeTIL;
+    private TextInputLayout edSampleReferanceNumberTIL;
+    private LinearLayout viralLoadClassificationLayout;
 
     @Nullable
     @Override
@@ -82,6 +97,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             setHasOptionsMenu(true);
             setListeners();
             showDatePickers();
+            dropDownListeners();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId()));
@@ -138,6 +154,18 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
         viewOtherRecenceOptions = root.findViewById(R.id.viewOtherRecenceOptions);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
+
+        autoOptOutRTRITIL = root.findViewById(R.id.autoOptOutRTRITIL);
+        autoOptOutRTRITestNameTIL = root.findViewById(R.id.autoOptOutRTRITestNameTIL);
+        edOptOutRTRITestDateTIL = root.findViewById(R.id.edOptOutRTRITestDateTIL);
+        edRencencyIdTIL = root.findViewById(R.id.edRencencyIdTIL);
+        autoControlLineTIL = root.findViewById(R.id.autoControlLineTIL);
+        autoVerififcationLineTIL = root.findViewById(R.id.autoVerififcationLineTIL);
+        autoLongTermLineTIL = root.findViewById(R.id.autoLongTermLineTIL);
+        autoHasViralLoadTIL = root.findViewById(R.id.autoHasViralLoadTIL);
+        autoSampleTypeTIL = root.findViewById(R.id.autoSampleTypeTIL);
+        edSampleReferanceNumberTIL = root.findViewById(R.id.edSampleReferanceNumberTIL);
+        viralLoadClassificationLayout = root.findViewById(R.id.viralLoadClassificationLayout);
     }
 
     private void setListeners() {
@@ -168,6 +196,8 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ViewUtils.getInput(autoOptOutRTRI).equals("No")) {
                     viewOtherRecenceOptions.setVisibility(View.VISIBLE);
+                } else {
+                    viewOtherRecenceOptions.setVisibility(View.GONE);
                 }
             }
         });
@@ -189,7 +219,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
                 String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay =  String.format("%02d", selectedDay);
+                String stringDay = String.format("%02d", selectedDay);
                 edOptOutRTRITestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -210,7 +240,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
                 String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay =  String.format("%02d", selectedDay);
+                String stringDay = String.format("%02d", selectedDay);
                 edSampleCollectedDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -231,7 +261,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
                 String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay =  String.format("%02d", selectedDay);
+                String stringDay = String.format("%02d", selectedDay);
                 edDateSampleSentToPCRLab.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -252,7 +282,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
                 int adjustedMonth = selectedMonth + 1;
                 String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay =  String.format("%02d", selectedDay);
+                String stringDay = String.format("%02d", selectedDay);
                 edSampleTestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -330,6 +360,15 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             edFinalRecencyResult.setText(recency.getRecencyDetails().getFinalRecencyResult());
 
+            if(recency.getRecencyDetails().getRencencyInterpretation() != null) {
+                if (recency.getRecencyDetails().getRencencyInterpretation().equals("Recent")) {
+                    autoHasViralLoadTIL.setVisibility(View.VISIBLE);
+                    viralLoadClassificationLayout.setVisibility(View.VISIBLE);
+                } else {
+                    autoHasViralLoadTIL.setVisibility(View.GONE);
+                    viralLoadClassificationLayout.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
@@ -377,7 +416,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
         }
 
         if (!ViewUtils.isEmpty(edRencencyInterpretation)) {
-            recencyDetails.setRencencyInterpretation(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(edRencencyInterpretation)));
+            recencyDetails.setRencencyInterpretation(ViewUtils.getInput(edRencencyInterpretation));
         }
 
         if (!ViewUtils.isEmpty(autoHasViralLoad)) {
@@ -423,6 +462,12 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
 
     @Override
+    public void scrollToTop() {
+        ScrollView scrollView = this.getActivity().findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0, scrollView.getPaddingTop());
+    }
+
+    @Override
     public void startActivityForElicitation() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ELICITATION, mPresenter.getPatientId());
         if (encounter == null) {
@@ -430,6 +475,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     String.valueOf(mPresenter.getPatientId()));
             startActivity(preTestProgram);
+            getActivity().finish();
         } else {
             startDashboardActivity();
         }
@@ -441,6 +487,126 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
         preTestProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(mPresenter.getPatientId()));
         startActivity(preTestProgram);
+        getActivity().finish();
+    }
+
+    @Override
+    public void setErrorsVisibility(boolean optOutRTRI, boolean testName, boolean testDate, boolean rencencyId, boolean controlLine, boolean verififcationLine, boolean longTermLine, boolean hasViralLoad, boolean sampleReferanceNumber, boolean sampleType) {
+        if (optOutRTRI) {
+            autoOptOutRTRITIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoOptOutRTRITIL.setError("Select Opt Out of RTRI");
+        }
+        if (testName) {
+            autoOptOutRTRITestNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoOptOutRTRITestNameTIL.setError("Select Test Name");
+        }
+        if (testDate) {
+            edOptOutRTRITestDateTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edOptOutRTRITestDateTIL.setError("Select Test Date");
+        }
+        if (rencencyId) {
+            edRencencyIdTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edRencencyIdTIL.setError("Enter the Recency ID");
+        }
+
+        if (controlLine) {
+            autoControlLineTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoControlLineTIL.setError("Select Control Line");
+        }
+
+        if (verififcationLine) {
+            autoVerififcationLineTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoVerififcationLineTIL.setError("Select Verification Line");
+        }
+
+        if (longTermLine) {
+            autoLongTermLineTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoLongTermLineTIL.setError("Select Long Term Line");
+        }
+
+        if (hasViralLoad) {
+            autoHasViralLoadTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoHasViralLoadTIL.setError("Select Has Viral Load");
+        }
+
+        if (sampleType) {
+            autoSampleTypeTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            autoSampleTypeTIL.setError("Select Sample Type");
+        }
+
+        if (sampleType) {
+            edSampleReferanceNumberTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edSampleReferanceNumberTIL.setError("Enter the Sample Reference Number");
+        }
+    }
+
+    public void dropDownListeners() {
+        autoHasViralLoad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (autoHasViralLoad.getText().toString().equals("Yes")) {
+                    viralLoadClassificationLayout.setVisibility(View.VISIBLE);
+                }else{
+                    viralLoadClassificationLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        autoControlLine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //If a user selects this field then clear other fields that are dependent on this so that the logic can work well
+                autoVerififcationLine.clearListSelection();
+                autoLongTermLine.clearListSelection();
+                edRencencyInterpretation.setText("");
+                autoHasViralLoadTIL.setVisibility(View.GONE);
+            }
+        });
+
+        autoVerififcationLine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                autoLongTermLine.clearListSelection();
+                edRencencyInterpretation.setText("");
+                autoHasViralLoadTIL.setVisibility(View.GONE);
+            }
+        });
+
+        autoLongTermLine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (StringUtils.isBlank(autoControlLine.getText().toString())) {
+                    autoControlLineTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    autoControlLineTIL.setError("Select Control Line First");
+                } else if (StringUtils.isBlank(autoVerififcationLine.getText().toString())) {
+                    autoVerififcationLineTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    autoVerififcationLineTIL.setError("Select Verification Line First");
+                } else {
+                    if (autoLongTermLine.getText().toString().equals("Yes")) {
+                        if (autoControlLine.getText().toString().equals("Yes") && autoVerififcationLine.getText().toString().equals("Yes")) {
+                            edRencencyInterpretation.setText("Long Term");
+                        } else if (autoControlLine.getText().toString().equals("Yes") && autoVerififcationLine.getText().toString().equals("No")) {
+                            edRencencyInterpretation.setText("Invalid");
+                        } else if (autoControlLine.getText().toString().equals("No") && autoVerififcationLine.getText().toString().equals("Yes")) {
+                            edRencencyInterpretation.setText("Invalid");
+                        } else {
+                            edRencencyInterpretation.setText("");
+                        }
+                    } else {
+                        autoHasViralLoadTIL.setVisibility(View.GONE);
+                        if (autoControlLine.getText().toString().equals("Yes") && autoVerififcationLine.getText().toString().equals("Yes")) {
+                            edRencencyInterpretation.setText("Recent");
+                            autoHasViralLoadTIL.setVisibility(View.VISIBLE);
+                        } else if (autoControlLine.getText().toString().equals("Yes") && autoVerififcationLine.getText().toString().equals("No")) {
+                            edRencencyInterpretation.setText("Negative");
+                        } else {
+                            edRencencyInterpretation.setText("");
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 public class LamisPlusLogger {
 
     private static String mTAG = "LamisPlus";
+    private static final String LOG_FILENAME = "LAMISPlus.log";
     private static LamisPlus mLamisPlus = LamisPlus.getInstance();
     private static final boolean IS_DEBUGGING_ON = true;
     private static LamisPlusLogger logger = null;
@@ -25,6 +26,10 @@ public class LamisPlusLogger {
         final int lineNumber = Thread.currentThread().getStackTrace()[4].getLineNumber();
 
         return "#" + lineNumber + " " + className + "." + methodName + "() : " + msg;
+    }
+
+    public String getLogFilename() {
+        return LOG_FILENAME;
     }
 
     public void v(final String msg) {
@@ -81,5 +86,6 @@ public class LamisPlusLogger {
 //        SaveToFileAsyncTask asyncTask = new SaveToFileAsyncTask();
 //        asyncTask.execute();
     }
+
 
 }

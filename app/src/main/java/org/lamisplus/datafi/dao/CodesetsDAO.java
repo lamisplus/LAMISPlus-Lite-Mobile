@@ -23,8 +23,11 @@ public class CodesetsDAO {
      * @return String
      */
     public static String findCodesetsDisplayById(int id){
-        Codesets codesets = new Select().from(Codesets.class).where("codeset_id=?", id).executeSingle();
-        return codesets.getDisplay();
+        if(id != 0) {
+            Codesets codesets = new Select().from(Codesets.class).where("codeset_id=?", id).executeSingle();
+            return codesets.getDisplay();
+        }
+        return null;
     }
 
 
@@ -34,8 +37,11 @@ public class CodesetsDAO {
      * @return
      */
     public static String findCodesetsDisplayByCode(String code){
-        Codesets codesets = new Select().from(Codesets.class).where("code=?", code).executeSingle();
-        return codesets.getDisplay();
+        if(code != null) {
+            Codesets codesets = new Select().from(Codesets.class).where("code=?", code).executeSingle();
+            return codesets.getDisplay();
+        }
+        return null;
     }
 
     /**
@@ -44,8 +50,11 @@ public class CodesetsDAO {
      * @return
      */
     public static String findCodesetsCodeByDisplay(String display){
-        Codesets codesets = new Select().from(Codesets.class).where("display=?", display).executeSingle();
-        return codesets.getCode();
+        if(display != null) {
+            Codesets codesets = new Select().from(Codesets.class).where("display=?", display).executeSingle();
+            return codesets.getCode();
+        }
+        return null;
     }
 
 }
