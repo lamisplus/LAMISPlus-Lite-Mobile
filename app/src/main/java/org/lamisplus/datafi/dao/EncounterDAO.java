@@ -16,6 +16,7 @@ import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.models.RequestResult;
 import org.lamisplus.datafi.models.RiskStratification;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 
 import java.util.List;
 

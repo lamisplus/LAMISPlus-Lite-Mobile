@@ -21,6 +21,11 @@ public class Lab extends Model implements Serializable {
     @Expose
     private String lab_code;
 
+    @SerializedName("selected")
+    @Column(name = "selected")
+    @Expose
+    private String selected;
+
     public String getName() {
         return name;
     }
@@ -35,5 +40,13 @@ public class Lab extends Model implements Serializable {
 
     public void setLab_code(String lab_code) {
         this.lab_code = lab_code;
+    }
+
+    public String getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = selected;
     }
 }

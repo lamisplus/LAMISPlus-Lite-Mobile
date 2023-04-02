@@ -1,6 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.pretest;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
@@ -37,11 +38,10 @@ public class PreTestActivity extends LamisBaseActivity {
         } else {
             patientBundle = getIntent().getExtras();
         }
-        
+
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
-
         mPresenter = new PreTestPresenter(preTestFragment, patientID);
     }
 

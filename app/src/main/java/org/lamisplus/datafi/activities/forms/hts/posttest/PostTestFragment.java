@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -41,6 +43,7 @@ import org.lamisplus.datafi.models.PostTestCounselingKnowledgeAssessment;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.models.RequestResult;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -62,10 +65,11 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
     private AutoCompleteTextView autoPartnerFpUseCondom;
     private AutoCompleteTextView autoPostTestCounseling;
     private AutoCompleteTextView autoPostTestDisclosure;
-    private AutoCompleteTextView autoUnprotectedSex;
     private AutoCompleteTextView autoReferredToServices;
     private AutoCompleteTextView autoRiskReduction;
-
+    private EditText edcondomProvidedToClientCount;
+    private AutoCompleteTextView autolubricantProvidedToClient;
+    private EditText edlubricantProvidedToClientCount;
     private Button mSaveContinueButton;
 
     private boolean isUpdatePostTest = false;
@@ -74,6 +78,9 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
 
     private String packageName;
     private TextInputLayout autoHivTestResultTIL;
+    private TextInputLayout edcondomProvidedToClientCountTIL;
+    private TextInputLayout autolubricantProvidedToClientTIL;
+    private TextInputLayout edlubricantProvidedToClientCountTIL;
 
     @Nullable
     @Override
@@ -84,6 +91,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             setHasOptionsMenu(true);
             setListeners();
             autoPopulateFields();
+            dropDownClickListeners();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId()));
@@ -94,11 +102,11 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
 
     private void autoPopulateFields() {
         RequestResult requestResult = EncounterDAO.findRequestResultFromForm(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
-        if(requestResult != null){
+        if (requestResult != null) {
             String finalResult = "";
-            if(requestResult.getHivTestResult().equals("Non Reactive")){
+            if (requestResult.getHivTestResult().equals("Negative")) {
                 finalResult = "Negative";
-            }else {
+            } else {
                 finalResult = requestResult.getHivTestResult2();
             }
 
@@ -146,10 +154,14 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
         autoPostTestCounseling = root.findViewById(R.id.autoPostTestCounseling);
         autoPostTestDisclosure = root.findViewById(R.id.autoPostTestDisclosure);
         autoReferredToServices = root.findViewById(R.id.autoReferredToServices);
-        autoUnprotectedSex = root.findViewById(R.id.autoUnprotectedSex);
         autoRiskReduction = root.findViewById(R.id.autoRiskReduction);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
-
+        edcondomProvidedToClientCount = root.findViewById(R.id.edcondomProvidedToClientCount);
+        autolubricantProvidedToClient = root.findViewById(R.id.autolubricantProvidedToClient);
+        edlubricantProvidedToClientCount = root.findViewById(R.id.edlubricantProvidedToClientCount);
+        edcondomProvidedToClientCountTIL = root.findViewById(R.id.edcondomProvidedToClientCountTIL);
+        autolubricantProvidedToClientTIL = root.findViewById(R.id.autolubricantProvidedToClientTIL);
+        edlubricantProvidedToClientCountTIL = root.findViewById(R.id.edlubricantProvidedToClientCountTIL);
         autoHivTestResultTIL = root.findViewById(R.id.autoHivTestResultTIL);
     }
 
@@ -160,7 +172,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
         ArrayAdapter<String> adapterBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanPosNeg);
         autoHivTestResult.setAdapter(adapterBooleanAnswers);
 
-        String[] previouslyTested = {"Not Previously Tested", "Previously tested negative", "Previously tested positive in HIV care", "Previously tested positive not in HIV care"};
+        String[] previouslyTested = {"Not previously tested", "Previously tested negative", "Previously tested positive in HIV care", "Previously tested positive not in HIV care"};
         ArrayAdapter<String> adapterPreviouslyTested = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, previouslyTested);
         autoHivTestBefore.setAdapter(adapterPreviouslyTested);
 
@@ -176,10 +188,10 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
         autoInformationFp.setAdapter(adapterBooleanYesNo);
         autoPartnerFpThanCondom.setAdapter(adapterBooleanYesNo);
         autoPartnerFpUseCondom.setAdapter(adapterBooleanYesNo);
+        autolubricantProvidedToClient.setAdapter(adapterBooleanYesNo);
 
         autoPostTestCounseling.setAdapter(adapterBooleanYesNo);
         autoPostTestDisclosure.setAdapter(adapterBooleanYesNo);
-        autoUnprotectedSex.setAdapter(adapterBooleanYesNo);
         autoReferredToServices.setAdapter(adapterBooleanYesNo);
         autoRiskReduction.setAdapter(adapterBooleanYesNo);
     }
@@ -190,6 +202,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             isUpdatePostTest = true;
             updatedPostTest = postTest;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM, mPresenter.getPatientId());
+            populateField(postTest);
 
             autoBringPartnerHivtesting.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getBringPartnerHivtesting()), false);
             autoChildrenHivtesting.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getChildrenHivtesting()), false);
@@ -207,8 +220,10 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             autoPostTestCounseling.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getPostTestCounseling()), false);
             autoPostTestDisclosure.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getPostTestDisclosure()), false);
             autoReferredToServices.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getReferredToServices()), false);
-            autoUnprotectedSex.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getUnprotectedSexRegularPartnerLastThreeMonth()), false);
             autoRiskReduction.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getRiskReduction()), false);
+            edcondomProvidedToClientCount.setText(postTest.getPostTestCounselingKnowledgeAssessment().getCondomProvidedToClientCount());
+            edlubricantProvidedToClientCount.setText(postTest.getPostTestCounselingKnowledgeAssessment().getLubricantProvidedToClientCount());
+            autolubricantProvidedToClient.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getLubricantProvidedToClient()), false);
         }
     }
 
@@ -242,7 +257,6 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
         if (!ViewUtils.isEmpty(autoHivRequestResultCt)) {
             postTestCounselingKnowledgeAssessment.setHivRequestResultCt(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autoHivRequestResultCt)));
         }
-
 
 
         if (!ViewUtils.isEmpty(autoClientReceivedHivTestResult)) {
@@ -289,16 +303,24 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             postTestCounselingKnowledgeAssessment.setPostTestDisclosure(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autoPostTestDisclosure)));
         }
 
-        if (!ViewUtils.isEmpty(autoUnprotectedSex)) {
-            postTestCounselingKnowledgeAssessment.setUnprotectedSexRegularPartnerLastThreeMonth(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autoUnprotectedSex)));
-        }
-
         if (!ViewUtils.isEmpty(autoReferredToServices)) {
             postTestCounselingKnowledgeAssessment.setReferredToServices(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autoReferredToServices)));
         }
 
         if (!ViewUtils.isEmpty(autoRiskReduction)) {
             postTestCounselingKnowledgeAssessment.setRiskReduction(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autoRiskReduction)));
+        }
+
+        if (!ViewUtils.isEmpty(edcondomProvidedToClientCount)) {
+            postTestCounselingKnowledgeAssessment.setCondomProvidedToClientCount(ViewUtils.getInput(edcondomProvidedToClientCount));
+        }
+
+        if (!ViewUtils.isEmpty(edlubricantProvidedToClientCount)) {
+            postTestCounselingKnowledgeAssessment.setLubricantProvidedToClientCount(ViewUtils.getInput(edlubricantProvidedToClientCount));
+        }
+
+        if (!ViewUtils.isEmpty(autolubricantProvidedToClient)) {
+            postTestCounselingKnowledgeAssessment.setLubricantProvidedToClient(StringUtils.changeYesNoToTrueFalse(ViewUtils.getInput(autolubricantProvidedToClient)));
         }
 
         postTest.setPostTestCounselingKnowledgeAssessment(postTestCounselingKnowledgeAssessment);
@@ -338,6 +360,7 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
     @Override
     public void startActivityForRecencyForm() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId());
+        LamisCustomHandler.showJson(encounter);
         if (encounter == null) {
             Intent recencyProgram = new Intent(LamisPlus.getInstance(), RecencyActivity.class);
             recencyProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
@@ -346,6 +369,47 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
             getActivity().finish();
         } else {
             startDashboardActivity();
+        }
+    }
+
+    private void dropDownClickListeners() {
+        autolubricantProvidedToClient.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (autolubricantProvidedToClient.getText().toString().equals("Yes")) {
+                    edlubricantProvidedToClientCountTIL.setVisibility(View.VISIBLE);
+                } else {
+                    edlubricantProvidedToClientCountTIL.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        autoCondomProvidedToClient.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (autoCondomProvidedToClient.getText().toString().equals("Yes")) {
+                    edcondomProvidedToClientCountTIL.setVisibility(View.VISIBLE);
+                } else {
+                    edcondomProvidedToClientCountTIL.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void populateField(PostTest postTest) {
+        autolubricantProvidedToClient.setText(StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getLubricantProvidedToClient()), false);
+
+
+        if (StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getLubricantProvidedToClient()).equals("Yes")) {
+            edlubricantProvidedToClientCountTIL.setVisibility(View.VISIBLE);
+        } else {
+            edlubricantProvidedToClientCountTIL.setVisibility(View.GONE);
+        }
+
+        if (StringUtils.changeBooleanToString(postTest.getPostTestCounselingKnowledgeAssessment().getCondomProvidedToClient()).equals("Yes")) {
+            edcondomProvidedToClientCountTIL.setVisibility(View.VISIBLE);
+        } else {
+            edcondomProvidedToClientCountTIL.setVisibility(View.GONE);
         }
     }
 

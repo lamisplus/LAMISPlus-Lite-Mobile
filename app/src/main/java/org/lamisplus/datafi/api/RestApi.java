@@ -18,7 +18,7 @@ public interface RestApi {
     Call<Object> createPatient(@Body Object personPayload);
 
     @POST("risk-stratification")
-    Call<RiskStratification> createRiskStratification(@Body RiskStratification riskStratification);
+    Call<RiskStratification> createRiskStratification(@Body Object riskStratification);
 
     @POST("hts")
     Call<Object> createClientIntakeHTS(@Body Object clientIntakePayload);
@@ -40,5 +40,8 @@ public interface RestApi {
 
     @GET("account")
     Call<Object> getAccount();
+
+    @POST("biometrics/templates")
+    Call<Object> createBiometrics(@Body Object biometricsPayload);
 
 }

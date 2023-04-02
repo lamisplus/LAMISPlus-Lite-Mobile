@@ -37,8 +37,6 @@ public class FormPageAdapter extends FragmentStatePagerAdapter {
             default:
                 return FormDisplayPostTest.getInstance(position, "Page #" + position);
         }
-//        Log.v("Baron", "Logging getItem:"+position);
-//        return FormDisplayFragment.getInstance(position, "Page #" + position);
     }
 
 
@@ -49,7 +47,6 @@ public class FormPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        Log.v("Baron", "Item Position " + POSITION_NONE);
         return POSITION_NONE;
     }
 

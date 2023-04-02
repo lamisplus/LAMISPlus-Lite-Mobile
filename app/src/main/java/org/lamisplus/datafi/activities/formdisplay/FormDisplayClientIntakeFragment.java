@@ -50,7 +50,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_form_display, container, false);
         mParent = (LinearLayout) root.findViewById(R.id.formDisplayLayout);
-        Log.v("Baron", "Client Intakes");
         setHasOptionsMenu(true);
         if (root != null) {
             populateForms(root);
@@ -97,7 +96,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.v("Baron", "Error: " + e);
             }
         }
     }
@@ -117,7 +115,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
             JSONArray jsonarraySections = new JSONArray(jsonObjectSection.getString("sections"));
             for (int j = 0; j < jsonarraySections.length(); j++) {
                 JSONObject objSections = jsonarraySections.getJSONObject(j);
-                Log.v("Baron", "This is for this Section" + objSections.getString("label"));
 
                 LinearLayout tempLinearTextView = new LinearLayout(LamisPlus.getInstance());
                 tempLinearTextView.setOrientation(LinearLayout.VERTICAL);
@@ -137,7 +134,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
                 tempLinearTextView.addView(textViewHeader);
                 attachSectionToView(tempLinearTextView);
 
-                LamisCustomHandler.showJson(objSections.getString("questions"));
                 JSONArray jsonarrayQuestions = new JSONArray(objSections.getString("questions"));
 
                 for (int z = 0; z < jsonarrayQuestions.length(); z++) {
@@ -219,7 +215,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
                         String[] gender = getResources().getStringArray(R.array.gender);
                         ArrayAdapter<String> adapterGender = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, gender);
                         autoCompleteTextView.setAdapter(adapterGender);
-                        Log.v("Baron", "Added");
 
                         textInputLayouts.addView(autoCompleteTextView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         temp.addView(textInputLayouts);
@@ -292,7 +287,6 @@ public class FormDisplayClientIntakeFragment extends Fragment {
                         View s = ((FrameLayout) z).getChildAt(0);
                         if (s instanceof TextInputEditText) {
                             String txt = ((TextInputEditText) s).getText().toString();
-                            Log.v("Baron", txt);
                         }
                     }
                 }

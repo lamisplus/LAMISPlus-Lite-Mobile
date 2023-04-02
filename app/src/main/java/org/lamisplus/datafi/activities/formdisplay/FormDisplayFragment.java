@@ -96,7 +96,6 @@ public class FormDisplayFragment extends LamisBaseFragment<FormDisplayContract.P
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.v("Baron", "Error: " + e);
                 }
         }
     }
@@ -112,13 +111,11 @@ public class FormDisplayFragment extends LamisBaseFragment<FormDisplayContract.P
     }
 
     public void addToTab(JSONObject jsonObjectSection) {
-        LamisCustomHandler.showJson(jsonObjectSection);
         AutoCompleteTextView autoCompleteTextView;
         try {
             JSONArray jsonarraySections = new JSONArray(jsonObjectSection.getString("sections"));
             for (int j = 0; j < jsonarraySections.length(); j++) {
                 JSONObject objSections = jsonarraySections.getJSONObject(j);
-                Log.v("Baron", "This is for this Section" + objSections.getString("label"));
 
                 LinearLayout tempLinearTextView = new LinearLayout(LamisPlus.getInstance());
                 tempLinearTextView.setOrientation(LinearLayout.VERTICAL);
@@ -220,7 +217,6 @@ public class FormDisplayFragment extends LamisBaseFragment<FormDisplayContract.P
                         String[] gender = getResources().getStringArray(R.array.gender);
                         ArrayAdapter<String> adapterGender = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, gender);
                         autoCompleteTextView.setAdapter(adapterGender);
-                        Log.v("Baron", "Added");
 
                         textInputLayouts.addView(autoCompleteTextView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         temp.addView(textInputLayouts);
@@ -297,7 +293,6 @@ public class FormDisplayFragment extends LamisBaseFragment<FormDisplayContract.P
                        View s = ((FrameLayout) z).getChildAt(0);
                         if(s instanceof TextInputEditText){
                             String txt = ((TextInputEditText) s).getText().toString();
-                            Log.v("Baron",  txt);
                         }
                     }
                 }

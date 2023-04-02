@@ -12,24 +12,26 @@ public class ClientIntakeContract {
     interface View extends LamisBaseView<Presenter>{
 
         void scrollToTop();
-        void startActivityForPreTestForm();
+        void startActivityForPreTestForm(String s);
 
         void startDashboardActivity();
 
+        void startHTSActivity();
+
         void retreiveRSTFormData(String rstForm);
-        void setErrorsVisibility(boolean targetGroup, boolean clientCode, boolean referredFrom, boolean settings, boolean visitDate);
+        void setErrorsVisibility(boolean targetGroup, boolean clientCode, boolean referredFrom, boolean settings, boolean visitDate,
+                boolean indexTestingError, boolean firstTimeVisitError, boolean previouslyTestedError, boolean typeCounselingError);
 
         void setErrorsVisibilityPatient(boolean firstNameError,
                                  boolean lastNameError,
                                  boolean middleNameError,
                                  boolean dateOfBirthError,
                                  boolean genderError,
-                                 boolean employmentNull,
                                  boolean maritalNull,
                                  boolean educationNull,
                                  boolean phoneNull,
                                  boolean stateError,
-                                 boolean provinceError);
+                                 boolean provinceError, boolean addressError);
     }
 
     interface Presenter extends LamisBasePresenterContract{

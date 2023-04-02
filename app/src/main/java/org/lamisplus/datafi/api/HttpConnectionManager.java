@@ -2,8 +2,6 @@ package org.lamisplus.datafi.api;
 
 import android.util.Log;
 
-import com.google.common.hash.Hashing;
-
 import okhttp3.*;
 
 import java.io.IOException;
@@ -39,7 +37,6 @@ public class HttpConnectionManager {
 //                .addHeader("Authorization", token)
                 .post(body)
                 .build();
-        Log.v("Baron", "Message below the RequestBody");
 
         try (Response response = httpClient
                 .newBuilder()

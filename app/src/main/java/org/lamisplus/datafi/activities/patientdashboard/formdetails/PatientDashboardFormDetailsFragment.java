@@ -185,7 +185,6 @@ public class PatientDashboardFormDetailsFragment extends PatientDashboardFragmen
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Log.v("Baron", "The Id has been clicked " + view.getId());
                     try {
                         Class className = Class.forName(encounter.getPackageName());
                         Intent form = new Intent(getContext(), className);

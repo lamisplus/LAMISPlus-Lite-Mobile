@@ -18,6 +18,7 @@ public class ClientIntakeActivity extends LamisBaseActivity {
 
     String patientID = "";
     String rstForm = "";
+    String rstFormPackageName = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,9 +43,10 @@ public class ClientIntakeActivity extends LamisBaseActivity {
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
             rstForm = patientBundle.getString(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
+            rstFormPackageName = patientBundle.getString("packageName");
         }
 
-        mPresenter = new ClientIntakePresenter(clientIntakeFragment, patientID, rstForm);
+        mPresenter = new ClientIntakePresenter(clientIntakeFragment, patientID, rstForm, rstFormPackageName);
     }
 
     @Override

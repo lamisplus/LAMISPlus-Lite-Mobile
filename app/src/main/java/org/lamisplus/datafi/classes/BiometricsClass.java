@@ -9,26 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BiometricsClass{
-    @SerializedName("patientUUID")
-    @Expose
-    private String PatientUUID;
 
-    @SerializedName("fingerPrintList")
-    @Expose
-    private List<Biometrics> FingerPrintList;
+    List<BiometricsClass.BiometricsClassFingers> biometricsClassFingers = new ArrayList<>();
 
-
-    public String getPatientUUID() {
-        return PatientUUID;
-    }
-    public void setPatientUUID(String patientUUID) {
-        this.PatientUUID = patientUUID;
+    public BiometricsClass(List<BiometricsClass.BiometricsClassFingers> items) {
+        this.biometricsClassFingers = items;
     }
 
-    public List<Biometrics> getFingerPrintList() {
-        return FingerPrintList;
-    }
-    public void setFingerPrintList(ArrayList<Biometrics> fingerPrintList)   {
-        this.FingerPrintList = fingerPrintList;
+    public static class BiometricsClassFingers {
+        String template;
+        String templateType;
+
+        public BiometricsClassFingers(String template, String templateType) {
+            this.template = template;
+            this.templateType = templateType;
+        }
+
+        public void setTemplate(String template){
+            this.template = template;
+        }
+
+        public String getTemplate(){
+            return template;
+        }
+
+        public void setTemplateType(String templateType){
+            this.templateType = templateType;
+        }
+
+        public String getTemplateType(){
+            return templateType;
+        }
     }
 }

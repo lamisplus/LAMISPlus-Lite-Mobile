@@ -48,4 +48,5 @@
     <color name="light_gray">#DBEEE8</color>
     <!-- neutral colors that look pleasing on both white and black background -->
     <color name="neutral_green">#249627</color>
+    <color name="snooper_yellow">#FFBD00</color>
 </resources>

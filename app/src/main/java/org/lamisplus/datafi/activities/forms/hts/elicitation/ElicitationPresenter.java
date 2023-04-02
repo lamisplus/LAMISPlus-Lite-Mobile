@@ -7,6 +7,8 @@ import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ViewUtils;
 
 public class ElicitationPresenter extends LamisBasePresenter implements ElicitationContract.Presenter {
 
@@ -36,23 +38,49 @@ public class ElicitationPresenter extends LamisBasePresenter implements Elicitat
 
     @Override
     public void confirmCreate(Elicitation elicitation, String packageName) {
-        String clientIntakeEncounter = new Gson().toJson(elicitation);
-        Encounter encounter = new Encounter();
-        encounter.setName(ApplicationConstants.Forms.ELICITATION);
-        encounter.setPerson(patientId);
-        encounter.setPackageName(packageName);
-        encounter.setDataValues(clientIntakeEncounter);
-        encounter.save();
+        if (validate(elicitation)) {
+            String clientIntakeEncounter = new Gson().toJson(elicitation);
+            Encounter encounter = new Encounter();
+            encounter.setName(ApplicationConstants.Forms.ELICITATION);
+            encounter.setPerson(patientId);
+            encounter.setPackageName(packageName);
+            encounter.setDataValues(clientIntakeEncounter);
+            encounter.save();
 
-        elicitationInfoView.startDashboardActivity();
+            elicitationInfoView.startDashboardActivity();
+        }else{
+            elicitationInfoView.scrollToTop();
+        }
     }
 
     @Override
     public void confirmUpdate(Elicitation elicitation, Encounter encounter) {
-        String s = new Gson().toJson(elicitation);
-        encounter.setDataValues(s);
-        encounter.save();
-        elicitationInfoView.startDashboardActivity();
+        if (validate(elicitation)) {
+            String s = new Gson().toJson(elicitation);
+            encounter.setDataValues(s);
+            encounter.save();
+            elicitationInfoView.startDashboardActivity();
+        }else{
+            elicitationInfoView.scrollToTop();
+        }
+    }
+
+    private boolean validate(Elicitation elicitation){
+        boolean offeredINSError = false;
+
+        elicitationInfoView.setErrorsVisibility(offeredINSError);
+
+        if (elicitation.getOfferedIns() == null) {
+            offeredINSError = true;
+        }
+        boolean result = !offeredINSError;
+
+        if (result) {
+            return true;
+        } else {
+            elicitationInfoView.setErrorsVisibility(offeredINSError);
+            return false;
+        }
     }
 
     @Override

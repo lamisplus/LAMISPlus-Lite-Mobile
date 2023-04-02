@@ -24,7 +24,7 @@ public class Account extends Model implements Serializable {
     @SerializedName("currentOrganisationUnitId")
     @Column(name = "currentOrganisationUnitId")
     @Expose
-    private int currentOrganisationUnitId;
+    private Integer currentOrganisationUnitId;
 
     @SerializedName("currentOrganisationUnitName")
     @Column(name = "currentOrganisationUnitName")
@@ -44,7 +44,7 @@ public class Account extends Model implements Serializable {
     @SerializedName("selected")
     @Column(name = "selected")
     @Expose
-    private int selected;
+    private Integer selected;
 
     public String getUsername() {
         return username;
@@ -62,11 +62,11 @@ public class Account extends Model implements Serializable {
         this.password = password;
     }
 
-    public int getCurrentOrganisationUnitId() {
+    public Integer getCurrentOrganisationUnitId() {
         return currentOrganisationUnitId;
     }
 
-    public void setCurrentOrganisationUnitId(int currentOrganisationUnitId) {
+    public void setCurrentOrganisationUnitId(Integer currentOrganisationUnitId) {
         this.currentOrganisationUnitId = currentOrganisationUnitId;
     }
 
@@ -94,11 +94,11 @@ public class Account extends Model implements Serializable {
         this.serverUrl = serverUrl;
     }
 
-    public int getSelected() {
+    public Integer getSelected() {
         return selected;
     }
 
-    public void setSelected(int selected) {
+    public void setSelected(Integer selected) {
         this.selected = selected;
     }
 }

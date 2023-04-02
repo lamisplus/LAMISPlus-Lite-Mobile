@@ -21,12 +21,14 @@ public class AddEditPatientContract {
                                  boolean dateOfRegisterError,
                                  boolean hospitalError,
                                  boolean genderError,
-                                 boolean employmentNull,
                                  boolean maritalNull,
                                  boolean educationNull,
                                  boolean phoneNull,
                                  boolean stateError,
-                                 boolean provinceError);
+                                 boolean provinceError,
+                                 boolean nokFirstNameError,
+                                 boolean nokMiddleNameError,
+                                 boolean nokLastNameError);
     }
 
     interface Presenter extends LamisBasePresenterContract{

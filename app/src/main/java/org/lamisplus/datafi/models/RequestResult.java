@@ -8,10 +8,10 @@ public class RequestResult implements Serializable {
 
 
     @SerializedName("personId")
-    private int personId;
+    private Integer personId = null;
 
     @SerializedName("htsClientId")
-    private int htsClientId;
+    private Integer htsClientId = null;
 
     @SerializedName("hivTestResult")
     private String hivTestResult;
@@ -55,19 +55,19 @@ public class RequestResult implements Serializable {
     @SerializedName("others")
     private Others others;
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
-    public int getHtsClientId() {
+    public Integer getHtsClientId() {
         return htsClientId;
     }
 
-    public void setHtsClientId(int htsClientId) {
+    public void setHtsClientId(Integer htsClientId) {
         this.htsClientId = htsClientId;
     }
 

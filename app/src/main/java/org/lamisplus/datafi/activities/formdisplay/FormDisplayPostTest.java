@@ -52,7 +52,6 @@ public class FormDisplayPostTest extends LamisBaseFragment<FormDisplayContract.P
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_form_display, container, false);
         mParent = (LinearLayout) root.findViewById(R.id.formDisplayLayout);
-        Log.v("Baron", "Post Test");
         setHasOptionsMenu(true);
         if (root != null) {
             populateForms(root);
@@ -98,7 +97,6 @@ public class FormDisplayPostTest extends LamisBaseFragment<FormDisplayContract.P
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.v("Baron", "Error: " + e);
                 }
         }
     }
@@ -120,7 +118,6 @@ public class FormDisplayPostTest extends LamisBaseFragment<FormDisplayContract.P
             JSONArray jsonarraySections = new JSONArray(jsonObjectSection.getString("sections"));
             for (int j = 0; j < jsonarraySections.length(); j++) {
                 JSONObject objSections = jsonarraySections.getJSONObject(j);
-                Log.v("Baron", "This is for this Section" + objSections.getString("label"));
 
                 LinearLayout tempLinearTextView = new LinearLayout(LamisPlus.getInstance());
                 tempLinearTextView.setOrientation(LinearLayout.VERTICAL);
@@ -222,7 +219,6 @@ public class FormDisplayPostTest extends LamisBaseFragment<FormDisplayContract.P
                         String[] gender = getResources().getStringArray(R.array.gender);
                         ArrayAdapter<String> adapterGender = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, gender);
                         autoCompleteTextView.setAdapter(adapterGender);
-                        Log.v("Baron", "Added");
 
                         textInputLayouts.addView(autoCompleteTextView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         temp.addView(textInputLayouts);
@@ -299,7 +295,6 @@ public class FormDisplayPostTest extends LamisBaseFragment<FormDisplayContract.P
                         View s = ((FrameLayout) z).getChildAt(0);
                         if (s instanceof TextInputEditText) {
                             String txt = ((TextInputEditText) s).getText().toString();
-                            Log.v("Baron", txt);
                         }
                     }
                 }

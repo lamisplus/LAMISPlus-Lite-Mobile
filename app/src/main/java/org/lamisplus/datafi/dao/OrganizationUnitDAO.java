@@ -12,9 +12,12 @@ public class OrganizationUnitDAO {
      * @param name
      * @return int
      */
-    public static int findOrganizationUnitIdByName(String name) {
+    public static Integer findOrganizationUnitIdByName(String name) {
         OrganizationUnit organizationUnit = new Select().from(OrganizationUnit.class).where("name=?", name).executeSingle();
-        return organizationUnit.getUnit_id();
+        if(organizationUnit != null) {
+            return organizationUnit.getUnit_id();
+        }
+        return null;
     }
 
     /**

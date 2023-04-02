@@ -9,29 +9,29 @@ public class PostTest implements Serializable {
 
     @SerializedName("htsClientId")
     @Expose
-    private int htsClientId;
+    private Integer htsClientId = null;
 
     @SerializedName("personId")
     @Expose
-    private int personId;
+    private Integer personId = null;
 
     @SerializedName("postTestCounselingKnowledgeAssessment")
     @Expose
     private PostTestCounselingKnowledgeAssessment postTestCounselingKnowledgeAssessment;
 
-    public int getHtsClientId() {
+    public Integer getHtsClientId() {
         return htsClientId;
     }
 
-    public void setHtsClientId(int htsClientId) {
+    public void setHtsClientId(Integer htsClientId) {
         this.htsClientId = htsClientId;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 

@@ -72,7 +72,6 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
     private TextView tvGender;
     private TextView tvDateOfBirth;
     private TextView tvMaritalStatus;
-    private TextView tvEmploymentStatus;
     private TextView tvEducationLevel;
     private TextView tvPhoneNumber;
     private TextView tvCountry;
@@ -112,7 +111,6 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
         tvGender = root.findViewById(R.id.tvGender);
         tvDateOfBirth = root.findViewById(R.id.tvDateOfBirth);
         tvMaritalStatus = root.findViewById(R.id.tvMaritalStatus);
-        tvEmploymentStatus = root.findViewById(R.id.tvEmploymentStatus);
         tvEducationLevel = root.findViewById(R.id.tvEducationLevel);
         tvPhoneNumber = root.findViewById(R.id.tvPhoneNumber);
         tvCountry = root.findViewById(R.id.tvCountry);
@@ -145,26 +143,26 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
 
     private void fillFields(View root) {
         Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
+        if(person != null) {
+            your_profile.setText(person.getFirstName() + "'s Profile");
 
-        your_profile.setText(person.getFirstName() + "'s Profile");
-
-        tvPatientName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
-        tvHospitalNumber.setText(person.getIdentifiers().getValue());
-        if (("Male").equals(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()))) {
-            tvGender.setText("Male");
-            ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_male);
-        } else {
-            tvGender.setText("Female");
-            ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_female);
+            tvPatientName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
+            tvHospitalNumber.setText(person.getIdentifiers().getValue());
+            if (("Male").equals(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()))) {
+                tvGender.setText("Male");
+                ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_male);
+            } else {
+                tvGender.setText("Female");
+                ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_female);
+            }
+            tvDateOfBirth.setText(person.getDateOfBirth());
+            tvMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()));
+            tvEducationLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()));
+            tvPhoneNumber.setText(person.pullContactPointList().get(0).getValue());
+            tvCountry.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getCountryId()));
+            tvState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()));
+            tvLGA.setText(person.getAddresses().getDistrict());
+            tvStreet.setText(person.getAddresses().getCity());
         }
-        tvDateOfBirth.setText(person.getDateOfBirth());
-        tvMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()));
-        tvEmploymentStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getEmploymentStatusId()));
-        tvEducationLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()));
-        tvPhoneNumber.setText(person.pullContactPointList().get(0).getValue());
-        tvCountry.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getCountryId()));
-        tvState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()));
-        tvLGA.setText(person.getAddresses().getDistrict());
-        tvStreet.setText(person.getAddresses().getCity());
     }
 }

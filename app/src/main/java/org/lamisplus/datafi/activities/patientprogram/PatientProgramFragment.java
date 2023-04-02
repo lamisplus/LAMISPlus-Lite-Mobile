@@ -87,7 +87,6 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.htsView:
-                Log.v("Baron", "The patient ID is " + mPresenter.getPatientId());
                 //These checks if a form has been entered and if it has then display the next form till completed and the dashboard is shown
                 Encounter encounterRst = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
 
@@ -169,7 +168,6 @@ public class PatientProgramFragment extends LamisBaseFragment<PatientProgramCont
                 break;
             default:
                 startNewActivity(FormDisplayActivity.class);
-                Log.v("Baron", "Nothings was clicked " + view.getId());
                 break;
         }
 

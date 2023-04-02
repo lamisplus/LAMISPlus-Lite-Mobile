@@ -17,7 +17,7 @@ public class PrefrencesActivity extends LamisBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prefrences);
         getSupportActionBar().setElevation(0);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + " Configurations");
 
 
         prefrencesFragment = (PrefrencesFragment) getSupportFragmentManager().findFragmentById(R.id.prefrencesContentFrame);

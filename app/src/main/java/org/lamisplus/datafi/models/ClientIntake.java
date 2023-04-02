@@ -11,11 +11,11 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("htsClientId")
     @Expose
-    private int htsClientId;
+    private Integer htsClientId = null;
 
     @SerializedName("breastFeeding")
     @Expose
-    private boolean breastFeeding;
+    private String breastFeeding;
 
     @SerializedName("clientCode")
     @Expose
@@ -27,7 +27,7 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("firstTimeVisit")
     @Expose
-    private boolean firstTimeVisit;
+    private String firstTimeVisit;
 
     @SerializedName("indexClient")
     @Expose
@@ -39,31 +39,31 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("numChildren")
     @Expose
-    private int numChildren;
+    private Integer numChildren = 0;
 
     @SerializedName("numWives")
     @Expose
-    private int numWives;
+    private Integer numWives = 0;
 
     @SerializedName("personId")
     @Expose
-    private int personId;
+    private Integer personId = null;
 
     @SerializedName("pregnant")
     @Expose
-    private int pregnant;
+    private Integer pregnant = null;
 
     @SerializedName("previouslyTested")
     @Expose
-    private Boolean previouslyTested;
+    private String previouslyTested;
 
     @SerializedName("referredFrom")
     @Expose
-    private int referredFrom;
+    private Integer referredFrom = null;
 
     @SerializedName("relationWithIndexClient")
     @Expose
-    private int relationWithIndexClient;
+    private Integer relationWithIndexClient = null;
 
     @SerializedName("targetGroup")
     @Expose
@@ -75,7 +75,7 @@ public class ClientIntake implements Serializable {
 
     @SerializedName("typeCounseling")
     @Expose
-    private int typeCounseling;
+    private Integer typeCounseling = null;
 
     @SerializedName("extra")
     @Expose
@@ -86,11 +86,11 @@ public class ClientIntake implements Serializable {
     private String riskStratificationCode;
 
 
-    public boolean isBreastFeeding() {
+    public String isBreastFeeding() {
         return breastFeeding;
     }
 
-    public void setBreastFeeding(boolean breastFeeding) {
+    public void setBreastFeeding(String breastFeeding) {
         this.breastFeeding = breastFeeding;
     }
 
@@ -110,11 +110,11 @@ public class ClientIntake implements Serializable {
         this.dateVisit = dateVisit;
     }
 
-    public boolean isFirstTimeVisit() {
+    public String isFirstTimeVisit() {
         return firstTimeVisit;
     }
 
-    public void setFirstTimeVisit(boolean firstTimeVisit) {
+    public void setFirstTimeVisit(String firstTimeVisit) {
         this.firstTimeVisit = firstTimeVisit;
     }
 
@@ -134,59 +134,59 @@ public class ClientIntake implements Serializable {
         this.indexClientCode = indexClientCode;
     }
 
-    public int getNumChildren() {
+    public Integer getNumChildren() {
         return numChildren;
     }
 
-    public void setNumChildren(int numChildren) {
+    public void setNumChildren(Integer numChildren) {
         this.numChildren = numChildren;
     }
 
-    public int getNumWives() {
+    public Integer getNumWives() {
         return numWives;
     }
 
-    public void setNumWives(int numWives) {
+    public void setNumWives(Integer numWives) {
         this.numWives = numWives;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
-    public int getPregnant() {
+    public Integer getPregnant() {
         return pregnant;
     }
 
-    public void setPregnant(int pregnant) {
+    public void setPregnant(Integer pregnant) {
         this.pregnant = pregnant;
     }
 
-    public Boolean getPreviouslyTested() {
+    public String getPreviouslyTested() {
         return previouslyTested;
     }
 
-    public void setPreviouslyTested(Boolean previouslyTested) {
+    public void setPreviouslyTested(String previouslyTested) {
         this.previouslyTested = previouslyTested;
     }
 
-    public int getReferredFrom() {
+    public Integer getReferredFrom() {
         return referredFrom;
     }
 
-    public void setReferredFrom(int referredFrom) {
+    public void setReferredFrom(Integer referredFrom) {
         this.referredFrom = referredFrom;
     }
 
-    public int getRelationWithIndexClient() {
+    public Integer getRelationWithIndexClient() {
         return relationWithIndexClient;
     }
 
-    public void setRelationWithIndexClient(int relationWithIndexClient) {
+    public void setRelationWithIndexClient(Integer relationWithIndexClient) {
         this.relationWithIndexClient = relationWithIndexClient;
     }
 
@@ -206,11 +206,11 @@ public class ClientIntake implements Serializable {
         this.testingSetting = testingSetting;
     }
 
-    public int getTypeCounseling() {
+    public Integer getTypeCounseling() {
         return typeCounseling;
     }
 
-    public void setTypeCounseling(int typeCounseling) {
+    public void setTypeCounseling(Integer typeCounseling) {
         this.typeCounseling = typeCounseling;
     }
 
@@ -230,11 +230,11 @@ public class ClientIntake implements Serializable {
         this.riskStratificationCode = riskStratificationCode;
     }
 
-    public int getHtsClientId() {
+    public Integer getHtsClientId() {
         return htsClientId;
     }
 
-    public void setHtsClientId(int htsClientId) {
+    public void setHtsClientId(Integer htsClientId) {
         this.htsClientId = htsClientId;
     }
 }

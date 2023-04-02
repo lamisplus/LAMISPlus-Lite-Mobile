@@ -41,7 +41,7 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
     public void confirmCreate(RiskStratification riskStratification, String packageName) {
         if (validate(riskStratification)) {
             String rstEncounter = new Gson().toJson(riskStratification);
-            rstInfoView.startActivityForClientIntakeForm(rstEncounter);
+            rstInfoView.startActivityForClientIntakeForm(rstEncounter, packageName);
         } else {
             rstInfoView.scrollToTop();
         }
@@ -51,7 +51,7 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
     public void confirmUpdate(RiskStratification riskStratification, Encounter encounter) {
         if (validate(riskStratification)) {
             Person person = PersonDAO.findPersonById(patientId);
-            if (person.getPersonId() != 0) {
+            if (person.getPersonId() != null) {
                 encounter.setPersonId(person.getPersonId());
             }
             String s = new Gson().toJson(riskStratification);
@@ -114,7 +114,7 @@ public class RSTPresenter extends LamisBasePresenter implements RSTContract.Pres
 
     @Override
     public void confirmDeleteEncounter(String formName, String patientId) {
-        EncounterDAO.deleteEncounter(formName, patientId);
+        //EncounterDAO.deleteEncounter(formName, patientId);
         rstInfoView.startHTSActivity();
     }
 

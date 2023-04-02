@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp">
@@ -49,6 +49,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/autoTimeLastHIVNegativeTestResultTIL"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +58,8 @@
                 android:layout_weight="1"
                 android:hint="Time of last HIV Negative test Result"
                 app:errorEnabled="true"
-                app:helperText="Time of last HIV Negative test Result">
+                app:helperText="Time of last HIV Negative test Result"
+                android:visibility="gone">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoTimeLastHIVNegativeTestResult"
@@ -358,226 +360,439 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/everHadSexualIntercourseTIL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Ever had sexual intercourse*"
-                app:errorEnabled="true"
-                app:helperText="Ever had sexual intercourse*">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoeverHadSexualIntercourse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/bloodtransInlastThreeMonthsTIL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Blood transfusion in last 3 months*"
-                app:errorEnabled="true"
-                app:helperText="Blood transfusion in last 3 months*">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autobloodtransInlastThreeMonths"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/othersHIVRiskAssessmentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/uprotectedSexWithCasualLastThreeMonthsTIL"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Unprotected sex with casual partner in last 3 months*"
-                app:errorEnabled="true"
-                app:helperText="Unprotected sex with casual partner in last 3 months*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autouprotectedSexWithCasualLastThreeMonths"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/experiencePainTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you/your partner experienced lower abdominal pain, smelly discharge, blisters and wounds around you/partner vagina, penis anus or mouth? *">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoexperiencePain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/uprotectedSexWithRegularPartnerLastThreeMonthsTIL"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/haveSexWithoutCondomTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you/partner had sex without a condom with someone of unknown HIV status, or you/partner raped by person with unknown HIV status? *">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autohaveSexWithoutCondom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Unprotected sex with regular partner in the last 3months*"
-                app:errorEnabled="true"
-                app:helperText="Unprotected sex with regular partner in the last 3months*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autouprotectedSexWithRegularPartnerLastThreeMonths"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/haveCondomBurstTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you had a condom burst with your partner during sexual intercourse? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you had a condom burst with your partner during sexual intercourse? *">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autohaveCondomBurst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/abuseDrugTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind? *"
+                    app:errorEnabled="true"
+                    app:helperText="Do you/partner share needles/syringes, other sharp objects or used abuse drug substances of any kind? *">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/autounprotectedVaginalSexTIL"
+                    <AutoCompleteTextView
+                        android:id="@+id/autoabuseDrug"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Unprotected vaginal sex*"
-                app:errorEnabled="true"
-                app:helperText="Unprotected vaginal sex*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autounprotectedVaginalSex"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/autobloodTransfusionTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you/partner had any blood or blood product transfusion? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you/partner had any blood or blood product transfusion? *">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autobloodTransfusion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/uprotectedAnalSexHivRiskAssessTIL"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/consistentWeightFeverNightCoughTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you/partner experienced coughing, weight loss, fever, night sweats consistently? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you/partner experienced coughing, weight loss, fever, night sweats consistently? *">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoconsistentWeightFeverNightCough"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Unprotected Anal sex*"
-                app:errorEnabled="true"
-                app:helperText="Unprotected Anal sex*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoUprotectedAnalSexHivRiskAssess"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/soldPaidVaginalSexTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Have you/partner paid or sold vaginal, anal or oral sex? *"
+                    app:errorEnabled="true"
+                    app:helperText="Have you/partner paid or sold vaginal, anal or oral sex? *">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autosoldPaidVaginalSex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/stiLastThreeMonthsTIL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="STI in last 3 months*"
-                app:errorEnabled="true"
-                app:helperText="STI in last 3 months*">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autostiLastThreeMonths"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/sexUnderInfluenceTIL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Sex under the influence of drugs or alcohol*"
-                app:errorEnabled="true"
-                app:helperText="Sex under the influence of drugs or alcohol*">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autosexUnderInfluence"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <LinearLayout
+            android:id="@+id/genPopHIVRiskAssessmentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/moreThanOneSexPartnerLastThreeMonthsTIL"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="More than 1 sex partner during last 3 months*"
-                app:errorEnabled="true"
-                app:helperText="More than 1 sex partner during last 3 months*">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/automoreThanOneSexPartnerLastThreeMonths"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/everHadSexualIntercourseTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Ever had sexual intercourse*"
+                    app:errorEnabled="true"
+                    app:helperText="Ever had sexual intercourse*">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoeverHadSexualIntercourse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bloodtransInlastThreeMonthsTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Blood transfusion in last 3 months*"
+                    app:errorEnabled="true"
+                    app:helperText="Blood transfusion in last 3 months*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autobloodtransInlastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/uprotectedSexWithCasualLastThreeMonthsTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Unprotected sex with casual partner in last 3 months*"
+                    app:errorEnabled="true"
+                    app:helperText="Unprotected sex with casual partner in last 3 months*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autouprotectedSexWithCasualLastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/uprotectedSexWithRegularPartnerLastThreeMonthsTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Unprotected sex with regular partner in the last 3months*"
+                    app:errorEnabled="true"
+                    app:helperText="Unprotected sex with regular partner in the last 3months*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autouprotectedSexWithRegularPartnerLastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/autounprotectedVaginalSexTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Unprotected vaginal sex*"
+                    app:errorEnabled="true"
+                    app:helperText="Unprotected vaginal sex*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autounprotectedVaginalSex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/uprotectedAnalSexHivRiskAssessTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Unprotected Anal sex*"
+                    app:errorEnabled="true"
+                    app:helperText="Unprotected Anal sex*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoUprotectedAnalSexHivRiskAssess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/stiLastThreeMonthsTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="STI in last 3 months*"
+                    app:errorEnabled="true"
+                    app:helperText="STI in last 3 months*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autostiLastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sexUnderInfluenceTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Sex under the influence of drugs or alcohol*"
+                    app:errorEnabled="true"
+                    app:helperText="Sex under the influence of drugs or alcohol*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autosexUnderInfluence"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/moreThanOneSexPartnerLastThreeMonthsTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="More than 1 sex partner during last 3 months*"
+                    app:errorEnabled="true"
+                    app:helperText="More than 1 sex partner during last 3 months*">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/automoreThanOneSexPartnerLastThreeMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -762,78 +977,143 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/syndromicSTIMale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Complaints of urethral discharge or burning when urinating?"
-                app:errorEnabled="true"
-                app:helperText="Complaints of urethral discharge or burning when urinating?">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoUrethralDischarge"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Complaints of urethral discharge or burning when urinating?"
+                    app:errorEnabled="true"
+                    app:helperText="Complaints of urethral discharge or burning when urinating?">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoUrethralDischarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:id="@+id/autoComplaintsOfScrotalTIL"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/autoComplaintsOfScrotalTIL"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Male: Complaints of scrotal swelling and pain"
+                    app:errorEnabled="true"
+                    app:helperText="Male: Complaints of scrotal swelling and pain">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplaintsOfScrotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Male: Complaints of scrotal swelling and pain"
-                app:errorEnabled="true"
-                app:helperText="Male: Complaints of scrotal swelling and pain">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoComplaintsOfScrotal"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Complaints of genital sore(s) or swollen inguinal lymph nodes with or without pains?"
+                    app:errorEnabled="true"
+                    app:helperText="Complaints of genital sore(s) or swollen inguinal lymph nodes with or without pains?">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplaintsGenitalSore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/syndromicSTIFemale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:hint="Complaints of genital sore(s) or swollen inguinal lymph nodes with or without pains?"
-                app:errorEnabled="true"
-                app:helperText="Complaints of genital sore(s) or swollen inguinal lymph nodes with or without pains?">
+                android:weightSum="2">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoComplaintsGenitalSore"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_design"
-                    android:inputType="none" />
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Complaints of vaginal discharge or burning when urinating?"
+                    app:errorEnabled="true"
+                    app:helperText="Complaints of vaginal discharge or burning when urinating?">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/autovaginalDischarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:hint="Complaints of lower abdominal pains with or without vaginal discharge?"
+                    app:errorEnabled="true"
+                    app:helperText="Complaints of lower abdominal pains with or without vaginal discharge?">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autolowerAbdominalPains"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_design"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -27,6 +27,7 @@ import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Lab;
 import org.lamisplus.datafi.models.OrganizationUnit;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.models.Settings;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -70,6 +71,7 @@ public class LamisPlus extends Application {
         configurationBuilder.addModelClasses(OrganizationUnit.class);
         configurationBuilder.addModelClasses(Person.class);
         configurationBuilder.addModelClasses(Lab.class);
+        configurationBuilder.addModelClasses(Settings.class);
         ActiveAndroid.initialize(configurationBuilder.create());
         try {
             populateCodesets();
@@ -231,37 +233,37 @@ public class LamisPlus extends Application {
     private void populateLab(){
         List<Lab> labs = new Select().from(Lab.class).execute();
         if(labs.isEmpty()){
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (1,'ASOKORO Testing Lab','LIMS150003')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (2,'PLASVIREC TESTING LAB','LIMS320002')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (8,'ABUTH Testing Lab','LIMS190001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (11,'University College Hospital (UCH) Ibadan','LIMS310001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (9,'LUTH Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (10,'NIMR Testing Lab','LIMS250002')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (12,'LASUTH Testing Lab','LIMS250001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (13,'JUTH Testing Lab','LIMS320001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (14,'OLA Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (15,'AKTH Testing Lab','LIMS200001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (16,'NTBLTC Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (17,'FMCG Testing Lab','LIMS160001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (18,'FMCMK Testing Lab','LIMS070001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (19,'OAUTHC Testing Lab','LIMS300001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (20,'UMTH Testing Lab','LIMS080001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (21,'FMCJAL Testing Lab','LIMS350001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (22,'NAUTH Testing Lab','LIMS040002')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (7,'UUTH Testing Lab','LIMS030001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (3,'UBTH Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (4,'UDUTH Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (5,'UNTH Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (6,'NHA Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (23,'DRL Testing Lab','LIMS150001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (24,'DLHMH Testing Lab',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (25,'68 MRH Testing Lab','LIMS250003')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (26,'UATH Abuja Testing Lab','LIMS150004')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (27,'RSUTH Testing Lab','LIMS330001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (30,'COOUTH Testing Lab','LIMS040001')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (31,'NRL Abuja','LIMS150002')");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (32,'University Of Calabar Teaching Hospital (UCTH)',NULL)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code) VALUES (28,'OAUTHC ANNEX','LIMS290001')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (1,'ASOKORO Testing Lab','LIMS150003','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (2,'PLASVIREC TESTING LAB','LIMS320002','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (8,'ABUTH Testing Lab','LIMS190001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (11,'University College Hospital (UCH) Ibadan','LIMS310001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (9,'LUTH Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (10,'NIMR Testing Lab','LIMS250002','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (12,'LASUTH Testing Lab','LIMS250001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (13,'JUTH Testing Lab','LIMS320001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (14,'OLA Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (15,'AKTH Testing Lab','LIMS200001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (16,'NTBLTC Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (17,'FMCG Testing Lab','LIMS160001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (18,'FMCMK Testing Lab','LIMS070001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (19,'OAUTHC Testing Lab','LIMS300001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (20,'UMTH Testing Lab','LIMS080001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (21,'FMCJAL Testing Lab','LIMS350001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (22,'NAUTH Testing Lab','LIMS040002','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (7,'UUTH Testing Lab','LIMS030001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (3,'UBTH Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (4,'UDUTH Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (5,'UNTH Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (6,'NHA Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (23,'DRL Testing Lab','LIMS150001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (24,'DLHMH Testing Lab',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (25,'68 MRH Testing Lab','LIMS250003','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (26,'UATH Abuja Testing Lab','LIMS150004','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (27,'RSUTH Testing Lab','LIMS330001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (30,'COOUTH Testing Lab','LIMS040001','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (31,'NRL Abuja','LIMS150002','')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (32,'University Of Calabar Teaching Hospital (UCTH)',NULL,'')");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO lab(id,name,lab_code, selected) VALUES (28,'OAUTHC ANNEX','LIMS290001','')");
         }
     }
 
@@ -764,7 +766,7 @@ public class LamisPlus extends Application {
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (546, 'REASON_DEFAULTING', 'Intensive Follow-up', 'en', NULL, 'REASON_DEFAULTING_INTENSIVE_FOLLOW-UP', '2022-09-09 23:34:13.899', 'guest@lamisplus.org', '2022-09-09 23:34:13.899', 'guest@lamisplus.org', 0)");
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (547, 'REASON_DEFAULTING', 'Others (Pls specify)', 'en', NULL, 'REASON_DEFAULTING_OTHERS_(PLS_SPECIFY)', '2022-09-09 23:34:42.922', 'guest@lamisplus.org', '2022-09-09 23:34:42.922', 'guest@lamisplus.org', 0)");
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (548, 'COUNSELING_TYPE', 'Group', 'en', NULL, 'COUNSELING_TYPE_GROUP', '2022-09-10 00:05:53.689', 'guest@lamisplus.org', '2022-09-10 00:05:53.689', 'guest@lamisplus.org', 0)");
-            SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (549, 'COUNSELING_TYPE', 'previously self-tested ', 'en', NULL, 'COUNSELING_TYPE_PREVIOUSLY_SELF-TESTED', '2022-09-10 00:09:42.056', 'guest@lamisplus.org', '2022-09-10 00:09:42.056', 'guest@lamisplus.org', 0)");
+            SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (549, 'COUNSELING_TYPE', 'previously self-tested', 'en', NULL, 'COUNSELING_TYPE_PREVIOUSLY_SELF-TESTED', '2022-09-10 00:09:42.056', 'guest@lamisplus.org', '2022-09-10 00:09:42.056', 'guest@lamisplus.org', 0)");
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (550, 'EAC_BARRIERS', 'Forgot', 'en', NULL, 'EAC_BARRIERS_FORGOT', '2022-09-12 09:31:03.31', 'guest@lamisplus.org', '2022-09-12 09:31:03.31', 'guest@lamisplus.org', 0)");
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (551, 'EAC_BARRIERS', 'Knowledge/ beliefs', 'en', NULL, 'EAC_BARRIERS_KNOWLEDGE_BELIEFS', '2022-09-12 09:31:26.773', 'guest@lamisplus.org', '2022-09-12 09:31:26.773', 'guest@lamisplus.org', 0)");
             SQLiteUtils.execSql("INSERT OR REPLACE INTO codesets (codeset_id, codeset_group, display, language, version, code, date_created, created_by, date_modified, modified_by, archived) VALUES (552, 'EAC_BARRIERS', ' Side effects', 'en', NULL, 'EAC_BARRIERS__SIDE_EFFECTS', '2022-09-12 09:31:47.055', 'guest@lamisplus.org', '2022-09-12 09:31:47.055', 'guest@lamisplus.org', 0)");

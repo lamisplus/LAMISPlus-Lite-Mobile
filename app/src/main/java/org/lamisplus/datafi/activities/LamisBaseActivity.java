@@ -1,7 +1,6 @@
 package org.lamisplus.datafi.activities;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -24,28 +23,19 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.login.LoginActivity;
-import org.lamisplus.datafi.application.LamisCustomFileHandler;
+import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.auth.AuthorizationManager;
-import org.lamisplus.datafi.dao.EncounterDAO;
-import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Person;
-import org.lamisplus.datafi.services.EncounterService;
-import org.lamisplus.datafi.services.PatientService;
 import org.lamisplus.datafi.services.SyncServices;
-import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ForceClose;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public abstract class LamisBaseActivity extends AppCompatActivity {
 
@@ -140,8 +130,8 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.actionSettings:
-//                Intent i = new Intent(this, SettingsActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(this, PrefrencesActivity.class);
+                startActivity(i);
                 return true;
             case R.id.actionLogout:
                 this.logout();
@@ -161,14 +151,6 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
                     Intent ii = new Intent(getApplicationContext(), SyncServices.class);
                     getApplicationContext().startService(ii);
 
-//                    Intent ii = new Intent(getApplicationContext(), PatientService.class);
-//                    getApplicationContext().startService(ii);
-//
-//                    //This is to handle android sync version 10
-//                    Intent i1 = new Intent(getApplicationContext(), EncounterService.class);
-//                    getApplicationContext().startService(i1);
-
-
                     ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.NOTICE, R.string.reconn_server);
                     if (snackbar != null)
                         snackbar.dismiss();
@@ -184,7 +166,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
     }
 
     public void showDeletePatientDialog(long patientId) {
-        Log.v("Baron", "Delete this patient?");
+        //Log.v("Baron", "Delete this patient?");
     }
 
     public void dismissCustomFragmentDialog() {

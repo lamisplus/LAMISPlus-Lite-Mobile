@@ -6,11 +6,13 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,6 +138,18 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
     private String mLattitude = null;
     private String mLongitude = null;
 
+    private TextInputLayout edDateTest1TIL;
+    private TextInputLayout autoResultTest1TIL;
+    private TextInputLayout edConfirmDate1TIL;
+    private TextInputLayout autoConfirmResult1TIL;
+    private TextInputLayout edTieBreaker1TIL;
+    private TextInputLayout autoResultTieBreaker1TIL;
+    private TextInputLayout edDateTest2TIL;
+    private TextInputLayout autoResultTest2TIL;
+    private TextInputLayout edConfirmDate2TIL;
+    private TextInputLayout autoConfirmResult2TIL;
+    private TextInputLayout edDateTieBreaker2TIL;
+    private TextInputLayout autoTieBreakerResult2TIL;
 
     @Nullable
     @Override
@@ -226,6 +241,19 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         prepAcceptedTIL = root.findViewById(R.id.prepAcceptedTIL);
         testResult1Message = root.findViewById(R.id.testResult1Message);
         testResult2Message = root.findViewById(R.id.testResult2Message);
+
+        edDateTest1TIL = root.findViewById(R.id.edDateTest1TIL);
+        autoResultTest1TIL = root.findViewById(R.id.autoResultTest1TIL);
+        edConfirmDate1TIL = root.findViewById(R.id.edConfirmDate1TIL);
+        autoConfirmResult1TIL = root.findViewById(R.id.autoConfirmResult1TIL);
+        edTieBreaker1TIL = root.findViewById(R.id.edTieBreaker1TIL);
+        autoResultTieBreaker1TIL = root.findViewById(R.id.autoResultTieBreaker1TIL);
+        edDateTest2TIL = root.findViewById(R.id.edDateTest2TIL);
+        autoResultTest2TIL = root.findViewById(R.id.autoResultTest2TIL);
+        edConfirmDate2TIL = root.findViewById(R.id.edConfirmDate2TIL);
+        autoConfirmResult2TIL = root.findViewById(R.id.autoConfirmResult2TIL);
+        edDateTieBreaker2TIL = root.findViewById(R.id.edDateTieBreaker2TIL);
+        autoTieBreakerResult2TIL = root.findViewById(R.id.autoTieBreakerResult2TIL);
     }
 
     private void setListeners() {
@@ -244,8 +272,12 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         autoConfirmResult2.setAdapter(adapterBooleanAnswers);
         autoTieBreakerResult2.setAdapter(adapterBooleanAnswers);
         autoSyphilis.setAdapter(adapterBooleanAnswers);
-        autoHepatitisB.setAdapter(adapterBooleanAnswers);
-        autoHepatitisC.setAdapter(adapterBooleanAnswers);
+
+        String[] booleanPositiveNegativeAnswers = getResources().getStringArray(R.array.positive_negative);
+        ArrayAdapter<String> adapterBooleanPositiveNegativeAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanPositiveNegativeAnswers);
+
+        autoHepatitisB.setAdapter(adapterBooleanPositiveNegativeAnswers);
+        autoHepatitisC.setAdapter(adapterBooleanPositiveNegativeAnswers);
 
         String[] prepYesNo = getResources().getStringArray(R.array.booleanAnswers);
         ArrayAdapter<String> adapterPrepBooleanAnswers = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, prepYesNo);
@@ -409,70 +441,78 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         });
 
         edConfirmDate2.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edDateTest2))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            String dateTest1 = ViewUtils.getInput(edDateTest2);
-            String[] explodeDate = dateTest1.split("-");
-            int yearVisit = Integer.valueOf(explodeDate[0]);
-            int monthVisit = Integer.valueOf(explodeDate[1]);
-            int dayVisit = Integer.valueOf(explodeDate[2]);
+                String dateTest1 = ViewUtils.getInput(edDateTest2);
+                String[] explodeDate = dateTest1.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
 
-            LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
-            DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
-            regMilli = bdt.getMillis();
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                regMilli = bdt.getMillis();
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edConfirmDate2.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edConfirmDate2.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
 
-            }, cYear, cMonth, cDay);
+                }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(regMilli);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                mDatePicker.getDatePicker().setMinDate(regMilli);
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            }else{
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the ReTest Date");
+            }
         });
 
         edDateTieBreaker2.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edConfirmDate2))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            String dateTest1 = ViewUtils.getInput(edConfirmDate2);
-            String[] explodeDate = dateTest1.split("-");
-            int yearVisit = Integer.valueOf(explodeDate[0]);
-            int monthVisit = Integer.valueOf(explodeDate[1]);
-            int dayVisit = Integer.valueOf(explodeDate[2]);
+                String dateTest1 = ViewUtils.getInput(edConfirmDate2);
+                String[] explodeDate = dateTest1.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
 
-            LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
-            DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
-            regMilli = bdt.getMillis();
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                regMilli = bdt.getMillis();
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edDateTieBreaker2.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edDateTieBreaker2.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
 
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMinDate(regMilli);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMinDate(regMilli);
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            }else{
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Confirmatory Test Date");
+            }
         });
 
 
@@ -484,46 +524,50 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
             updatedRequestResult = requestResult;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
 
+            hivTestResult = requestResult.getHivTestResult();
+            hivTestResult2 = requestResult.getHivTestResult2();
+
+
             //Test 1
             edDateTest1.setText(requestResult.getTest1().getDate());
 
             if (!StringUtils.isBlank(requestResult.getTest1().getResult())) {
-                autoResultTest1.setText(requestResult.getTest1().getResult(), false);
+                autoResultTest1.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getTest1().getResult()), false);
             }
 
             //Confirm Test
             edConfirmDate1.setText(requestResult.getConfirmatoryTest().getDate());
 
             if (!StringUtils.isBlank(requestResult.getConfirmatoryTest().getResult())) {
-                autoConfirmResult1.setText(requestResult.getConfirmatoryTest().getResult(), false);
+                autoConfirmResult1.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getConfirmatoryTest().getResult()), false);
             }
 
             //Test 2
             edDateTest2.setText(requestResult.getTest2().getDate2());
 
             if (!StringUtils.isBlank(requestResult.getTest2().getResult2())) {
-                autoResultTest2.setText(requestResult.getTest2().getResult2(), false);
+                autoResultTest2.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getTest2().getResult2()), false);
             }
 
             //Confirm 2
             edConfirmDate2.setText(requestResult.getConfirmatoryTest2().getDate2());
 
             if (!StringUtils.isBlank(requestResult.getConfirmatoryTest2().getResult2())) {
-                autoConfirmResult2.setText(requestResult.getConfirmatoryTest2().getResult2(), false);
+                autoConfirmResult2.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getConfirmatoryTest2().getResult2()), false);
             }
 
             //Tie Breaker 1
             edDateTieBreaker1.setText(requestResult.getTieBreakerTest().getDate());
 
             if (!StringUtils.isBlank(requestResult.getTieBreakerTest().getResult())) {
-                autoResultTieBreaker1.setText(requestResult.getTieBreakerTest().getResult(), false);
+                autoResultTieBreaker1.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getTieBreakerTest().getResult()), false);
             }
 
             //Tie Breaker 2
             edDateTieBreaker2.setText(requestResult.getTieBreakerTest2().getDate2());
 
             if (!StringUtils.isBlank(requestResult.getTieBreakerTest2().getResult2())) {
-                autoTieBreakerResult2.setText(requestResult.getTieBreakerTest2().getResult2(), false);
+                autoTieBreakerResult2.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getTieBreakerTest2().getResult2()), false);
             }
 
             //This fields auto populates the hidden fields based on selected inputs
@@ -609,11 +653,11 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
 
             edcd4FlowCyteometry.setText(requestResult.getCd4().getCd4FlowCyteometry());
 
-            autoSyphilis.setText(requestResult.getSyphilisTesting().getSyphilisTestResult());
+            autoSyphilis.setText(StringUtils.changeRequestResultBoolToReactNon(requestResult.getSyphilisTesting().getSyphilisTestResult()), false);
 
-            autoHepatitisB.setText(requestResult.getHepatitisTesting().getHepatitisBTestResult(), false);
+            autoHepatitisB.setText(StringUtils.changeRequestResultBoolToPosNeg(requestResult.getHepatitisTesting().getHepatitisBTestResult()), false);
 
-            autoHepatitisC.setText(requestResult.getHepatitisTesting().getHepatitisCTestResult(), false);
+            autoHepatitisC.setText(StringUtils.changeRequestResultBoolToPosNeg(requestResult.getHepatitisTesting().getHepatitisCTestResult()), false);
 
             edOthersLongitude.setText(requestResult.getOthers().getLongitude());
 
@@ -677,7 +721,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoResultTest1)) {
-            test1.setResult(ViewUtils.getInput(autoResultTest1));
+            test1.setResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoResultTest1)));
         }
         requestResult.setTest1(test1);
 
@@ -689,7 +733,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoConfirmResult1)) {
-            confirmatoryTest.setResult(ViewUtils.getInput(autoConfirmResult1));
+            confirmatoryTest.setResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoConfirmResult1)));
         }
 
         requestResult.setConfirmatoryTest(confirmatoryTest);
@@ -702,7 +746,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoResultTieBreaker1)) {
-            tieBreakerTest.setResult(ViewUtils.getInput(autoResultTieBreaker1));
+            tieBreakerTest.setResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoResultTieBreaker1)));
         }
 
         requestResult.setTieBreakerTest(tieBreakerTest);
@@ -715,7 +759,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoResultTest2)) {
-            test2.setResult2(ViewUtils.getInput(autoResultTest2));
+            test2.setResult2(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoResultTest2)));
         }
 
         requestResult.setTest2(test2);
@@ -728,7 +772,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoConfirmResult2)) {
-            confirmatoryTest2.setResult2(ViewUtils.getInput(autoConfirmResult2));
+            confirmatoryTest2.setResult2(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoConfirmResult2)));
         }
 
         requestResult.setConfirmatoryTest2(confirmatoryTest2);
@@ -741,7 +785,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         }
 
         if (!ViewUtils.isEmpty(autoTieBreakerResult2)) {
-            tieBreakerTest2.setResult2(ViewUtils.getInput(autoTieBreakerResult2));
+            tieBreakerTest2.setResult2(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoTieBreakerResult2)));
         }
 
         requestResult.setTieBreakerTest2(tieBreakerTest2);
@@ -750,7 +794,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         RequestResult.SyphilisTesting syphilisTesting = new RequestResult.SyphilisTesting();
 
         if (!ViewUtils.isEmpty(autoSyphilis)) {
-            syphilisTesting.setSyphilisTestResult(ViewUtils.getInput(autoSyphilis));
+            syphilisTesting.setSyphilisTestResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoSyphilis)));
         }
 
         requestResult.setSyphilisTesting(syphilisTesting);
@@ -759,11 +803,11 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         RequestResult.HepatitisTesting hepatitisTesting = new RequestResult.HepatitisTesting();
 
         if (!ViewUtils.isEmpty(autoHepatitisB)) {
-            hepatitisTesting.setHepatitisBTestResult(ViewUtils.getInput(autoHepatitisB));
+            hepatitisTesting.setHepatitisBTestResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoHepatitisB)));
         }
 
         if (!ViewUtils.isEmpty(autoHepatitisC)) {
-            hepatitisTesting.setHepatitisCTestResult(ViewUtils.getInput(autoHepatitisC));
+            hepatitisTesting.setHepatitisCTestResult(StringUtils.changeRequestResultToBool(ViewUtils.getInput(autoHepatitisC)));
         }
 
         requestResult.setHepatitisTesting(hepatitisTesting);
@@ -832,6 +876,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
         getActivity().finish();
     }
 
+
     public void dropDownListeners() {
         autoResultTest1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -845,8 +890,8 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     confirmatoryTestLayout.setVisibility(View.GONE);
                     cd4Layout.setVisibility(View.GONE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Non Reactive");
-                    hivTestResult = "Non Reactive";
+                    testResult1Message.setText("Negative");
+                    hivTestResult = "Negative";
                     prepLayout.setVisibility(View.VISIBLE);
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.green));
                 }
@@ -872,8 +917,8 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     tieBreakerLayout.setVisibility(View.GONE);
                     cd4Layout.setVisibility(View.VISIBLE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Reactive");
-                    hivTestResult = "Reactive";
+                    testResult1Message.setText("Positive");
+                    hivTestResult = "Positive";
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.red));
                     prepLayout.setVisibility(View.GONE);
                 } else {
@@ -893,15 +938,16 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     initialHivTest2Layout.setVisibility(View.VISIBLE);
                     confirmatoryTest2Layout.setVisibility(View.VISIBLE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Reactive");
-                    hivTestResult = "Reactive";
+                    testResult1Message.setText("Positive");
+                    hivTestResult = "Positive";
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.red));
                     prepLayout.setVisibility(View.GONE);
                 } else {
                     initialHivTest2Layout.setVisibility(View.GONE);
                     confirmatoryTest2Layout.setVisibility(View.GONE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Non Reactive");
+                    testResult1Message.setText("Negative");
+                    hivTestResult = "Negative";
                     prepLayout.setVisibility(View.VISIBLE);
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.green));
                 }
@@ -933,6 +979,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     tieBreakerTest2Layout.setVisibility(View.GONE);
                     testResult2Message.setVisibility(View.VISIBLE);
                     testResult2Message.setText("Positive");
+                    hivTestResult2 = "Positive";
                     testResult2Message.setBackgroundColor(getResources().getColor(R.color.red));
                 }
             }
@@ -1057,6 +1104,63 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                 Looper.myLooper()
         );
 
+    }
+
+    @Override
+    public void scrollToTop() {
+        ScrollView scrollView = this.getActivity().findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0, scrollView.getPaddingTop());
+    }
+
+    @Override
+    public void setErrorsVisibility(boolean edDateTest1, boolean autoResultTest1, boolean edConfirmDate1, boolean autoConfirmResult1, boolean edTieBreaker1, boolean autoResultTieBreaker1, boolean edDateTest2, boolean autoResultTest2, boolean edConfirmDate2, boolean autoConfirmResult2, boolean edDateTieBreaker2, boolean autoTieBreakerResult2) {
+        if (edDateTest1) {
+            edDateTest1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoResultTest1) {
+            autoResultTest1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (edConfirmDate1) {
+            edConfirmDate1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoConfirmResult1) {
+            autoConfirmResult1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (edTieBreaker1) {
+            edTieBreaker1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoResultTieBreaker1) {
+            autoResultTieBreaker1TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (edDateTest2) {
+            edDateTest2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoResultTest2) {
+            autoResultTest2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (edConfirmDate2) {
+            edConfirmDate2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoConfirmResult2) {
+            autoConfirmResult2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (edDateTieBreaker2) {
+            edDateTieBreaker2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
+
+        if (autoTieBreakerResult2) {
+            autoTieBreakerResult2TIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package org.lamisplus.datafi.activities.preferences;
 
+import static java.lang.reflect.Modifier.TRANSIENT;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,7 +34,11 @@ import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.AccountDAO;
+import org.lamisplus.datafi.dao.LabDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Account;
+import org.lamisplus.datafi.models.Lab;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
@@ -53,8 +60,10 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
     private EditText edserverURL;
     private Button btnSaveServerURL;
     private Button btnSaveLocation;
+    private Button btnSavePCRLab;
     private TextView tvcurrentServerURL;
     private AutoCompleteTextView autoLocation;
+    private AutoCompleteTextView autoPCRLab;
 
     private LamisPlus  lamisPlus = LamisPlus.getInstance();
 
@@ -79,11 +88,19 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         edserverURL = root.findViewById(R.id.edserverURL);
         btnSaveServerURL = root.findViewById(R.id.btnSaveServerURL);
         btnSaveLocation = root.findViewById(R.id.btnSaveLocation);
+        btnSavePCRLab = root.findViewById(R.id.btnSavePCRLab);
         tvcurrentServerURL = root.findViewById(R.id.tvcurrentServerURL);
         autoLocation = root.findViewById(R.id.autoLocation);
+        autoPCRLab = root.findViewById(R.id.autoPCRLab);
     }
 
     private void fillFields(){
+//        Person person = PersonDAO.findPersonById("1");
+//        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+//                .excludeFieldsWithModifiers(TRANSIENT).disableHtmlEscaping().create();
+//        String personList = gson.toJson(person);
+//        final String payload = personList.replaceAll("u003c", "<").replaceAll("u003d", "=").replaceAll("u003e", ">").replaceAll("\\\\", "").replaceAll("\"\\[\\{", "[{").replaceAll("\\}\\]\"", "}]");
+
         tvcurrentServerURL.setText(lamisPlus.getServerUrl());
 
         List<Account> accounts = AccountDAO.getAllAccounts();
@@ -91,7 +108,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         for(Account acc : accounts){
             allAccounts.add(acc.getCurrentOrganisationUnitName());
         }
-        LamisCustomHandler.showJson(allAccounts);
+
         ArrayAdapter<String> adapterLocations = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, allAccounts);
         autoLocation.setAdapter(adapterLocations);
 
@@ -99,11 +116,27 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         if(account != null) {
             autoLocation.setText(account.getCurrentOrganisationUnitName(), false);
         }
+
+
+        List<Lab> labs = LabDAO.getAllLabs();
+        List<String> allLabs = new ArrayList<>();
+        for(Lab lab : labs){
+            allLabs.add(lab.getName());
+        }
+
+        ArrayAdapter<String> adapterLabs = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, allLabs);
+        autoPCRLab.setAdapter(adapterLabs);
+
+        Lab lab = LabDAO.getDefaultLab();
+        if(lab != null) {
+            autoPCRLab.setText(lab.getName(), false);
+        }
     }
 
     private void setListeners() {
         btnSaveServerURL.setOnClickListener(this);
         btnSaveLocation.setOnClickListener(this);
+        btnSavePCRLab.setOnClickListener(this);
     }
 
     @Override
@@ -133,9 +166,21 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
                 break;
             case R.id.btnSaveLocation:
                 String selectedFacility = ViewUtils.getInput(autoLocation);
-                AccountDAO.setLocation(selectedFacility);
-                ToastUtil.success("Location saved successfully as " + selectedFacility);
+                if(!StringUtils.isBlank(selectedFacility)) {
+                    AccountDAO.setLocation(selectedFacility);
+                    ToastUtil.success("Location saved successfully as " + selectedFacility);
+                }else{
+                    ToastUtil.error("Please select a Facility before saving");
+                }
                 break;
+            case R.id.btnSavePCRLab:
+                String selectedLab = ViewUtils.getInput(autoPCRLab);
+                if(!StringUtils.isBlank(selectedLab)) {
+                    LabDAO.setLab(selectedLab);
+                    ToastUtil.success("Lab saved successfully as " + selectedLab);
+                }else{
+                    ToastUtil.error("Please select a Lab before saving");
+                }
             default:
 
                 break;

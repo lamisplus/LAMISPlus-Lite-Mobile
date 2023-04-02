@@ -29,7 +29,7 @@ public class FormDisplayPagePresenter extends LamisBasePresenter implements Form
 
     @Override
     public void createEncounter() {
-        Log.v("Baron", "I am submitted");
+
     }
 
     @Override

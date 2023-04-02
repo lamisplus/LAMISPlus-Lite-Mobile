@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardContract;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardFragment;
+import org.lamisplus.datafi.dao.BiometricsDAO;
+import org.lamisplus.datafi.models.Biometrics;
+import org.lamisplus.datafi.models.BiometricsList;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.StringUtils;
@@ -28,16 +32,49 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     private View rootView;
     private PatientDashboardActivity mPatientDashboardActivity;
 
-    public static PatientDashboardFingerPrintsFragment newInstance(){
+    private TextView listCapturedBiometrics;
+    private TextView biometricsStatusText;
+
+    public static PatientDashboardFingerPrintsFragment newInstance() {
         return new PatientDashboardFingerPrintsFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_patient_fingerprints, null, false);
+        listCapturedBiometrics = rootView.findViewById(R.id.listCapturedBiometrics);
+        biometricsStatusText = rootView.findViewById(R.id.biometricsStatusText);
+        setViewFingerprints();
 //        FontsUtil.setFont(this.getActivity().findViewById(android.R.id.content));
 //        FontsUtil.setFont((ViewGroup) rootView);
         return rootView;
+    }
+
+    private void setViewFingerprints() {
+        Long l = new Long(mPresenter.getPatientId());
+        if (l != null) {
+            Integer patientId = l.intValue();
+            Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(patientId);
+            if (biometrics == null) {
+                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                biometricsStatusText.setText("Not captured");
+            } else if (biometrics.getSyncStatus() == 0) {
+                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.snooper_yellow));
+                biometricsStatusText.setText("Captured but not synced");
+            } else if (biometrics.getSyncStatus() == 1) {
+                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                biometricsStatusText.setText("Captured and synced");
+            }
+
+            List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(patientId);
+            if (biometricsLists != null && biometricsLists.size() > 0) {
+                String biometricsDetails = "";
+                for (BiometricsList biometricsList : biometricsLists) {
+                    biometricsDetails += "Captured: " + biometricsList.getTemplateType() + "\n\n";
+                }
+                listCapturedBiometrics.setText(biometricsDetails);
+            }
+        }
     }
 
     @Override

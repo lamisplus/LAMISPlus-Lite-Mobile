@@ -7,10 +7,10 @@ import java.io.Serializable;
 public class PreTest implements Serializable {
 
     @SerializedName("htsClientId")
-    private int htsClientId;
+    private Integer htsClientId = null;
 
     @SerializedName("personId")
-    private int personId;
+    private Integer personId = null;
 
     @SerializedName("knowledgeAssessment")
     private KnowledgeAssessment knowledgeAssessment;
@@ -27,19 +27,19 @@ public class PreTest implements Serializable {
     @SerializedName("tbScreening")
     private TbScreening tbScreening;
 
-    public int getHtsClientId() {
+    public Integer getHtsClientId() {
         return htsClientId;
     }
 
-    public void setHtsClientId(int htsClientId) {
+    public void setHtsClientId(Integer htsClientId) {
         this.htsClientId = htsClientId;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 

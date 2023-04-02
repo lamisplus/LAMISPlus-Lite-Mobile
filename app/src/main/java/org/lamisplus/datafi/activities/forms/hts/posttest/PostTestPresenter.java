@@ -1,5 +1,7 @@
 package org.lamisplus.datafi.activities.forms.hts.posttest;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.activities.LamisBasePresenter;
@@ -48,7 +50,7 @@ public class PostTestPresenter extends LamisBasePresenter implements PostTestCon
             encounter.setPackageName(packageName);
             encounter.setDataValues(postTestEncounter);
             encounter.save();
-            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("Positive")) {
+            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("true")) {
                 postTestInfoView.startActivityForRecencyForm();
             }else{
                 postTestInfoView.startDashboardActivity();
@@ -64,7 +66,7 @@ public class PostTestPresenter extends LamisBasePresenter implements PostTestCon
             String s = new Gson().toJson(postTest);
             encounter.setDataValues(s);
             encounter.save();
-            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("Positive")) {
+            if(postTest.getPostTestCounselingKnowledgeAssessment().getHivTestResult().equals("true")) {
                 postTestInfoView.startActivityForRecencyForm();
             }else{
                 postTestInfoView.startDashboardActivity();

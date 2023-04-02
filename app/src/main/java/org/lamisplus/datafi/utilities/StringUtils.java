@@ -149,4 +149,38 @@ public class StringUtils {
         }
         return "";
     }
+
+    public static String changeRequestResultToBool(String value){
+        if(notEmpty(value)){
+            if(value.toLowerCase().equals("positive") || value.toLowerCase().equals("reactive")){
+                return "Yes";
+            }else{
+                return "No";
+            }
+        }
+        return "";
+    }
+
+    public static String changeRequestResultBoolToReactNon(String value){
+        if(notEmpty(value)){
+            if(value.toLowerCase().equals("yes")){
+                return "Reactive";
+            }else{
+                return "Non Reactive";
+            }
+        }
+        return "";
+    }
+
+    public static String changeRequestResultBoolToPosNeg(String value){
+        if(notEmpty(value)){
+            if(value.toLowerCase().equals("yes")){
+                return "Positive";
+            }else{
+                return "Negative";
+            }
+        }
+        return "";
+    }
+
 }

@@ -2,6 +2,7 @@ package org.lamisplus.datafi.utilities;
 
 import android.util.Base64;
 
+import org.lamisplus.datafi.classes.BiometricsClass;
 import org.lamisplus.datafi.models.Biometrics;
 
 import java.util.List;
@@ -17,26 +18,27 @@ public class BiometricsUtil {
         sgfplib = jsgfpLib;
     }
 
-    public String CheckIfFingerAlreadyCaptured(String newTemplate, List<Biometrics> compare) {
+    public String CheckIfFingerAlreadyCaptured(String newTemplate, List<BiometricsClass.BiometricsClassFingers> compare) {
         if (compare == null || compare.size() == 0) return null;
 
         boolean[] matched = new boolean[1];
         try {
             byte[] unknownTemplateArray = Base64.decode(newTemplate, Base64.NO_WRAP);
 
-            for (Biometrics each : compare) {
+            for (BiometricsClass.BiometricsClassFingers each : compare) {
+
                 int[] matchScore = new int[1];
                 if (each.getTemplate() != null) {
 
-                    debugMessage("Checking against : " + each.getPatienId() + " finger: " + each.getFingerPositions().name());
+                    debugMessage("Checking against : Template finger: " + each.getTemplateType());
 
                     byte[] fingerTemplate = Base64.decode(each.getTemplate(), Base64.NO_WRAP);
                     long iError = sgfplib.MatchIsoTemplate(fingerTemplate, 0, unknownTemplateArray, 0, SGFDxSecurityLevel.SL_ABOVE_NORMAL, matched);
                     if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
                         if (matched[0]) {
                             sgfplib.GetIsoMatchingScore(fingerTemplate, 0, unknownTemplateArray, 0, matchScore);
-                            debugMessage("found match : " + each.getFingerPositions() + " score - " + matchScore[0]);
-                            return decodeFingerPosition(each.getFingerPositions().name());
+                            debugMessage("found match : " + each.getTemplate() + " score - " + matchScore[0]);
+                            return each.getTemplateType();
                         }
                     }
                 }
@@ -59,7 +61,7 @@ public class BiometricsUtil {
             case "RightWedding":
                 return "Right Ring";
             case "RightSmall":
-                return "Right Pinky";
+                return "Right Little";
             case "LeftThumb":
                 return "Left Thumb";
             case "LeftIndex":
@@ -69,7 +71,7 @@ public class BiometricsUtil {
             case "LeftWedding":
                 return "Left ring";
             case "LeftSmall":
-                return "Left Pinky";
+                return "Left Little";
             default:
                 return "";
         }

@@ -6,11 +6,11 @@ import org.lamisplus.datafi.application.LamisPlus;
 public class BiometricsPresenter extends LamisBasePresenter implements BiometricsContract.Presenter {
 
     private final BiometricsContract.View biometricsInfoView;
-    private LamisPlus lamisPlus;
+    private String patientId;
 
-    public BiometricsPresenter(BiometricsContract.View biometricsInfoView, LamisPlus lamisPlus) {
+    public BiometricsPresenter(BiometricsContract.View biometricsInfoView, String patientId) {
         this.biometricsInfoView = biometricsInfoView;
-        this.lamisPlus = lamisPlus;
+        this.patientId = patientId;
         this.biometricsInfoView.setPresenter(this);
     }
 
@@ -19,4 +19,8 @@ public class BiometricsPresenter extends LamisBasePresenter implements Biometric
 
     }
 
+    @Override
+    public Integer getPatientId() {
+        return Integer.parseInt(patientId);
+    }
 }

@@ -20,11 +20,13 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
     private final ClientIntakeContract.View clientIntakeInfoView;
     private String patientId;
     private String rstForm;
+    private String rstFormPackageName;
 
-    public ClientIntakePresenter(ClientIntakeContract.View clientIntakeInfoView, String patientId, String rstForm){
+    public ClientIntakePresenter(ClientIntakeContract.View clientIntakeInfoView, String patientId, String rstForm, String rstFormPackageName){
         this.clientIntakeInfoView = clientIntakeInfoView;
         this.patientId = patientId;
         this.rstForm = rstForm;
+        this.rstFormPackageName = rstFormPackageName;
         this.clientIntakeInfoView.setPresenter(this);
     }
 
@@ -57,7 +59,7 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             Encounter encounterRst = new Encounter();
             encounterRst.setName(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
             encounterRst.setPerson(String.valueOf(personId));
-            encounterRst.setPackageName(packageName);
+            encounterRst.setPackageName(rstFormPackageName);
             encounterRst.setDataValues(rstForm);
             encounterRst.save();
             //Save the Client Intake Form
@@ -69,7 +71,7 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             encounter.setDataValues(clientIntakeEncounter);
             encounter.save();
 
-            clientIntakeInfoView.startActivityForPreTestForm();
+            clientIntakeInfoView.startActivityForPreTestForm(String.valueOf(personId));
         }else{
             clientIntakeInfoView.scrollToTop();
         }
@@ -82,7 +84,7 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             String s = new Gson().toJson(clientIntake);
             encounter.setDataValues(s);
             encounter.save();
-            clientIntakeInfoView.startActivityForPreTestForm();
+            clientIntakeInfoView.startHTSActivity();
         }else{
             clientIntakeInfoView.scrollToTop();
         }
@@ -94,18 +96,22 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
         boolean referredFromError = false;
         boolean settingsError = false;
         boolean visitDateError = false;
+        boolean firstTimeVisitError = false;
+        boolean previouslyTestedError = false;
+        boolean typeCounselingError = false;
+        boolean indexTestingError = false;
 
-        clientIntakeInfoView.setErrorsVisibility(targetGroupError, clientCodeError, referredFromError, settingsError, visitDateError);
+        clientIntakeInfoView.setErrorsVisibility(targetGroupError, clientCodeError, referredFromError, settingsError, visitDateError, firstTimeVisitError, previouslyTestedError, typeCounselingError, indexTestingError);
 
         if (StringUtils.isBlank(clientIntake.getTargetGroup())) {
             targetGroupError = true;
         }
 
-        if (StringUtils.isBlank(clientIntake.getClientCode())) {
-            clientCodeError = true;
-        }
+//        if (StringUtils.isBlank(clientIntake.getClientCode()) || !ViewUtils.validateText(clientIntake.getClientCode(), ViewUtils.ILLEGAL_CHARACTERS)) {
+//            clientCodeError = true;
+//        }
 
-        if (clientIntake.getReferredFrom() == 0) {
+        if (clientIntake.getReferredFrom() == null) {
             referredFromError = true;
         }
 
@@ -117,12 +123,28 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             visitDateError = true;
         }
 
-        boolean result = !targetGroupError && !clientCodeError && !referredFromError && !settingsError && !visitDateError;
+        if (StringUtils.isBlank(clientIntake.isFirstTimeVisit())) {
+            firstTimeVisitError = true;
+        }
+
+        if (StringUtils.isBlank(clientIntake.getPreviouslyTested())) {
+            previouslyTestedError = true;
+        }
+
+        if (clientIntake.getTypeCounseling() == null) {
+            typeCounselingError = true;
+        }
+
+        if (StringUtils.isBlank(clientIntake.getIndexClient())) {
+            indexTestingError = true;
+        }
+
+        boolean result = !targetGroupError && !clientCodeError && !referredFromError && !settingsError && !visitDateError && !firstTimeVisitError && !previouslyTestedError && !typeCounselingError && !indexTestingError;
 
         if (result) {
             return true;
         } else {
-            clientIntakeInfoView.setErrorsVisibility(targetGroupError, clientCodeError, referredFromError, settingsError, visitDateError);
+            clientIntakeInfoView.setErrorsVisibility(targetGroupError, clientCodeError, referredFromError, settingsError, visitDateError, firstTimeVisitError, previouslyTestedError, typeCounselingError, indexTestingError);
             return false;
         }
 
@@ -134,14 +156,14 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
         boolean middleNameError = false;
         boolean dateOfBirthError = false;
         boolean genderError = false;
-        boolean employmentNull = false;
         boolean maritalNull = false;
         boolean educationNull = false;
         boolean phoneNull = false;
         boolean stateError = false;
         boolean provinceError = false;
+        boolean addressError = false;
 
-        clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, employmentNull, maritalNull, educationNull, phoneNull, stateError, provinceError);
+        clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError);
 
         if (StringUtils.isBlank(person.getFirstName())
                 || !ViewUtils.validateText(person.getFirstName(), ViewUtils.ILLEGAL_NAME_CHARACTERS)) {
@@ -161,20 +183,16 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             dateOfBirthError = true;
         }
 
-        if (person.getGenderId() == 0) {
+        if (person.getGenderId() == null) {
             genderError = true;
         }
 
-        if (person.getMaritalStatusId() == 0) {
+        if (person.getMaritalStatusId() == null) {
             maritalNull = true;
         }
 
 
-        if (person.getEmploymentStatusId() == 0) {
-            employmentNull = true;
-        }
-
-        if (person.getEducationId() == 0) {
+        if (person.getEducationId() == null) {
             educationNull = true;
         }
 
@@ -183,27 +201,31 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             phoneNull = true;
         }
 
-        if (person.getAddress().get(0).getStateId() == 0) {
+        if (person.getAddresses().getStateId() == null) {
             stateError = true;
         }
 
-        if (person.getAddress().get(0).getDistrict() == null) {
+        if (person.getAddresses().getDistrict() == null) {
             provinceError = true;
         }
 
-        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfBirthError && !genderError && !maritalNull && !employmentNull && !educationNull && !phoneNull && !stateError && !provinceError;
+        if (person.getAddresses().getCity() == null) {
+            addressError = true;
+        }
+
+        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfBirthError && !genderError && !maritalNull && !educationNull && !phoneNull && !stateError && !provinceError && !addressError;
 
         if (result) {
             return true;
         } else {
-            clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, employmentNull, maritalNull, educationNull, phoneNull, stateError, provinceError);
+            clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError);
             return false;
         }
     }
 
     @Override
     public void confirmDeleteEncounterClientIntake(String formName, String patientId) {
-        EncounterDAO.deleteEncounter(formName, patientId);
+        //EncounterDAO.deleteEncounter(formName, patientId);
         clientIntakeInfoView.startDashboardActivity();
     }
 

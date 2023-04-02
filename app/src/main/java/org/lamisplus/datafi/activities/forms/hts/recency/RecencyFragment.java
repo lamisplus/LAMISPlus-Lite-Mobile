@@ -29,6 +29,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientFragment;
@@ -37,12 +39,17 @@ import org.lamisplus.datafi.activities.forms.hts.requestresult.RequestResultActi
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.LabDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Lab;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
 import java.util.Calendar;
@@ -64,7 +71,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
     private EditText edSampleCollectedDate;
     private EditText edDateSampleSentToPCRLab;
     private EditText edSampleTestDate;
-    private EditText edReceivingPcrLab;
+    private AutoCompleteTextView autoReceivingPcrLab;
     private AutoCompleteTextView autoViralLoadResultClassification;
     private EditText edFinalRecencyResult;
 
@@ -147,7 +154,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
         edDateSampleSentToPCRLab = root.findViewById(R.id.edDateSampleSentToPCRLab);
         edSampleTestDate = root.findViewById(R.id.edSampleTestDate);
-        edReceivingPcrLab = root.findViewById(R.id.edReceivingPcrLab);
+        autoReceivingPcrLab = root.findViewById(R.id.autoReceivingPcrLab);
 
         autoViralLoadResultClassification = root.findViewById(R.id.autoViralLoadResultClassification);
         edFinalRecencyResult = root.findViewById(R.id.edFinalRecencyResult);
@@ -170,6 +177,13 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
+
+        Lab labSelected = LabDAO.getDefaultLab();
+        String labName = "";
+        if(labSelected != null){
+            labName = labSelected.getName();
+        }
+        autoReceivingPcrLab.setText(labName);
 
         String[] booleanYesNo = getResources().getStringArray(R.array.booleanAnswers);
         ArrayAdapter<String> adapterBooleanYesNo = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, booleanYesNo);
@@ -222,72 +236,128 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
                 String stringDay = String.format("%02d", selectedDay);
                 edOptOutRTRITestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
+            Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
+            if (person != null) {
+                String visitDate = person.getDateOfRegistration();
+                String[] explodeDate = visitDate.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                mDatePicker.getDatePicker().setMinDate(bdt.getMillis());
+            }
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
 
         edSampleCollectedDate.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edOptOutRTRITestDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edSampleCollectedDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                String dateTest1 = ViewUtils.getInput(edOptOutRTRITestDate);
+                String[] explodeDate = dateTest1.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
+
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                long regMilli = bdt.getMillis();
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edSampleCollectedDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMinDate(regMilli);
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            } else {
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Test Date First");
+            }
         });
 
         edDateSampleSentToPCRLab.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edOptOutRTRITestDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edDateSampleSentToPCRLab.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                String dateTest1 = ViewUtils.getInput(edOptOutRTRITestDate);
+                String[] explodeDate = dateTest1.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
+
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                long regMilli = bdt.getMillis();
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edDateSampleSentToPCRLab.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMinDate(regMilli);
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            } else {
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Test Date First");
+            }
         });
 
         edSampleTestDate.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edOptOutRTRITestDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edSampleTestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                String dateTest1 = ViewUtils.getInput(edOptOutRTRITestDate);
+                String[] explodeDate = dateTest1.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
+
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                long regMilli = bdt.getMillis();
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edSampleTestDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMinDate(regMilli);
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            } else {
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Test Date First");
+            }
         });
 
     }
@@ -320,7 +390,6 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             updatedRecency = recency;
             updatedForm = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.HIV_RECENCY_FORM, mPresenter.getPatientId());
 
-            Log.v("Baron Lamisplus", new Gson().toJson(recency));
 
             autoOptOutRTRI.setText(StringUtils.changeBooleanToString(recency.getRecencyDetails().getOptOutRTRI()), false);
 
@@ -354,13 +423,13 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
 
             edSampleTestDate.setText(recency.getRecencyDetails().getSampleTestDate());
 
-            edReceivingPcrLab.setText(recency.getRecencyDetails().getReceivingPcrLab());
+            autoReceivingPcrLab.setText(recency.getRecencyDetails().getReceivingPcrLab(), false);
 
             autoViralLoadResultClassification.setText(recency.getRecencyDetails().getViralLoadResultClassification(), false);
 
             edFinalRecencyResult.setText(recency.getRecencyDetails().getFinalRecencyResult());
 
-            if(recency.getRecencyDetails().getRencencyInterpretation() != null) {
+            if (recency.getRecencyDetails().getRencencyInterpretation() != null) {
                 if (recency.getRecencyDetails().getRencencyInterpretation().equals("Recent")) {
                     autoHasViralLoadTIL.setVisibility(View.VISIBLE);
                     viralLoadClassificationLayout.setVisibility(View.VISIBLE);
@@ -443,8 +512,8 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             recencyDetails.setSampleTestDate(ViewUtils.getInput(edSampleTestDate));
         }
 
-        if (!ViewUtils.isEmpty(edReceivingPcrLab)) {
-            recencyDetails.setReceivingPcrLab(ViewUtils.getInput(edReceivingPcrLab));
+        if (!ViewUtils.isEmpty(autoReceivingPcrLab)) {
+            recencyDetails.setReceivingPcrLab(ViewUtils.getInput(autoReceivingPcrLab));
         }
 
         if (!ViewUtils.isEmpty(autoViralLoadResultClassification)) {
@@ -491,7 +560,9 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
     }
 
     @Override
-    public void setErrorsVisibility(boolean optOutRTRI, boolean testName, boolean testDate, boolean rencencyId, boolean controlLine, boolean verififcationLine, boolean longTermLine, boolean hasViralLoad, boolean sampleReferanceNumber, boolean sampleType) {
+    public void setErrorsVisibility(boolean optOutRTRI, boolean testName, boolean testDate,
+                                    boolean rencencyId, boolean controlLine, boolean verififcationLine, boolean longTermLine,
+                                    boolean hasViralLoad, boolean sampleReferanceNumber, boolean sampleType) {
         if (optOutRTRI) {
             autoOptOutRTRITIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             autoOptOutRTRITIL.setError("Select Opt Out of RTRI");
@@ -546,7 +617,7 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (autoHasViralLoad.getText().toString().equals("Yes")) {
                     viralLoadClassificationLayout.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     viralLoadClassificationLayout.setVisibility(View.GONE);
                 }
             }
@@ -603,6 +674,20 @@ public class RecencyFragment extends LamisBaseFragment<RecencyContract.Presenter
                             edRencencyInterpretation.setText("");
                         }
                     }
+                }
+            }
+        });
+
+
+        autoViralLoadResultClassification.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    edFinalRecencyResult.setText("RITA Recent");
+                } else if (i == 1) {
+                    edFinalRecencyResult.setText("RITA Long Term");
+                } else  {
+                    edFinalRecencyResult.setText("RITA Inconclusive");
                 }
             }
         });

@@ -36,7 +36,7 @@ public class Person extends Model implements Serializable {
 
     @Column(name = "personId")
     @SerializedName("personId")
-    private int personId;
+    private Integer personId = null;
 
     @Column(name = "active")
     @SerializedName("active")
@@ -92,12 +92,12 @@ public class Person extends Model implements Serializable {
     @SerializedName("genderId")
     @Column(name = "genderId")
     @Expose
-    private int genderId;
+    private Integer genderId;
 
     @SerializedName("sexId")
     @Column(name = "sexId")
     @Expose
-    private int sexId;
+    private Integer sexId;
 
     @SerializedName("identifierList")
     private List<PatientIdentifier> identifierList = new ArrayList<>();
@@ -114,22 +114,17 @@ public class Person extends Model implements Serializable {
     @SerializedName("educationId")
     @Column(name = "educationId")
     @Expose
-    private int educationId;
+    private Integer educationId;
 
     @SerializedName("maritalStatusId")
     @Column(name = "maritalStatusId")
     @Expose
-    private int maritalStatusId;
+    private Integer maritalStatusId;
 
     @SerializedName("dateOfRegistration")
     @Column(name = "dateOfRegistration")
     @Expose
     private String dateOfRegistration;
-
-    @SerializedName("employmentStatusId")
-    @Column(name = "employmentStatusId")
-    @Expose
-    private int employmentStatusId;
 
     @SerializedName("emrId")
     @Column(name = "emrId")
@@ -139,7 +134,7 @@ public class Person extends Model implements Serializable {
     @SerializedName("facilityId")
     @Column(name = "facilityId")
     @Expose
-    private int facilityId;
+    private Integer facilityId;
 
     @SerializedName("isDateOfBirthEstimated")
     @Column(name = "isDateOfBirthEstimated")
@@ -154,7 +149,7 @@ public class Person extends Model implements Serializable {
     @SerializedName("organizationId")
     @Column(name = "organizationId")
     @Expose
-    private int organizationId;
+    private Integer organizationId;
 
     public boolean isSynced() {
         return synced;
@@ -164,11 +159,11 @@ public class Person extends Model implements Serializable {
         this.synced = synced;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
@@ -292,19 +287,19 @@ public class Person extends Model implements Serializable {
         this.firstName = firstName;
     }
 
-    public int getGenderId() {
+    public Integer getGenderId() {
         return genderId;
     }
 
-    public void setGenderId(int genderId) {
+    public void setGenderId(Integer genderId) {
         this.genderId = genderId;
     }
 
-    public int getSexId() {
+    public Integer getSexId() {
         return sexId;
     }
 
-    public void setSexId(int sexId) {
+    public void setSexId(Integer sexId) {
         this.sexId = sexId;
     }
 
@@ -352,28 +347,20 @@ public class Person extends Model implements Serializable {
         this.otherName = otherName;
     }
 
-    public int getMaritalStatusId() {
+    public Integer getMaritalStatusId() {
         return maritalStatusId;
     }
 
-    public void setMaritalStatusId(int maritalStatusId) {
+    public void setMaritalStatusId(Integer maritalStatusId) {
         this.maritalStatusId = maritalStatusId;
     }
 
-    public int getEducationId() {
+    public Integer getEducationId() {
         return educationId;
     }
 
-    public void setEducationId(int educationId) {
+    public void setEducationId(Integer educationId) {
         this.educationId = educationId;
-    }
-
-    public int getEmploymentStatusId() {
-        return employmentStatusId;
-    }
-
-    public void setEmploymentStatusId(int employmentStatusId) {
-        this.employmentStatusId = employmentStatusId;
     }
 
     public String getEmrId() {
@@ -384,11 +371,11 @@ public class Person extends Model implements Serializable {
         this.emrId = emrId;
     }
 
-    public int getFacilityId() {
+    public Integer getFacilityId() {
         return facilityId;
     }
 
-    public void setFacilityId(int facilityId) {
+    public void setFacilityId(Integer facilityId) {
         this.facilityId = facilityId;
     }
 
@@ -416,11 +403,11 @@ public class Person extends Model implements Serializable {
         this.ninNumber = ninNumber;
     }
 
-    public int getOrganizationId() {
+    public Integer getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(int organizationId) {
+    public void setOrganizationId(Integer organizationId) {
         this.organizationId = organizationId;
     }
 

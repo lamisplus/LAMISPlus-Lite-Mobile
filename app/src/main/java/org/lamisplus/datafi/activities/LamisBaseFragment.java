@@ -27,13 +27,17 @@ public abstract class LamisBaseFragment <T extends LamisBasePresenterContract> e
     @Override
     public void onResume(){
         super.onResume();
-        mPresenter.subscribe();
+        if(mPresenter!= null) {
+            mPresenter.subscribe();
+        }
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        mPresenter.unsubscribe();
+        if(mPresenter!= null) {
+            mPresenter.unsubscribe();
+        }
     }
 
 }

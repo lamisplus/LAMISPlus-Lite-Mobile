@@ -15,7 +15,7 @@ public class Address implements Serializable {
 
     @SerializedName("countryId")
     @Expose
-    private int countryId = 1;
+    private Integer countryId = 1;
 
     @SerializedName("district")
     @Expose
@@ -35,7 +35,7 @@ public class Address implements Serializable {
 
     @SerializedName("stateId")
     @Expose
-    private int stateId;
+    private Integer stateId = null;
 
     public String getCity() {
         return city;
@@ -45,11 +45,11 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public int getCountryId() {
+    public Integer getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(int countryId) {
+    public void setCountryId(Integer countryId) {
         this.countryId = countryId;
     }
 
@@ -85,11 +85,11 @@ public class Address implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public int getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(int stateId) {
+    public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
 }

@@ -25,9 +25,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="HIV test result *"
+                android:hint="HIV test result*"
                 app:errorEnabled="true"
-                app:helperText="HIV test result *">
+                app:helperText="HIV test result*">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoHivTestResult"
@@ -139,9 +139,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Post test counseling done *"
+                android:hint="Post test counseling done"
                 app:errorEnabled="true"
-                app:helperText="Post test counseling done *">
+                app:helperText="Post test counseling done">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoPostTestCounseling"
@@ -166,9 +166,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Risk reduction plan developed *"
+                android:hint="Risk reduction plan developed"
                 app:errorEnabled="true"
-                app:helperText="Risk reduction plan developed *">
+                app:helperText="Risk reduction plan developed">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoRiskReduction"
@@ -186,9 +186,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Post test disclosure plan developed *"
+                android:hint="Post test disclosure plan developed"
                 app:errorEnabled="true"
-                app:helperText="Post test disclosure plan developed *">
+                app:helperText="Post test disclosure plan developed">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoPostTestDisclosure"
@@ -214,9 +214,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Will bring partner(s) for HIV testing *"
+                android:hint="Will bring partner(s) for HIV testing"
                 app:errorEnabled="true"
-                app:helperText="Will bring partner(s) for HIV testing *">
+                app:helperText="Will bring partner(s) for HIV testing">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoBringPartnerHivtesting"
@@ -234,9 +234,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Will bring own children &lt; 5 years for HIV testing *"
+                android:hint="Will bring own children &lt; 5 years for HIV testing"
                 app:errorEnabled="true"
-                app:helperText="Will bring own children &lt; 5 years for HIV testing *">
+                app:helperText="Will bring own children &lt; 5 years for HIV testing">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoChildrenHivtesting"
@@ -262,9 +262,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Provided with information on FP and dual contraception *"
+                android:hint="Provided with information on FP and dual contraception"
                 app:errorEnabled="true"
-                app:helperText="Provided with information on FP and dual contraception *">
+                app:helperText="Provided with information on FP and dual contraception">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoInformationFp"
@@ -282,9 +282,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Client/Partner use FP methods (other than condom)*"
+                android:hint="Client/Partner use FP methods (other than condom)"
                 app:errorEnabled="true"
-                app:helperText="Client/Partner use FP methods (other than condom)*">
+                app:helperText="Client/Partner use FP methods (other than condom)">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoPartnerFpThanCondom"
@@ -329,9 +329,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Correct condom use demonstrated *"
+                android:hint="Correct condom use demonstrated"
                 app:errorEnabled="true"
-                app:helperText="Correct condom use demonstrated *">
+                app:helperText="Correct condom use demonstrated">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCorrectCondomUse"
@@ -357,9 +357,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Condoms provided to client *"
+                android:hint="Condoms provided to client"
                 app:errorEnabled="true"
-                app:helperText="Condoms provided to client *">
+                app:helperText="Condoms provided to client">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCondomProvidedToClient"
@@ -371,18 +371,47 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edcondomProvidedToClientCountTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                app:helperText="How many condoms were provided to client"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/edcondomProvidedToClientCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="How many condoms were provided to client"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/autolubricantProvidedToClientTIL"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Unprotected sex with regular partner in the last 3months"
+                android:hint="Lubricant were provided to client"
                 app:errorEnabled="true"
-                app:helperText="Unprotected sex with regular partner in the last 3months">
+                app:helperText="Lubricant were provided to client">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoUnprotectedSex"
+                    android:id="@+id/autolubricantProvidedToClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
@@ -390,8 +419,28 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlubricantProvidedToClientCountTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                app:helperText="How many lubricant provided to client"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/edlubricantProvidedToClientCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="How many lubricant provided to client"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -405,9 +454,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
-                android:hint="Client referred to other services *"
+                android:hint="Client referred to other services"
                 app:errorEnabled="true"
-                app:helperText="Client referred to other services *">
+                app:helperText="Client referred to other services">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoReferredToServices"

@@ -8,7 +8,10 @@ import org.lamisplus.datafi.models.Encounter;
 public class ElicitationContract {
 
     interface View extends LamisBaseView<Presenter>{
+        void scrollToTop();
         void startDashboardActivity();
+
+        void setErrorsVisibility(boolean offeredINSError);
     }
 
     interface Presenter extends LamisBasePresenterContract{

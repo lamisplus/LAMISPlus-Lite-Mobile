@@ -117,7 +117,9 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             setListeners();
             showDatePickers();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
-            person = PersonDAO.findPersonById(mPresenter.getPatientId());
+            if (mPresenter.getPatientId() != null) {
+                person = PersonDAO.findPersonById(mPresenter.getPatientId());
+            }
             if (person != null) {
                 if (DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) >= ApplicationConstants.RST_AGE) {
                     isAdult = true;
@@ -206,7 +208,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                 if (strEnteredVal != null && !strEnteredVal.equals("")) {
                     int num = Integer.parseInt(strEnteredVal);
 
-                    edDateofBirth.setText(DateUtils.getAgeFromBirthdate(num));
+                    //edDateofBirth.setText(DateUtils.getAgeFromBirthdate(num));
 
                     if (num < ApplicationConstants.RST_AGE) {
                         riskAssessmentLayout.setVisibility(View.GONE);
@@ -277,11 +279,11 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         autolastHivTestDone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    if (autolastHivTestDone.getText().toString().equals("Never")) {
-                        autowhatWasTheResultTIL.setVisibility(View.GONE);
-                    } else {
-                        autowhatWasTheResultTIL.setVisibility(View.VISIBLE);
-                    }
+                if (autolastHivTestDone.getText().toString().equals("Never")) {
+                    autowhatWasTheResultTIL.setVisibility(View.GONE);
+                } else {
+                    autowhatWasTheResultTIL.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -363,34 +365,49 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         });
 
         edDateofBirth.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edVisitDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                String dateTestVisitDate = ViewUtils.getInput(edVisitDate);
+                String[] explodeDate = dateTestVisitDate.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
 
-                int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
-                if (age >= ApplicationConstants.RST_AGE) {
-                    isAdult = true;
-                    riskAssessmentLayout.setVisibility(View.VISIBLE);
-                } else {
-                    isAdult = false;
-                    riskAssessmentLayout.setVisibility(View.GONE);
-                }
-                edAge.setText(age + "");
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                Long regMillis = bdt.getMillis();
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+
+                    int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
+                    if (age >= ApplicationConstants.RST_AGE) {
+                        isAdult = true;
+                        riskAssessmentLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        isAdult = false;
+                        riskAssessmentLayout.setVisibility(View.GONE);
+                    }
+                    edAge.setText(age + "");
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMaxDate(regMillis);
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            } else {
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Visit Date first");
+            }
         });
 
     }
@@ -501,7 +518,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         riskStratification.setCode("");
 
         if (updatedForm != null) {
-            if (updatedForm.getPersonId() != 0) {
+            if (updatedForm.getPersonId() != null) {
                 riskStratification.setPersonId(updatedForm.getPersonId());
             } else {
                 riskStratification.setPersonId(0);
@@ -606,7 +623,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     }
 
     @Override
-    public void startActivityForClientIntakeForm(String s) {
+    public void startActivityForClientIntakeForm(String s, String packageName) {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.CLIENT_INTAKE_FORM, mPresenter.getPatientId());
         if (encounter == null) {
             Intent clientIntakeProgram = new Intent(LamisPlus.getInstance(), ClientIntakeActivity.class);
@@ -614,6 +631,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                     String.valueOf(mPresenter.getPatientId()));
             //Save the Risk stratification here and pass it to the Client Intake Form Activity
             clientIntakeProgram.putExtra(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, s);
+            clientIntakeProgram.putExtra("packageName", packageName);
             startActivity(clientIntakeProgram);
             getActivity().finish();
         } else {

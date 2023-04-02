@@ -54,7 +54,6 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
     @Override
     public void confirmUpdate(Person person) {
         if (!registeringPatient && validate(person)) {
-            LamisCustomHandler.showJson(person);
             mAddEditPatientInfoView.scrollToTop();
             mAddEditPatientInfoView.setProgressBarVisibility(true);
             person.save();
@@ -73,14 +72,16 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
         boolean dateOfRegisterError = false;
         boolean hospitalError = false;
         boolean genderError = false;
-        boolean employmentNull = false;
         boolean maritalNull = false;
         boolean educationNull = false;
         boolean phoneNull = false;
         boolean stateError = false;
         boolean provinceError = false;
+        boolean nokFirstNameError = false;
+        boolean nokMiddleNameError = false;
+        boolean nokLastNameError = false;
 
-        mAddEditPatientInfoView.setErrorsVisibility(firstNameError, lastNameError, middleNameError, dateOfBirthError, dateOfRegisterError, hospitalError, genderError, employmentNull, maritalNull, educationNull, phoneNull, stateError, provinceError);
+        mAddEditPatientInfoView.setErrorsVisibility(firstNameError, lastNameError, middleNameError, dateOfBirthError, dateOfRegisterError, hospitalError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, nokFirstNameError, nokMiddleNameError, nokLastNameError);
 
         if (StringUtils.isBlank(person.getFirstName())
                 || !ViewUtils.validateText(person.getFirstName(), ViewUtils.ILLEGAL_NAME_CHARACTERS)) {
@@ -108,20 +109,15 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
             hospitalError = true;
         }
 
-        if (person.getGenderId() == 0) {
+        if (person.getGenderId() == null) {
             genderError = true;
         }
 
-        if (person.getMaritalStatusId() == 0) {
+        if (person.getMaritalStatusId() == null) {
             maritalNull = true;
         }
 
-
-        if (person.getEmploymentStatusId() == 0) {
-            employmentNull = true;
-        }
-
-        if (person.getEducationId() == 0) {
+        if (person.getEducationId() == null) {
             educationNull = true;
         }
 
@@ -130,7 +126,7 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
             phoneNull = true;
         }
 
-        if (person.getAddress().get(0).getStateId() == 0) {
+        if (person.getAddress().get(0).getStateId() == null) {
             stateError = true;
         }
 
@@ -138,13 +134,26 @@ public class AddEditPatientPresenter extends LamisBasePresenter implements AddEd
             provinceError = true;
         }
 
-        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfRegisterError && !dateOfBirthError && !hospitalError && !genderError && !maritalNull && !employmentNull && !educationNull && !phoneNull && !stateError && !provinceError;
+        if(!StringUtils.isBlank(person.getContacts().getFirstName()) && !ViewUtils.validateText(person.getContacts().getFirstName(), ViewUtils.ILLEGAL_NAME_CHARACTERS)){
+            nokFirstNameError = true;
+        }
+
+        if(!StringUtils.isBlank(person.getContacts().getOtherName()) && !ViewUtils.validateText(person.getContacts().getOtherName(), ViewUtils.ILLEGAL_NAME_CHARACTERS)){
+            nokMiddleNameError = true;
+        }
+
+        if(!StringUtils.isBlank(person.getContacts().getSurname()) && !ViewUtils.validateText(person.getContacts().getSurname(), ViewUtils.ILLEGAL_NAME_CHARACTERS)){
+            nokLastNameError = true;
+        }
+
+        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfRegisterError && !dateOfBirthError && !hospitalError && !genderError && !maritalNull
+                && !educationNull && !phoneNull && !stateError && !provinceError && !nokFirstNameError && !nokMiddleNameError && !nokLastNameError;
 
         if (result) {
             mPerson = person;
             return true;
         } else {
-            mAddEditPatientInfoView.setErrorsVisibility(firstNameError, lastNameError, middleNameError, dateOfBirthError, dateOfRegisterError, hospitalError, genderError, employmentNull, maritalNull, educationNull, phoneNull, stateError, provinceError);
+            mAddEditPatientInfoView.setErrorsVisibility(firstNameError, lastNameError, middleNameError, dateOfBirthError, dateOfRegisterError, hospitalError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, nokFirstNameError, nokMiddleNameError, nokLastNameError);
             return false;
         }
     }

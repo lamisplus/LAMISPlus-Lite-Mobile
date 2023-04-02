@@ -30,7 +30,6 @@ public class PatientProgramActivity extends LamisBaseActivity {
 
         Bundle patientBundle = savedInstanceState;
         if (patientBundle != null) {
-            Log.v("Baron", "Patient Program " + patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE));
             patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         } else {
             patientBundle = getIntent().getExtras();

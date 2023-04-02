@@ -10,7 +10,7 @@ public class RSTContract {
     interface View extends LamisBaseView<Presenter>{
 
         void scrollToTop();
-        void startActivityForClientIntakeForm(String s);
+        void startActivityForClientIntakeForm(String s, String packageName);
 
         void startHTSActivity();
 

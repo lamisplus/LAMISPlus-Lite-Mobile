@@ -21,7 +21,7 @@ public class DBOpenHelper extends LamisPlusSQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.v("Baron", "Creating Database");
+
     }
 
     @Override

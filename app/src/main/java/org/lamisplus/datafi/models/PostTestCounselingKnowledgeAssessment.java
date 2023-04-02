@@ -54,8 +54,14 @@ public class PostTestCounselingKnowledgeAssessment implements Serializable {
     @SerializedName("riskReduction")
     private String riskReduction;
 
-    @SerializedName("unprotectedSexRegularPartnerLastThreeMonth")
-    private String unprotectedSexRegularPartnerLastThreeMonth;
+    @SerializedName("condomProvidedToClientCount")
+    private String condomProvidedToClientCount;
+
+    @SerializedName("lubricantProvidedToClient")
+    private String lubricantProvidedToClient;
+
+    @SerializedName("lubricantProvidedToClientCount")
+    private String lubricantProvidedToClientCount;
 
     public String getBringPartnerHivtesting() {
         return bringPartnerHivtesting;
@@ -185,11 +191,27 @@ public class PostTestCounselingKnowledgeAssessment implements Serializable {
         this.riskReduction = riskReduction;
     }
 
-    public String getUnprotectedSexRegularPartnerLastThreeMonth() {
-        return unprotectedSexRegularPartnerLastThreeMonth;
+    public String getCondomProvidedToClientCount() {
+        return condomProvidedToClientCount;
     }
 
-    public void setUnprotectedSexRegularPartnerLastThreeMonth(String unprotectedSexRegularPartnerLastThreeMonth) {
-        this.unprotectedSexRegularPartnerLastThreeMonth = unprotectedSexRegularPartnerLastThreeMonth;
+    public void setCondomProvidedToClientCount(String condomProvidedToClientCount) {
+        this.condomProvidedToClientCount = condomProvidedToClientCount;
+    }
+
+    public String getLubricantProvidedToClient() {
+        return lubricantProvidedToClient;
+    }
+
+    public void setLubricantProvidedToClient(String lubricantProvidedToClient) {
+        this.lubricantProvidedToClient = lubricantProvidedToClient;
+    }
+
+    public String getLubricantProvidedToClientCount() {
+        return lubricantProvidedToClientCount;
+    }
+
+    public void setLubricantProvidedToClientCount(String lubricantProvidedToClientCount) {
+        this.lubricantProvidedToClientCount = lubricantProvidedToClientCount;
     }
 }

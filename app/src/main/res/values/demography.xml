@@ -153,6 +153,7 @@
         <item>PRISON</item>
         <item>Gen Pop</item>
         <item>Children of KP</item>
+        <item>PD</item>
     </string-array>
 
     <string-array name="referred_from">
@@ -179,7 +180,7 @@
         <item>Individual</item>
         <item>Couple</item>
         <item>Group</item>
-        <item>Previously Self Tested</item>
+        <item>previously self-tested</item>
     </string-array>
 
     <string-array name="pregnant">
@@ -200,8 +201,8 @@
     </string-array>
 
     <string-array name="viral_load_result_classification">
-        <item>&gt;= 1000</item>
-        <item>&lt; 1000</item>
+        <item>&gt;=1000</item>
+        <item>&lt;1000</item>
         <item>Failed run</item>
         <item>Invalid viral load result</item>
     </string-array>
@@ -247,6 +248,19 @@
         <item>4-6 Months</item>
         <item>&gt; 6 Months</item>
         <item>Never</item>
+    </string-array>
+
+    <string-array name="fingerprints">
+        <item>Left Thumb Finger</item>
+        <item>Left Index Finger</item>
+        <item>Left Middle Finger</item>
+        <item>Left Ring Finger</item>
+        <item>Left Little Finger</item>
+        <item>Right Thumb Finger</item>
+        <item>Right Index Finger</item>
+        <item>Right Middle Finger</item>
+        <item>Right Ring Finger</item>
+        <item>Right Little Finger</item>
     </string-array>
 
 </resources>

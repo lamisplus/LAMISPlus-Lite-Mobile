@@ -41,6 +41,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +66,7 @@ import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.DateUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
 import java.io.File;
@@ -76,10 +79,9 @@ import java.util.List;
 
 public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientContract.Presenter> implements AddEditPatientContract.View {
 
-    private String[] gender, maritalStatus, employmentStatus, educationalLevel, allStates, allRelationShipNok;
+    private String[] gender, maritalStatus, educationalLevel, allStates, allRelationShipNok;
     private AutoCompleteTextView autoGender;
     private AutoCompleteTextView autoMaritalStatus;
-    private AutoCompleteTextView autoEmploymentStatus;
     private AutoCompleteTextView autoEducationalLevel;
     private AutoCompleteTextView autoState;
     private AutoCompleteTextView autoProvinceLGA;
@@ -125,11 +127,13 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     private TextInputLayout fillGenderTIL;
     private TextInputLayout edDateofBirthTIL;
     private TextInputLayout fillMaritalStatusTIL;
-    private TextInputLayout fillEmploymentStatusTIL;
     private TextInputLayout fillEducationLevelTIL;
     private TextInputLayout edPhoneTIL;
     private TextInputLayout fillStateTIL;
     private TextInputLayout fillProvinceDistrictLGATIL;
+    private TextInputLayout edNokFirstNameTIL;
+    private TextInputLayout edNokMiddleNameTIL;
+    private TextInputLayout edNokLastNameTIL;
 
     @Nullable
     @Override
@@ -187,7 +191,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     public void initViews(View root) {
         autoGender = root.findViewById(R.id.fillGender);
         autoMaritalStatus = root.findViewById(R.id.fillMaritalStatus);
-        autoEmploymentStatus = root.findViewById(R.id.fillEmploymentStatus);
         autoEducationalLevel = root.findViewById(R.id.fillEducationLevel);
         autoState = root.findViewById(R.id.fillState);
         autoCountry = root.findViewById(R.id.fillCountry);
@@ -232,11 +235,14 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         fillGenderTIL = root.findViewById(R.id.fillGenderTIL);
         edDateofBirthTIL = root.findViewById(R.id.edDateofBirthTIL);
         fillMaritalStatusTIL = root.findViewById(R.id.fillMaritalStatusTIL);
-        fillEmploymentStatusTIL = root.findViewById(R.id.fillEmploymentStatusTIL);
         fillEducationLevelTIL = root.findViewById(R.id.fillEducationLevelTIL);
         edPhoneTIL = root.findViewById(R.id.edPhoneTIL);
         fillStateTIL = root.findViewById(R.id.fillStateTIL);
         fillProvinceDistrictLGATIL = root.findViewById(R.id.fillProvinceDistrictLGATIL);
+
+        edNokFirstNameTIL = root.findViewById(R.id.edNokFirstNameTIL);
+        edNokMiddleNameTIL = root.findViewById(R.id.edNokMiddleNameTIL);
+        edNokLastNameTIL = root.findViewById(R.id.edNokLastNameTIL);
     }
 
     public void initDropDowns() {
@@ -247,10 +253,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         maritalStatus = getResources().getStringArray(R.array.marital_status);
         ArrayAdapter<String> adapterMaritalStatus = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, maritalStatus);
         autoMaritalStatus.setAdapter(adapterMaritalStatus);
-
-        employmentStatus = getResources().getStringArray(R.array.employment_status);
-        ArrayAdapter<String> adapterEmploymentStatus = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, employmentStatus);
-        autoEmploymentStatus.setAdapter(adapterEmploymentStatus);
 
         educationalLevel = getResources().getStringArray(R.array.educational_level);
         ArrayAdapter<String> adapterEducationalLevel = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, educationalLevel);
@@ -361,28 +363,43 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         });
 
         edDateofBirth.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edRegistrationDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(AddEditPatientFragment.this.getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                String dateReg = ViewUtils.getInput(edRegistrationDate);
+                String[] explodeDate = dateReg.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
 
-                int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                long regMilli = bdt.getMillis();
 
-                edAge.setText(age + "");
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                DatePickerDialog mDatePicker = new DatePickerDialog(AddEditPatientFragment.this.getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+
+                    int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
+
+                    edAge.setText(age + "");
+                }, cYear, cMonth, cDay);
+
+                mDatePicker.getDatePicker().setMaxDate(regMilli);
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            } else {
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Date of Registration");
+            }
         });
     }
 
@@ -402,7 +419,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
 
             autoGender.setText(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()), false);
             autoMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()), false);
-            autoEmploymentStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getEmploymentStatusId()), false);
             autoEducationalLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()), false);
             autoState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()), false);
             autoProvinceLGA.setText(person.getAddresses().getDistrict(), false);
@@ -431,7 +447,7 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
                 edNokFirstName.setText(person.getContacts().getFirstName());
                 edNokLastName.setText(person.getContacts().getSurname());
                 edNokMiddleName.setText(person.getContacts().getOtherName());
-                if (StringUtils.notZero(person.getContacts().getRelationshipId())) {
+                if (person.getContacts().getRelationshipId() != null) {
                     autoNokRelationship.setText(CodesetsDAO.findCodesetsDisplayById(person.getContacts().getRelationshipId()), false);
                 }
 
@@ -488,7 +504,8 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
 
         person.setEmrId("");
 
-        Account account = AccountDAO.getUserDetails();
+        Account account = AccountDAO.getDefaultLocation();
+
         person.setFacilityId(account.getCurrentOrganisationUnitId());
 
         if (!ViewUtils.isEmpty(autoGender)) {
@@ -500,11 +517,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
         if (!ViewUtils.isEmpty(autoMaritalStatus)) {
             int maritalStatusId = CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoMaritalStatus));
             person.setMaritalStatusId(maritalStatusId);
-        }
-
-        if (!ViewUtils.isEmpty(autoEmploymentStatus)) {
-            int employmentStatusId = CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoEmploymentStatus));
-            person.setEmploymentStatusId(employmentStatusId);
         }
 
         if (!ViewUtils.isEmpty(autoEducationalLevel)) {
@@ -650,11 +662,11 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
                 (!ViewUtils.isEmpty(edDateofBirth)) ||
                 (!ViewUtils.isEmpty(autoGender)) ||
                 (!ViewUtils.isEmpty(autoMaritalStatus)) ||
-                (!ViewUtils.isEmpty(autoEmploymentStatus)) ||
                 (!ViewUtils.isEmpty(autoEducationalLevel)) ||
                 (!ViewUtils.isEmpty(edPhone)) ||
                 (!ViewUtils.isEmpty(autoState)) ||
-                (!ViewUtils.isEmpty(autoProvinceLGA))
+                (!ViewUtils.isEmpty(autoProvinceLGA)) ||
+                (!ViewUtils.isEmpty(edStreet))
         );
     }
 
@@ -664,7 +676,8 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
     }
 
     @Override
-    public void setErrorsVisibility(boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean dateOfRegisterError, boolean hospitalError, boolean genderError, boolean employmentNull, boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError) {
+    public void setErrorsVisibility(boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean dateOfRegisterError, boolean hospitalError, boolean genderError, boolean maritalNull,
+                                    boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean nokFirstNameError, boolean nokMiddleNameError, boolean nokLastNameError) {
         if (firstNameError) {
             edfirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             edfirstNameTIL.setError("Enter the First Name or check they do not contain symbols and numbers");
@@ -700,11 +713,6 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             fillGenderTIL.setError("Select the Gender");
         }
 
-        if (employmentNull) {
-            fillEmploymentStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillEmploymentStatusTIL.setError("Select the Employment Status");
-        }
-
         if (maritalNull) {
             fillMaritalStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             fillMaritalStatusTIL.setError("Select the Marital Status");
@@ -730,6 +738,20 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             fillProvinceDistrictLGATIL.setError("Select the Province/LGA");
         }
 
+        if (nokFirstNameError) {
+            edNokFirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edNokFirstNameTIL.setError("Check that the Relationship/Next of Kin First Name do not contain symbols and numbers");
+        }
+
+        if (nokMiddleNameError) {
+            edNokMiddleNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edNokMiddleNameTIL.setError("Check that the Relationship/Next of Kin Middle Name do not contain symbols and numbers");
+        }
+
+        if (nokLastNameError) {
+            edNokLastNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            edNokLastNameTIL.setError("Check that the Relationship/Next of Kin Last Name do not contain symbols and numbers");
+        }
 
     }
 }

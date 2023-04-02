@@ -4,66 +4,86 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import android.util.Log;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import net.sqlcipher.Cursor;
 
 import org.lamisplus.datafi.models.Biometrics;
+import org.lamisplus.datafi.models.BiometricsList;
+import org.lamisplus.datafi.models.ContactPoint;
+import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.FingerPositions;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BiometricsDAO {
 
-    public void saveFingerPrint(List<Biometrics> pbs) {
-        for (int i = 0; i < pbs.size(); i++) {
+    public static void updateAllBiometricsWithPatiendId(int idFromServer, String personId) {
+        new Update(Biometrics.class)
+                .set("patientId = ?", idFromServer)
+                .where("person = ?", personId)
+                .execute();
+    }
 
-            if (pbs.get(i).getFingerPositions() != null) {
-                //long id = new FingerPrintTable().insert(pbs.get(i));
-                //Log.e(TAG, "return id: " + id);
-            }
-            else{
-                Log.e(TAG, "skipping empty finger print: ");
-            }
+    /**
+     * This function returns the patientId from the server if it already exists else set as null
+     *
+     * @param personId This is the personId from the person Table
+     * @return person id integer
+     */
+    public static Integer getPatientId(Integer personId) {
+        Person person = new Select().from(Person.class).where("id = ?", personId).executeSingle();
+        if (person != null) {
+            return person.getPersonId();
         }
+        return null;
     }
 
-    public long saveFingerPrint(Biometrics pbs) {
-        deletePrintPosition((long) pbs.getPatienId(), pbs.getFingerPositions());
-        //long id =  new FingerPrintTable().insert(pbs);
-       // Log.e(TAG, "return id: " +id);
-        return 0;
+    public static void deletePrint(Integer personId) {
+        new Delete().from(Biometrics.class).where("person = ?", personId).execute();
     }
 
-    public void deletePrintPosition(Long patientId, FingerPositions fingerPosition) {
-        //new FingerPrintTable().deleteFingerPrintCapture(patientId, fingerPosition);
+    public static List<BiometricsList> getFingerPrints(Integer personId) {
+        Biometrics biometrics = new Select().from(Biometrics.class).where("person = ?", personId).executeSingle();
+        if (biometrics != null) {
+            Type type = new TypeToken<List<BiometricsList>>() {
+            }.getType();
+            List<BiometricsList> biometricsLists = new Gson().fromJson(biometrics.getCapturedBiometricsList(), type);
+            return biometricsLists;
+        }
+        return null;
     }
 
-
-    public void deleteAllPrints() {
-//        DBOpenHelper openHelper = OpenMRSDBOpenHelper.getInstance().getDBOpenHelper();
-//        openHelper.getWritableDatabase().execSQL(new FingerPrintTable().dropTableDefinition());
-//        openHelper.getWritableDatabase().execSQL(new FingerPrintTable().createTableDefinition());
-//        OpenMRS.getInstance().getOpenMRSLogger().d("All Finger Print deleted");
+    public static Biometrics getFingerPrintsForUser(Integer personId) {
+        Biometrics biometrics = new Select().from(Biometrics.class).where("person = ?", personId).executeSingle();
+        if (biometrics != null) {
+            return biometrics;
+        }
+        return null;
     }
 
-    public void deletePrint(Long patientId) {
-       // new FingerPrintTable().delete(patientId);
+    public static Integer syncStatus(Integer personId) {
+        Biometrics biometrics = new Select().from(Biometrics.class).where("person = ?", personId).executeSingle();
+        if (biometrics != null) {
+            return biometrics.getSyncStatus();
+        }
+        return null;
     }
 
-
-    public  List<Biometrics> getAll(boolean IncludeSyncRecord, String patient_Id) {
-        List<Biometrics> pbsList = new ArrayList<>();
-
-        return pbsList;
+    public static List<Biometrics> getUnsyncedBiometrics() {
+        List<Biometrics> biometrics = new Select().from(Biometrics.class).where("syncStatus = ?", 0).execute();
+        if (biometrics != null) {
+            return biometrics;
+        }
+        return null;
     }
 
-    public boolean checkIfFingerPrintUptoSixFingers(String patientId) {
-
-        return false;
-    }
-
-    public int updatePatientFingerPrintSyncStatus(Long patientId, Biometrics tableObject) {
-        return 0;
-    }
 
 }

@@ -13,7 +13,7 @@ import java.io.FileWriter;
 
 public class LamisCustomHandler {
 
-    public static void showDialogMessage(Context context, String message){
+    public static void showDialogMessage(Context context, String message) {
         AlertDialog alertDialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
@@ -27,37 +27,38 @@ public class LamisCustomHandler {
         alertDialog.show();
     }
 
-    public static void showJson(Object object){
+    public static void showJson(Object object) {
         Gson gson = new GsonBuilder()
+                .disableHtmlEscaping()
                 .excludeFieldsWithoutExposeAnnotation()// STATIC|TRANSIENT in the default configuration
                 .create();
         String values = gson.toJson(object);
         Log.v("Baron", values);
     }
 
-    public static String getJson(Object object){
+    public static String getJson(Object object) {
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()// STATIC|TRANSIENT in the default configuration
                 .create();
         return gson.toJson(object);
     }
 
-    public static void writeErrorToFile(String message){
+    public static void writeErrorToFile(String message) {
         File logFile = new File("lamislogfile.log");
-        if(!logFile.exists()){
+        if (!logFile.exists()) {
             try {
                 logFile.createNewFile();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        try{
+        try {
             //BufferedWriter for performance, true to set append to file flag
             BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
             buf.append(message);
             buf.newLine();
             buf.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

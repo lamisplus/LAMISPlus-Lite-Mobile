@@ -48,7 +48,7 @@ public class Contact implements Serializable {
 
     @SerializedName("relationshipId")
     @Expose
-    private int relationshipId;
+    private Integer relationshipId;
 
     @SerializedName("surname")
     @Expose
@@ -90,11 +90,11 @@ public class Contact implements Serializable {
         this.fullName = fullName;
     }
 
-    public int getRelationshipId() {
+    public Integer getRelationshipId() {
         return relationshipId;
     }
 
-    public void setRelationshipId(int relationshipId) {
+    public void setRelationshipId(Integer relationshipId) {
         this.relationshipId = relationshipId;
     }
 

@@ -7,17 +7,28 @@ import org.lamisplus.datafi.models.PreTest;
 
 public class PreTestContract {
 
-    interface View extends LamisBaseView<Presenter>{
+    interface View extends LamisBaseView<Presenter> {
         void scrollToTop();
+
         void startActivityForRequestResultForm();
+
+        void hideFieldsDefault(String patientId);
 
         void startDashboardActivity();
 
-        void setErrorsVisibility(boolean everHadSexualIntercourse, boolean bloodtransInlastThreeMonths, boolean uprotectedSexWithCasualLastThreeMonths, boolean uprotectedSexWithRegularPartnerLastThreeMonths,
-                                 boolean autounprotectedVaginalSex, boolean uprotectedAnalSexHivRiskAssess, boolean stiLastThreeMonths, boolean sexUnderInfluence, boolean moreThanOneSexPartnerLastThreeMonths);
+        void setErrorsVisibilityGenPop(boolean everHadSexualIntercourse, boolean bloodtransInlastThreeMonths, boolean uprotectedSexWithCasualLastThreeMonths, boolean uprotectedSexWithRegularPartnerLastThreeMonths,
+                                       boolean autounprotectedVaginalSex, boolean uprotectedAnalSexHivRiskAssess, boolean stiLastThreeMonths, boolean sexUnderInfluence, boolean moreThanOneSexPartnerLastThreeMonths);
+
+        void setErrorsVisibilityOthers(boolean experiencePain,
+                                       boolean haveSexWithoutCondom,
+                                       boolean haveCondomBurst,
+                                       boolean abuseDrug,
+                                       boolean bloodTransfusion,
+                                       boolean consistentWeightFeverNightCough,
+                                       boolean soldPaidVaginalSex);
     }
 
-    interface Presenter extends LamisBasePresenterContract{
+    interface Presenter extends LamisBasePresenterContract {
 
         String getPatientId();
 

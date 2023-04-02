@@ -34,7 +34,7 @@ public class Encounter extends Model implements Serializable {
     @Column(name = "personId")
     @SerializedName("personId")
     @Expose
-    private int personId;
+    private Integer personId;
 
     @Column(name = "dataValues")
     @SerializedName("dataValues")
@@ -54,11 +54,11 @@ public class Encounter extends Model implements Serializable {
         this.name = name;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 

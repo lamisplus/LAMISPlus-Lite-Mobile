@@ -7,27 +7,27 @@ import java.io.Serializable;
 public class Recency implements Serializable {
 
     @SerializedName("personId")
-    private int personId;
+    private Integer personId = null;
 
     @SerializedName("htsClientId")
-    private int htsClientId;
+    private Integer htsClientId = null;
 
     @SerializedName("recency")
     private RecencyDetails recencyDetails;
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
-    public int getHtsClientId() {
+    public Integer getHtsClientId() {
         return htsClientId;
     }
 
-    public void setHtsClientId(int htsClientId) {
+    public void setHtsClientId(Integer htsClientId) {
         this.htsClientId = htsClientId;
     }
 

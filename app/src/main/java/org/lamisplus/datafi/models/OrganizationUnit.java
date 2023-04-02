@@ -14,7 +14,7 @@ public class OrganizationUnit extends Model implements Serializable {
     @SerializedName("unit_id")
     @Column(name = "unit_id")
     @Expose
-    private int unit_id;
+    private Integer unit_id;
 
     @SerializedName("name")
     @Column(name = "name")
@@ -46,11 +46,11 @@ public class OrganizationUnit extends Model implements Serializable {
     @Expose
     private String uuid;
 
-    public int getUnit_id() {
+    public Integer getUnit_id() {
         return unit_id;
     }
 
-    public void setUnit_id(int unit_id) {
+    public void setUnit_id(Integer unit_id) {
         this.unit_id = unit_id;
     }
 

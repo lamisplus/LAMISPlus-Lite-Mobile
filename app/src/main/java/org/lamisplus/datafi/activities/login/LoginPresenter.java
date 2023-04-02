@@ -75,7 +75,7 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
         if (!username.isEmpty() && !password.isEmpty() && !url.isEmpty()) {
             Account accountLogin = AccountDAO.checkUserExists(username, password);
             if (AccountDAO.countUsers() <= 0) {
-                if (NetworkUtils.isOnline()) {
+                if (NetworkUtils.isOnline() || NetworkUtils.isURLReachable(url)) {
                     String token = new BearerApi(url, username, password, rememberMe).getToken();
                     if (StringUtils.notEmpty(token) && StringUtils.notNull(token)) {
                         RestApi restApi = RestServiceBuilder.createService(RestApi.class, token);

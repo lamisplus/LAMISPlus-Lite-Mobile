@@ -1,157 +1,121 @@
 package org.lamisplus.datafi.models;
 
 import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.lamisplus.datafi.utilities.FingerPositions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "biometrics")
 public class Biometrics extends Model implements Serializable {
-    @SerializedName("manufacturer")
+    @Column(name = "patientId")
+    @SerializedName("patientId")
     @Expose
-    private String Manufacturer;
+    private Integer patientId;
 
-    @SerializedName("model")
+    //This is the person id from the person table and should not be confused with the patientId column from the server
+    @Column(name = "person")
+    @SerializedName("person")
+    private Integer person;
+
+    @SerializedName("capturedBiometricsList")
+    private transient List<BiometricsList> biometricsList = new ArrayList<>();
+
+    @Column(name = "capturedBiometricsList")
     @Expose
-    private String Model;
+    private String capturedBiometricsList;
 
-    @SerializedName("serialNumber")
+    @Column(name = "deviceName")
+    @SerializedName("deviceName")
     @Expose
-    private String SerialNumber;
+    private String deviceName;
 
-    @SerializedName("imageWidth")
+    @Column(name = "biometricType")
+    @SerializedName("biometricType")
     @Expose
-    private int ImageWidth;
+    private String biometricType;
 
-    @SerializedName("imageHeight")
+    @Column(name = "iso")
+    @SerializedName("iso")
     @Expose
-    private int ImageHeight;
+    private boolean iso;
 
-    @SerializedName("imageDPI")
+    @Column(name = "type")
+    @SerializedName("type")
     @Expose
-    private int ImageDPI;
+    private String type;
 
-    @SerializedName("imageQuality")
-    @Expose
-    private int ImageQuality;
-
-    @SerializedName("image")
-    @Expose
-    private String Image;
-
-    @SerializedName("imageByte")
-    @Expose
-    private byte[] ImageByte;
-
-    @SerializedName("template")
-    @Expose
-    private String Template;
-
-    @SerializedName("fingerPositions")
-    @Expose
-    private FingerPositions FingerPositions;
-
-    @SerializedName("patienId")
-    @Expose
-    private int PatienId;
-
-    @SerializedName("biometricInfo_Id")
-    @Expose
-    public String BiometricInfo_Id;
-
-    @SerializedName("creator")
-    @Expose
-    private Integer Creator;
-
-    @SerializedName("errorMessage")
-    @Expose
-    private String ErrorMessage;
-
+    @Column(name = "syncStatus")
     @SerializedName("syncStatus")
-    @Expose
     private int SyncStatus;
 
 
-    public String getManufacturer() {
-        return Manufacturer;
-    }
-    public void setManufacturer(String manufacturer) {
-        this.Manufacturer = manufacturer;
+    public Integer getPatientId() {
+        return patientId;
     }
 
-    public String getModel() {
-        return Model;
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
     }
-    public void setModel(String model) { this.Model = model;  }
 
-    public String getSerialNumber() {
-        return SerialNumber;
+    public Integer getPerson() {
+        return person;
     }
-    public void setSerialNumber(String serialNumber) { this.SerialNumber = serialNumber;  }
 
-    public int getImageWidth() {
-        return ImageWidth;
+    public void setPerson(Integer person) {
+        this.person = person;
     }
-    public void setImageWidth(int imageWidth) { this.ImageWidth = imageWidth ;  }
 
-    public int getImageHeight() {
-        return ImageHeight;
+    public String getCapturedBiometricsList() {
+        return capturedBiometricsList;
     }
-    public void setImageHeight(int imageHeight) { this.ImageHeight = imageHeight ;  }
 
-    public int getImageDPI() {
-        return ImageDPI;
+    public void setCapturedBiometricsList(String capturedBiometricsList) {
+        this.capturedBiometricsList = capturedBiometricsList;
     }
-    public void setImageDPI(int imageDPI) { this.ImageDPI = imageDPI ;  }
 
-    public int getImageQuality() {
-        return ImageQuality;
+    public String getDeviceName() {
+        return deviceName;
     }
-    public void setImageQuality(int imageQuality) { this.ImageQuality = imageQuality ;  }
 
-    public String getImage() {
-        return Image;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
-    public void setImage(String image) { this.Image = image;  }
 
-    public byte[] getImageByte() {
-        return ImageByte;
+    public String getBiometricType() {
+        return biometricType;
     }
-    public void setImageByte(byte[] imageByte) { this.ImageByte = imageByte;  }
 
-    public String getTemplate() {
-        return Template;
+    public void setBiometricType(String biometricType) {
+        this.biometricType = biometricType;
     }
-    public void setTemplate(String template) { this.Template = template;  }
 
-    public FingerPositions getFingerPositions() {
-        return FingerPositions;
+    public boolean isIso() {
+        return iso;
     }
-    public void setFingerPositions(FingerPositions fingerPositions) { this.FingerPositions = fingerPositions;  }
 
-    public int getPatienId() {
-        return PatienId;
+    public void setIso(boolean iso) {
+        this.iso = iso;
     }
-    public void setPatienId(int patienId) { this.PatienId = patienId;  }
-
-    public String getBiometricInfo_Id() {   return BiometricInfo_Id;  }
-    public void setBiometricInfo_Id(String biometricInfo_Id) { this.BiometricInfo_Id = biometricInfo_Id;  }
-
-    public Integer getCreator() {
-        return Creator;
-    }
-    public void setCreator(Integer creator) { this.Creator = creator;  }
-
-    public String getErrorMessage() {
-        return ErrorMessage;
-    }
-    public void setErrorMessage(String errorMessage) { this.ErrorMessage = errorMessage;  }
 
     public int getSyncStatus() {
         return SyncStatus;
     }
-    public void setSyncStatus(int syncStatus) { this.SyncStatus = syncStatus;  }
+
+    public void setSyncStatus(int syncStatus) {
+        SyncStatus = syncStatus;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

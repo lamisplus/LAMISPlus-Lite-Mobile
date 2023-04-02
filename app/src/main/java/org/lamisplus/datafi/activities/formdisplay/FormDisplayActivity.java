@@ -44,7 +44,6 @@ public class FormDisplayActivity extends LamisBaseActivity implements FormDispla
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.v("Baron", "Current position is " + tab.getPosition());
                 viewPager.setCurrentItem(tab.getPosition());
                 if(tab.getPosition() == 1){
                     FormDisplayClientIntakeFragment.getInstance(1, "Client Intake");
