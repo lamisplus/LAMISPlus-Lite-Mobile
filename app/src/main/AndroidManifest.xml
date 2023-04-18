@@ -87,6 +87,29 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.dashboard.DashboardActivity" />
         </activity>
+
+        <activity
+            android:name=".activities.connectserver.ConnectServerActivity"
+            android:label="@string/connect_to_server"
+            android:parentActivityName=".activities.dashboard.DashboardActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.connectserver.findpatientserver.FindPatientServerActivity"
+            android:label="@string/find_patient_server"
+            android:parentActivityName=".activities.connectserver.ConnectServerActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.connectserver.ConnectServerActivity" />
+        </activity>
+
         <activity
             android:name=".activities.patientprogram.PatientProgramActivity"
             android:label="@string/patient_program_label"
@@ -252,6 +275,70 @@
         <activity
             android:name=".activities.syncstatus.SyncStatusActivity"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.pmtct.pmtctprogram.PMTCTProgramActivity"
+            android:parentActivityName=".activities.dashboard.DashboardActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.pmtct.pmtctservices.PMTCTServicesActivity"
+            android:parentActivityName=".activities.pmtct.pmtctprogram.PMTCTProgramActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.pmtct.pmtctprogram.PMTCTProgramActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.pmtct.anc.ANCActivity"
+            android:label="@string/anc_form"
+            android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.pmtct.pmtctenrollment.PMTCTEnrollmentActivity"
+            android:label="@string/pmtct_enrollment_form"
+            android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.pmtct.labourdelivery.LabourDeliveryActivity"
+            android:label="@string/labour_delivery_form"
+            android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.pmtct.infantregistration.InfantRegistrationActivity"
+            android:label="@string/infant_registration_form"
+            android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

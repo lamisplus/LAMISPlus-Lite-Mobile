@@ -153,7 +153,7 @@
         <item>PRISON</item>
         <item>Gen Pop</item>
         <item>Children of KP</item>
-        <item>PD</item>
+        <item>PED</item>
     </string-array>
 
     <string-array name="referred_from">
@@ -168,6 +168,7 @@
         <item>Youth/Adolescent Outreach</item>
         <item>Private/Commercial Health Facility</item>
         <item>External HCT Center</item>
+        <item>LIP</item>
     </string-array>
 
     <string-array name="relationship_of_the_index_client">
@@ -261,6 +262,45 @@
         <item>Right Middle Finger</item>
         <item>Right Ring Finger</item>
         <item>Right Little Finger</item>
+    </string-array>
+
+    <!-- PMTCT -->
+    <string-array name="source_of_referral">
+        <item>PMTCT Outreach</item>
+        <item>Sex Worker Outreach</item>
+        <item>Medical Outpatient</item>
+        <item>Youth/Adolescent Outreach</item>
+        <item>Private/Commercial Health Facility</item>
+        <item>Under-fives/Immunization Clinic</item>
+        <item>External HCT Centre</item>
+        <item>CBO</item>
+        <item>In-patients</item>
+        <item>Self-referral</item>
+        <item>OVC Partner</item>
+    </string-array>
+
+    <string-array name="pmtct_point_of_entry">
+        <item>ANC</item>
+        <item>L&amp;D</item>
+        <item>Postnatal ward</item>
+    </string-array>
+
+    <string-array name="timing_art_initiation">
+        <item>Prior to this pregnancy</item>
+        <item>Initiated ART during pregnancy &lt;36 weeks gestation period</item>
+        <item>Initiated ART during pregnancy &#x2265;36 weeks gestation period</item>
+        <item>Initiated ART at L&amp;D</item>
+        <item>Initiated ART at L&amp;D/Initiated ART after delivery (post-partum)</item>
+    </string-array>
+
+    <string-array name="tb_status">
+        <item>No sign or symptoms of TB</item>
+        <item>TB suspected and referred for evaluation</item>
+        <item>Currently on INH prophylaxis</item>
+        <item>Currently on TB treatment</item>
+        <item>TB positive not on TB drugs</item>
+        <item>Presumptive TB</item>
+        <item>Confirmed TB</item>
     </string-array>
 
 </resources>

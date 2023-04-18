@@ -17,7 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import android.widget.SearchView;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -26,10 +28,12 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
+import org.lamisplus.datafi.activities.connectserver.ConnectServerActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
 import org.lamisplus.datafi.activities.hts.htsprogram.HTSProgramActivity;
 import org.lamisplus.datafi.activities.login.LoginActivity;
+import org.lamisplus.datafi.activities.pmtct.pmtctprogram.PMTCTProgramActivity;
 import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
 import org.lamisplus.datafi.activities.syncstatus.SyncStatusActivity;
 import org.lamisplus.datafi.application.LamisPlus;
@@ -50,11 +54,13 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
     private ImageView mPMTCTButton;
     private ImageView mAllClientsButton;
     private ImageView mSyncStatusButton;
+    private ImageView mConnectServerButton;
 
     private LinearLayout mHTSView;
     private LinearLayout mPMTCTView;
     private LinearLayout mAllClientsView;
     private LinearLayout mSyncStatusView;
+    private LinearLayout mConnectServerView;
 
     AnimatedBottomBar animatedBottomBar;
 
@@ -69,7 +75,6 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
             setListeners();
-            setFacilityName();
         }
         return root;
     }
@@ -83,11 +88,13 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mPMTCTButton = root.findViewById(R.id.mPMTCTButton);
         mAllClientsButton = root.findViewById(R.id.mAllClientsButton);
         mSyncStatusButton = root.findViewById(R.id.mSyncStatusButton);
+        mConnectServerButton = root.findViewById(R.id.mConnectServerButton);
 
         mHTSView = root.findViewById(R.id.mHTSView);
         mPMTCTView = root.findViewById(R.id.mPMTCTView);
         mAllClientsView = root.findViewById(R.id.mAllClientsView);
         mSyncStatusView = root.findViewById(R.id.mSyncStatusView);
+        mConnectServerView = root.findViewById(R.id.mConnectServerView);
         /**
          * Menu Bottom Navigation Drawer
          * */
@@ -118,14 +125,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mPMTCTView.setOnClickListener(this);
         mAllClientsView.setOnClickListener(this);
         mSyncStatusView.setOnClickListener(this);
-    }
-
-    private void setFacilityName() {
-//        Account account = AccountDAO.getUserDetails();
-//        if (account != null) {
-//            facilityName.setVisibility(View.VISIBLE);
-//            facilityName.setText(account.getCurrentOrganisationUnitName());
-//        }
+        mConnectServerView.setOnClickListener(this);
     }
 
     @Override
@@ -134,14 +134,17 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
             case R.id.mHTSView:
                 startNewActivity(HTSProgramActivity.class);
                 break;
-            case R.id.pmtctView:
-                //startNewActivity(PMTCT.class);
+            case R.id.mPMTCTView:
+                startNewActivity(PMTCTProgramActivity.class);
                 break;
             case R.id.mAllClientsView:
                 startNewActivity(FindPatientActivity.class);
                 break;
             case R.id.mSyncStatusView:
                 startNewActivity(SyncStatusActivity.class);
+                break;
+            case R.id.mConnectServerView:
+                startNewActivity(ConnectServerActivity.class);
                 break;
             default:
 
@@ -166,6 +169,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         bindDrawableResource(mPMTCTButton, R.drawable.pmtct);
         bindDrawableResource(mAllClientsButton, R.drawable.all_patients);
         bindDrawableResource(mSyncStatusButton, R.drawable.sync_status);
+        bindDrawableResource(mConnectServerButton, R.drawable.server_connect);
     }
 
     /**

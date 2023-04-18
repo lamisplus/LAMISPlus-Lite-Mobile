@@ -46,6 +46,10 @@ public class ApplicationConstants {
         public static final String POST_TEST_COUNSELING_FORM = "Post Test Counseling Form";
         public static final String HIV_RECENCY_FORM = "HIV Recency Form";
         public static final String ELICITATION = "Index Notification Services - Elicitation";
+        public static final String ANC_FORM = "ANC Form";
+        public static final String PMTCT_ENROLLMENT_FORM = "PMTCT Enrollment Form";
+        public static final String LABOUR_DELIVERY_FORM = "Labour & Delivery Form";
+        public static final String INFANT_INFORMATION_FORM = "Infant Information Form";
     }
 
 }

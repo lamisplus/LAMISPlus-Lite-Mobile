@@ -949,7 +949,7 @@
                     android:layout_weight="1"
                     android:hint="Unprotected Anal sex"
                     app:errorEnabled="true"
-                    app:helperText="Have you had sex with a partner who is HIV positive? ">
+                    app:helperText="Unprotected Anal sex">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoUprotectedAnalSex"

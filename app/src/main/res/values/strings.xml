@@ -42,6 +42,11 @@
     <string name="action_add_patients">Add Patients</string>
     <string name="search_patient_no_results">No patients exist in database</string>
 
+
+    <!-- Connect to server-->
+    <string name="connect_to_server">Connect To Server</string>
+    <string name="find_patient_server">Find/Download Patient From Server</string>
+
     <!-- Patient Program -->
     <string name="patient_program_label">Patient Program</string>
     <string name="testing_services_label">Testing Services</string>
@@ -109,6 +114,10 @@
     <string name="post_test_form">Post Test Form</string>
     <string name="recency_form">Recency Form</string>
     <string name="elicitation">Index Notification Services - Elicitation</string>
+    <string name="anc_form">ANC Form</string>
+    <string name="pmtct_enrollment_form">PMTCT Enrollment Form</string>
+    <string name="labour_delivery_form">Labour &amp; Delivery Form</string>
+    <string name="infant_registration_form">Infant Registration Form</string>
 
     <!-- Layout strings -->
     <string name="sync">Sync</string>

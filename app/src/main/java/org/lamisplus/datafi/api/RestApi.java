@@ -1,5 +1,6 @@
 package org.lamisplus.datafi.api;
 
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskStratification;
 
 import retrofit2.Call;
@@ -8,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RestApi {
 
@@ -43,5 +45,9 @@ public interface RestApi {
 
     @POST("biometrics/templates")
     Call<Object> createBiometrics(@Body Object biometricsPayload);
+
+    @GET("patient")
+    Call<Object> getPatients(@Query("searchParam") String searchParam,
+                                      @Query("pageNo") Integer pageNo, @Query("pageSize") Integer pageSize);
 
 }

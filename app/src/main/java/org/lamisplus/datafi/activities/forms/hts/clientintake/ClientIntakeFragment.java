@@ -110,10 +110,9 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
     private TextInputLayout autosettingsTIL;
     private TextInputLayout edvisitDateTIL;
 
-    private String[] gender, maritalStatus, educationalLevel, allStates;
+    private String[] gender, maritalStatus, allStates;
     private AutoCompleteTextView autoGender;
     private AutoCompleteTextView autoMaritalStatus;
-    private AutoCompleteTextView autoEducationalLevel;
     private AutoCompleteTextView autoState;
     private AutoCompleteTextView autoProvinceLGA;
     private EditText edRegistrationDate;
@@ -151,7 +150,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
     private TextInputLayout fillGenderTIL;
     private TextInputLayout edDateofBirthTIL;
     private TextInputLayout fillMaritalStatusTIL;
-    private TextInputLayout fillEducationLevelTIL;
     private TextInputLayout edPhoneTIL;
     private TextInputLayout fillStateTIL;
     private TextInputLayout fillProvinceDistrictLGATIL;
@@ -244,7 +242,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
     public void initViewsPatient(View root) {
         autoGender = root.findViewById(R.id.fillGender);
         autoMaritalStatus = root.findViewById(R.id.fillMaritalStatus);
-        autoEducationalLevel = root.findViewById(R.id.fillEducationLevel);
         autoState = root.findViewById(R.id.fillState);
         autoCountry = root.findViewById(R.id.fillCountry);
         autoProvinceLGA = root.findViewById(R.id.fillProvinceDistrictLGA);
@@ -280,7 +277,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         fillGenderTIL = root.findViewById(R.id.fillGenderTIL);
         edDateofBirthTIL = root.findViewById(R.id.edDateofBirthTIL);
         fillMaritalStatusTIL = root.findViewById(R.id.fillMaritalStatusTIL);
-        fillEducationLevelTIL = root.findViewById(R.id.fillEducationLevelTIL);
         edPhoneTIL = root.findViewById(R.id.edPhoneTIL);
         fillStateTIL = root.findViewById(R.id.fillStateTIL);
         fillProvinceDistrictLGATIL = root.findViewById(R.id.fillProvinceDistrictLGATIL);
@@ -579,12 +575,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             person.setMaritalStatusId(maritalStatusId);
         }
 
-        if (!ViewUtils.isEmpty(autoEducationalLevel)) {
-            int educationLevelId = CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoEducationalLevel));
-            person.setEducationId(educationLevelId);
-        }
-
-
         List<ContactPointClass.ContactPointItems> contactPointItems = new ArrayList<>();
         contactPointItems.add(new ContactPointClass.ContactPointItems("phone", ViewUtils.getInput(edPhone)));
         contactPointItems.add(new ContactPointClass.ContactPointItems("email", ViewUtils.getInput(edEmail)));
@@ -779,7 +769,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
 
     @Override
     public void setErrorsVisibilityPatient(boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError,
-                                           boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError) {
+                                           boolean maritalNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError) {
         if (firstNameError) {
             edfirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             edfirstNameTIL.setError("Enter the First Name or check they do not contain symbols and numbers");
@@ -808,11 +798,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         if (maritalNull) {
             fillMaritalStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             fillMaritalStatusTIL.setError("Select the Marital Status");
-        }
-
-        if (educationNull) {
-            fillEducationLevelTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            fillEducationLevelTIL.setError("Select the Education Level");
         }
 
         if (phoneNull) {
@@ -845,10 +830,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
         maritalStatus = getResources().getStringArray(R.array.marital_status);
         ArrayAdapter<String> adapterMaritalStatus = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, maritalStatus);
         autoMaritalStatus.setAdapter(adapterMaritalStatus);
-
-        educationalLevel = getResources().getStringArray(R.array.educational_level);
-        ArrayAdapter<String> adapterEducationalLevel = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, educationalLevel);
-        autoEducationalLevel.setAdapter(adapterEducationalLevel);
 
         autoCountry.setText("Nigeria");
 

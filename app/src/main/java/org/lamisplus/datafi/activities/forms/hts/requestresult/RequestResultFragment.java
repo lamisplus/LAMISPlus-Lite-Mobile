@@ -890,7 +890,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     confirmatoryTestLayout.setVisibility(View.GONE);
                     cd4Layout.setVisibility(View.GONE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Negative");
+                    testResult1Message.setText("Non Reactive");
                     hivTestResult = "Negative";
                     prepLayout.setVisibility(View.VISIBLE);
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.green));
@@ -917,7 +917,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     tieBreakerLayout.setVisibility(View.GONE);
                     cd4Layout.setVisibility(View.VISIBLE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Positive");
+                    testResult1Message.setText("Reactive");
                     hivTestResult = "Positive";
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.red));
                     prepLayout.setVisibility(View.GONE);
@@ -938,7 +938,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     initialHivTest2Layout.setVisibility(View.VISIBLE);
                     confirmatoryTest2Layout.setVisibility(View.VISIBLE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Positive");
+                    testResult1Message.setText("Reactive");
                     hivTestResult = "Positive";
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.red));
                     prepLayout.setVisibility(View.GONE);
@@ -946,7 +946,7 @@ public class RequestResultFragment extends LamisBaseFragment<RequestResultContra
                     initialHivTest2Layout.setVisibility(View.GONE);
                     confirmatoryTest2Layout.setVisibility(View.GONE);
                     testResult1Message.setVisibility(View.VISIBLE);
-                    testResult1Message.setText("Negative");
+                    testResult1Message.setText("Non Reactive");
                     hivTestResult = "Negative";
                     prepLayout.setVisibility(View.VISIBLE);
                     testResult1Message.setBackgroundColor(getResources().getColor(R.color.green));

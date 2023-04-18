@@ -107,9 +107,9 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             targetGroupError = true;
         }
 
-//        if (StringUtils.isBlank(clientIntake.getClientCode()) || !ViewUtils.validateText(clientIntake.getClientCode(), ViewUtils.ILLEGAL_CHARACTERS)) {
-//            clientCodeError = true;
-//        }
+        if (StringUtils.isBlank(clientIntake.getClientCode())) {
+            clientCodeError = true;
+        }
 
         if (clientIntake.getReferredFrom() == null) {
             referredFromError = true;
@@ -157,13 +157,12 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
         boolean dateOfBirthError = false;
         boolean genderError = false;
         boolean maritalNull = false;
-        boolean educationNull = false;
         boolean phoneNull = false;
         boolean stateError = false;
         boolean provinceError = false;
         boolean addressError = false;
 
-        clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError);
+        clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, phoneNull, stateError, provinceError, addressError);
 
         if (StringUtils.isBlank(person.getFirstName())
                 || !ViewUtils.validateText(person.getFirstName(), ViewUtils.ILLEGAL_NAME_CHARACTERS)) {
@@ -192,10 +191,6 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
         }
 
 
-        if (person.getEducationId() == null) {
-            educationNull = true;
-        }
-
         if (StringUtils.isBlank(person.pullContactPointList().get(0).getValue())
                 || !ViewUtils.validateText(person.pullContactPointList().get(0).getValue(), ViewUtils.ILLEGAL_CHARACTERS)) {
             phoneNull = true;
@@ -213,12 +208,12 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             addressError = true;
         }
 
-        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfBirthError && !genderError && !maritalNull && !educationNull && !phoneNull && !stateError && !provinceError && !addressError;
+        boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfBirthError && !genderError && !maritalNull && !phoneNull && !stateError && !provinceError && !addressError;
 
         if (result) {
             return true;
         } else {
-            clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError);
+            clientIntakeInfoView.setErrorsVisibilityPatient(firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, phoneNull, stateError, provinceError, addressError);
             return false;
         }
     }
