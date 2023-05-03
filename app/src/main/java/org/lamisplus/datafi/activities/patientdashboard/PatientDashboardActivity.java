@@ -22,6 +22,9 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.biometrics.BiometricsActivity;
+import org.lamisplus.datafi.activities.biometrics.neurotech.FingerActivity;
+import org.lamisplus.datafi.activities.biometrics.neurotech.MultiModalActivity;
+import org.lamisplus.datafi.activities.biometricsselect.BiometricsSelectActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
@@ -132,7 +135,7 @@ public class PatientDashboardActivity extends LamisBaseActivity {
     }
 
     public void startPatientPBSActivity(long patientId) {
-        Intent pbsProgram = new Intent(this, BiometricsActivity.class);
+        Intent pbsProgram = new Intent(this, BiometricsSelectActivity.class);
         pbsProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 String.valueOf(patientId));
         startActivity(pbsProgram);

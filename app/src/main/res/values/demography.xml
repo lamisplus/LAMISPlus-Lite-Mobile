@@ -303,6 +303,34 @@
         <item>Confirmed TB</item>
     </string-array>
 
+    <!--neurotach -->
+
+    <string-array name="finger_maching_speed_names">
+        <item>Low</item>
+        <item>High</item>
+    </string-array>
+    <string-array name="finger_maching_speed_values">
+        <item>0</item>
+        <item>256</item>
+    </string-array>
+    <string-array name="finger_template_size_names">
+        <!-- Temporarily disabling <item>Compact</item> -->
+        <item>Small</item>
+        <item>Medium</item>
+    </string-array>
+    <string-array name="finger_template_size_values">
+        <!-- Temporarily disabling <item>0</item> -->
+        <item>64</item>
+        <item>128</item>
+    </string-array>
+    <string-array name="finger_threshold_names">
+        <item>10%</item>
+        <item>1%</item>
+        <item>0.1%</item>
+        <item>0.01%</item>
+        <item>0.001%</item>
+        <item>0.0001%</item>
+    </string-array>
 </resources>
 
 

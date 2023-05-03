@@ -22,15 +22,18 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.lamisplus.datafi.R;
+import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
 import org.lamisplus.datafi.activities.login.LoginActivity;
 import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.auth.AuthorizationManager;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.services.SyncServices;
 import org.lamisplus.datafi.utilities.ForceClose;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
@@ -176,6 +179,12 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
     }
 
     public void showMultiDeletePatientDialog(ArrayList<Person> selectedItems) {
+        LamisCustomHandler.showJson(selectedItems);
+        for(Person p : selectedItems){
+            PersonDAO.deletePatient(p.getId());
+        }
+        Intent i = new Intent(this, DashboardActivity.class);
+        startActivity(i);
 //        CustomDialogBundle bundle = new CustomDialogBundle();
 //        bundle.setTitleViewMessage(getString(org.lamisplus.mobile.R.string.delete_multiple_patients));
 //        bundle.setTextViewMessage(getString(org.lamisplus.mobile.R.string.delete_multiple_patients_dialog_message));
@@ -186,6 +195,11 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
 //        bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
 //        createAndShowDialog(bundle, ApplicationConstants.DialogTAG.MULTI_DELETE_PATIENT_DIALOG_TAG);
     }
+
+//    public void createAndShowDialog(CustomDialogBundle bundle, String tag) {
+//        CustomFragmentDialog instance = CustomFragmentDialog.newInstance(bundle);
+//        instance.show(mFragmentManager, tag);
+//    }
 
     public void showAppCrashDialog(String error) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

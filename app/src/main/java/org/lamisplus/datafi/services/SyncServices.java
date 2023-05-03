@@ -200,7 +200,7 @@ public class SyncServices extends IntentService {
                     final ListIterator<Encounter> it = encounterRSTList.listIterator();
                     while (it.hasNext()) {
                         Encounter encounter = it.next();
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getRiskStratificationAndSync(encounter);
                         }
                     }
@@ -219,7 +219,7 @@ public class SyncServices extends IntentService {
                 if (encounterRSTList.size() > 0) {
                     while (it.hasNext()) {
                         Encounter encounter = it.next();
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getClientIntakeAndSync(encounter);
                         }
                     }
@@ -239,23 +239,23 @@ public class SyncServices extends IntentService {
                 while (it.hasNext()) {
                     Encounter encounter = it.next();
                     if (encounter.getName().equals(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM)) {
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getPreTestAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.REQUEST_RESULT_FORM)) {
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getRequestResultAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM)) {
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getPostTestAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.HIV_RECENCY_FORM)) {
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getHivRecencyAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.ELICITATION)) {
-                        if (!encounter.isSynced()) {
+                        if (encounter != null && !encounter.isSynced()) {
                             getIndexElicitationAndSync(encounter);
                         }
                     }

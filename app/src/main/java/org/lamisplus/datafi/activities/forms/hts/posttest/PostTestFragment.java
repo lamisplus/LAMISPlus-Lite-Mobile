@@ -101,16 +101,18 @@ public class PostTestFragment extends LamisBaseFragment<PostTestContract.Present
     }
 
     private void autoPopulateFields() {
-        RequestResult requestResult = EncounterDAO.findRequestResultFromForm(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
-        if (requestResult != null) {
-            String finalResult = "";
-            if (requestResult.getHivTestResult().equals("Negative")) {
-                finalResult = "Negative";
-            } else {
-                finalResult = requestResult.getHivTestResult2();
-            }
+        if(mPresenter != null) {
+            RequestResult requestResult = EncounterDAO.findRequestResultFromForm(ApplicationConstants.Forms.REQUEST_RESULT_FORM, mPresenter.getPatientId());
+            if (requestResult != null) {
+                String finalResult = "";
+                if (requestResult.getHivTestResult().equals("Negative")) {
+                    finalResult = "Negative";
+                } else {
+                    finalResult = requestResult.getHivTestResult2();
+                }
 
-            autoHivTestResult.setText(finalResult, false);
+                autoHivTestResult.setText(finalResult, false);
+            }
         }
     }
 

@@ -34,6 +34,8 @@ public class ApplicationConstants {
     }
 
     public abstract static class BundleKeys {
+        public static final String CUSTOM_DIALOG_BUNDLE = "customDialogBundle";
+
         public static final String PATIENT_ID_BUNDLE = "patientID";
         public static final String PATIENT_QUERY_BUNDLE = "patientQuery";
     }

@@ -15,4 +15,11 @@
         <item name="android:textColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="DialogTheme" parent="android:Theme.Dialog">
+    </style>
+    <style name="LoadingDialogTheme.DialogTheme" parent="android:Theme.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="SimilarPatients.DialogTheme" parent="android:Theme.Dialog">
+    </style>
 </resources>

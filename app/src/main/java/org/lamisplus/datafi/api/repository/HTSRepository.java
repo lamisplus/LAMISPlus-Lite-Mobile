@@ -44,38 +44,40 @@ public class HTSRepository extends RetrofitRepository {
     }
 
     public void syncRst(Encounter encounter, @Nullable final DefaultCallbackListener callbackListener) {
-        RiskStratification riskStratification = new Gson().fromJson(encounter.getDataValues(), RiskStratification.class);
-        riskStratification.setPersonId(encounter.getPersonId());
+        if(encounter != null) {
+            RiskStratification riskStratification = new Gson().fromJson(encounter.getDataValues(), RiskStratification.class);
+            riskStratification.setPersonId(encounter.getPersonId());
 
-        String formValues = new Gson().toJson(riskStratification);
-        final String payload = formValues.replaceAll("\u003c", "<").replaceAll("\u003d", "=").replaceAll("\u003e", ">");
-        JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
-        if (NetworkUtils.isOnline()) {
-            Call<RiskStratification> call = restApi.createRiskStratification(jsonObject);
-            call.enqueue(new Callback<RiskStratification>() {
-                @Override
-                public void onResponse(Call<RiskStratification> call, Response<RiskStratification> response) {
-                    if (response.isSuccessful()) {
-                        RiskStratification rst = response.body();
-                        riskStratification.setCode(rst.getCode());
-                        encounter.setDataValues(new Gson().toJson(riskStratification));
-                        encounter.setSynced(true);
-                        encounter.save();
-                        LamisCustomFileHandler.writeLogToFile("RST Synced");
+            String formValues = new Gson().toJson(riskStratification);
+            final String payload = formValues.replaceAll("\u003c", "<").replaceAll("\u003d", "=").replaceAll("\u003e", ">");
+            JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
+            if (NetworkUtils.isOnline()) {
+                Call<RiskStratification> call = restApi.createRiskStratification(jsonObject);
+                call.enqueue(new Callback<RiskStratification>() {
+                    @Override
+                    public void onResponse(Call<RiskStratification> call, Response<RiskStratification> response) {
+                        if (response.isSuccessful()) {
+                            RiskStratification rst = response.body();
+                            riskStratification.setCode(rst.getCode());
+                            encounter.setDataValues(new Gson().toJson(riskStratification));
+                            encounter.setSynced(true);
+                            encounter.save();
+                            LamisCustomFileHandler.writeLogToFile("RST Synced");
 
-                        callbackListener.onResponse();
-                    } else {
-                        LamisCustomFileHandler.writeLogToFile("Couldn't sync the RST, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                        LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
-                        callbackListener.onErrorResponse(response.errorBody().toString() + " - " + response.message() + " - " + response.code());
+                            callbackListener.onResponse();
+                        } else {
+                            LamisCustomFileHandler.writeLogToFile("Couldn't sync the RST, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
+                            LamisCustomFileHandler.writeLogToFile(payload);
+                            callbackListener.onErrorResponse(response.errorBody().toString() + " - " + response.message() + " - " + response.code());
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<RiskStratification> call, Throwable t) {
-                    LamisCustomFileHandler.writeLogToFile("RST Failure, Message: " + t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<RiskStratification> call, Throwable t) {
+                        LamisCustomFileHandler.writeLogToFile("RST Failure, Message: " + t.getMessage());
+                    }
+                });
+            }
         }
     }
 
@@ -118,7 +120,7 @@ public class HTSRepository extends RetrofitRepository {
                             callbackListener.onResponse();
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Client Intake Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                     }
 
@@ -155,7 +157,7 @@ public class HTSRepository extends RetrofitRepository {
                             LamisCustomFileHandler.writeLogToFile("Pre Test Form Synced");
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Pre Test Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                         callbackListener.onResponse();
                     }
@@ -193,7 +195,7 @@ public class HTSRepository extends RetrofitRepository {
                             LamisCustomFileHandler.writeLogToFile("Request Result Form Synced");
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Request Result Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                     }
 
@@ -230,7 +232,7 @@ public class HTSRepository extends RetrofitRepository {
                             LamisCustomFileHandler.writeLogToFile("Post Test Form Synced");
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Post Test Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                     }
 
@@ -268,7 +270,7 @@ public class HTSRepository extends RetrofitRepository {
                             LamisCustomFileHandler.writeLogToFile("Recency Form Synced");
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Recency Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                     }
 
@@ -305,7 +307,7 @@ public class HTSRepository extends RetrofitRepository {
                             LamisCustomFileHandler.writeLogToFile("Index Elicitation Form Synced");
                         } else {
                             LamisCustomFileHandler.writeLogToFile("Couldn't Sync the Index Elicitation Form, Reason: " + "Error Body: " + response.errorBody().toString() + " - Error Message: " + response.message() + " - Error Code: " + response.code());
-                            LamisCustomFileHandler.writeLogToFile(encounter.getDataValues());
+                            LamisCustomFileHandler.writeLogToFile(payload);
                         }
                     }
 

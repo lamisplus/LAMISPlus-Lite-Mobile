@@ -100,9 +100,9 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
         return new PatientProfileFragment();
     }
 
-    public void setListeners(){
-       btn_Dashboard.setOnClickListener(this);
-       btn_EditProfile.setOnClickListener(this);
+    public void setListeners() {
+        btn_Dashboard.setOnClickListener(this);
+        btn_EditProfile.setOnClickListener(this);
     }
 
     public void initiateFragmentViews(View root) {
@@ -125,7 +125,7 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnPatientDashboard:
                 Intent patientDashboard = new Intent(LamisPlus.getInstance(), PatientDashboardActivity.class);
                 patientDashboard.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
@@ -143,26 +143,49 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
 
     private void fillFields(View root) {
         Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
-        if(person != null) {
+        if (person != null) {
             your_profile.setText(person.getFirstName() + "'s Profile");
 
             tvPatientName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
-            tvHospitalNumber.setText(person.getIdentifiers().getValue());
-            if (("Male").equals(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()))) {
-                tvGender.setText("Male");
-                ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_male);
-            } else {
-                tvGender.setText("Female");
-                ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_female);
+
+            if(person.getIdentifiers().getValue() != null) {
+                tvHospitalNumber.setText(person.getIdentifiers().getValue());
             }
-            tvDateOfBirth.setText(person.getDateOfBirth());
-            tvMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()));
-            tvEducationLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()));
-            tvPhoneNumber.setText(person.pullContactPointList().get(0).getValue());
-            tvCountry.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getCountryId()));
-            tvState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()));
-            tvLGA.setText(person.getAddresses().getDistrict());
-            tvStreet.setText(person.getAddresses().getCity());
+
+            if(person.getGenderId() != null) {
+                if (("Male").equals(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()))) {
+                    tvGender.setText("Male");
+                    ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_male);
+                } else {
+                    tvGender.setText("Female");
+                    ((ImageView) root.findViewById(R.id.genderImage)).setImageResource(R.mipmap.ic_female);
+                }
+            }
+
+            if (person.getDateOfBirth() != null) {
+                tvDateOfBirth.setText(person.getDateOfBirth());
+            }
+            if (person.getMaritalStatusId() != null) {
+                tvMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()));
+            }
+            if (person.getEducationId() != null) {
+                tvEducationLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()));
+            }
+            if (person.pullContactPointList() != null) {
+                tvPhoneNumber.setText(person.pullContactPointList().get(0).getValue());
+            }
+            if (person.getAddresses().getCountryId() != null) {
+                tvCountry.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getCountryId()));
+            }
+            if (person.getAddresses().getStateId() != null) {
+                tvState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()));
+            }
+            if (person.getAddresses().getDistrict() != null) {
+                tvLGA.setText(person.getAddresses().getDistrict());
+            }
+            if (person.getAddresses().getCity() != null) {
+                tvStreet.setText(person.getAddresses().getCity());
+            }
         }
     }
 }

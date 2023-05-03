@@ -551,7 +551,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:hint="Landmark">
+                android:hint="Landmark"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/edLandMark"

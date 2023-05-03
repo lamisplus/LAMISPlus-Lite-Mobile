@@ -51,28 +51,30 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     }
 
     private void setViewFingerprints() {
-        Long l = new Long(mPresenter.getPatientId());
-        if (l != null) {
-            Integer patientId = l.intValue();
-            Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(patientId);
-            if (biometrics == null) {
-                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                biometricsStatusText.setText("Not captured");
-            } else if (biometrics.getSyncStatus() == 0) {
-                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.snooper_yellow));
-                biometricsStatusText.setText("Captured but not synced");
-            } else if (biometrics.getSyncStatus() == 1) {
-                biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                biometricsStatusText.setText("Captured and synced");
-            }
-
-            List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(patientId);
-            if (biometricsLists != null && biometricsLists.size() > 0) {
-                String biometricsDetails = "";
-                for (BiometricsList biometricsList : biometricsLists) {
-                    biometricsDetails += "Captured: " + biometricsList.getTemplateType() + "\n\n";
+        if(mPresenter.getPatientId() != 0) {
+            Long l = new Long(mPresenter.getPatientId());
+            if (l != null) {
+                Integer patientId = l.intValue();
+                Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(patientId);
+                if (biometrics == null) {
+                    biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    biometricsStatusText.setText("Not captured");
+                } else if (biometrics.getSyncStatus() == 0) {
+                    biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.snooper_yellow));
+                    biometricsStatusText.setText("Captured but not synced");
+                } else if (biometrics.getSyncStatus() == 1) {
+                    biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    biometricsStatusText.setText("Captured and synced");
                 }
-                listCapturedBiometrics.setText(biometricsDetails);
+
+                List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(patientId);
+                if (biometricsLists != null && biometricsLists.size() > 0) {
+                    String biometricsDetails = "";
+                    for (BiometricsList biometricsList : biometricsLists) {
+                        biometricsDetails += "Captured: " + biometricsList.getTemplateType() + "\n\n";
+                    }
+                    listCapturedBiometrics.setText(biometricsDetails);
+                }
             }
         }
     }

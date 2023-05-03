@@ -1,10 +1,22 @@
 plugins {
     id 'com.android.application'
 }
+def productRootDir = ".."
+def productBinDir = new File(productRootDir, "Bin")
+def productBinAndroidDir = new File(productBinDir, "Android")
+def productLibAndroidDir = new File(productRootDir, "Lib/Android")
+if (project.hasProperty("nativeLibraryPath")) {
+    productLibAndroidDir = new File(project.getProperty("nativeLibraryPath"))
+}
+def archUsed = "arm64-v8a,armeabi-v7a,x86"
+
+def usedNdfList = ["Fingers.ndf"]
 
 android {
     compileSdkVersion 33
-
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     defaultConfig {
         applicationId "org.lamisplus.datafi"
         minSdkVersion 21
@@ -12,8 +24,12 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        ndk {
+            abiFilters 'x86', 'armeabi-v7a', 'arm64-v8a'
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -21,15 +37,91 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    allprojects {
+        repositories {
+            google()
+            jcenter()
+            maven {
+                url 'https://jitpack.io'
+            }
+        }
+
+        subprojects {
+            project.configurations.all {
+                resolutionStrategy.eachDependency { details ->
+                    if (details.requested.group == 'com.google.android.gms'
+                            && !details.requested.name.contains('multidex')) {
+                        details.useVersion "12.0.1"
+                    }
+                }
+            }
+        }
+    }
 }
 
-dependencies {
+task deleteTemporaryFiles(type: Delete) {
+    for (String file : usedNdfList) {
+        delete "${android.sourceSets.main.assets.srcDirs[0]}/data/${file}.jet"
+    }
+    delete "${android.sourceSets.main.jniLibs.srcDirs[0]}"
+}
 
+task prepareNdfFiles(type: Copy) {
+    from "${productBinDir}/Data"
+    includes = usedNdfList
+    rename { String fileName ->
+        fileName.replace('.ndf', '.ndf.jet')
+    }
+    into "${android.sourceSets.main.assets.srcDirs[0]}/data"
+}
+
+int counter = 1
+archUsed.split(',').each {
+    String srcDir = "${productLibAndroidDir}/${it}"
+    String dstDir = "${android.sourceSets.main.jniLibs.srcDirs[0]}/${it}"
+    task "prepareNativeLibs$counter"(type: Copy) {
+        from srcDir
+        exclude "**/libgstreamer_android.so"
+        exclude "**/*.Test.so"
+        exclude "**/*.IT.so"
+        into dstDir
+        dependsOn(prepareNdfFiles)
+    }
+    tasks.preBuild.dependsOn("prepareNativeLibs$counter")
+    counter++
+}
+
+task publishApk(type: Copy) {
+    from "${project.buildDir}/outputs/apk/debug"
+    include "${project.archivesBaseName}-debug.apk"
+    rename "${project.archivesBaseName}-debug.apk", "${project.archivesBaseName}.apk"
+    into productBinAndroidDir
+}
+
+//clean.dependsOn(deleteTemporaryFiles)
+prepareNdfFiles.dependsOn(clean)
+build.finalizedBy(publishApk)
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation files('libs/FDxSDKProFDAndroid.jar')
+
+    implementation ":neurotec-biometrics-client-android"
+    implementation ":neurotec-devices-fscanners-futronic-android"
+    implementation ":neurotec-devices-media-android"
+    implementation ":neurotec-biometrics-android"
+    implementation ":neurotec-devices-android"
+    implementation(name:'neurotec-biometrics-gui-android', ext:'aar')
+    implementation project(":samples-utils")
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
@@ -74,4 +166,17 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'nl.joery.animatedbottombar:library:1.0.4'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+}
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    flatDir {
+        dirs "${productBinAndroidDir}/"
+    }
 }

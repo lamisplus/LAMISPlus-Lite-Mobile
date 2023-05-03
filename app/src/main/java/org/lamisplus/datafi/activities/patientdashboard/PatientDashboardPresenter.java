@@ -20,7 +20,10 @@ public abstract class PatientDashboardPresenter extends LamisBasePresenter imple
 
     @Override
     public long getPatientId() {
-        return mPerson.getId();
+        if(mPerson != null) {
+            return mPerson.getId();
+        }
+        return 0;
     }
 
 }

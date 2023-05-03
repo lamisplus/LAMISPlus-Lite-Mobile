@@ -50,4 +50,8 @@ public interface RestApi {
     Call<Object> getPatients(@Query("searchParam") String searchParam,
                                       @Query("pageNo") Integer pageNo, @Query("pageSize") Integer pageSize);
 
+    @GET("patient/getall-patients-with-no-biometric")
+    Call<Object> getAllPatientWithoutBiomentic(@Query("searchParam") String searchParam,
+                                      @Query("pageNo") Integer pageNo, @Query("pageSize") Integer pageSize);
+
 }

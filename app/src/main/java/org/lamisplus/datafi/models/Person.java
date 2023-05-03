@@ -34,6 +34,9 @@ public class Person extends Model implements Serializable {
     @Column(name = "synced")
     private boolean synced;
 
+    @Column(name = "fromServer")
+    private Integer fromServer = 0; //Default value is 0. If its pulled from server then value becomes 1. If Edited and requires changes then value becomes 2
+
     @Column(name = "personId")
     @SerializedName("personId")
     private Integer personId = null;
@@ -159,6 +162,14 @@ public class Person extends Model implements Serializable {
         this.synced = synced;
     }
 
+    public Integer getFromServer() {
+        return fromServer;
+    }
+
+    public void setFromServer(Integer fromServer) {
+        this.fromServer = fromServer;
+    }
+
     public Integer getPersonId() {
         return personId;
     }
@@ -184,11 +195,14 @@ public class Person extends Model implements Serializable {
     }
 
     public Address getAddresses() {
-        if (!address.isEmpty()) {
-            return pullAddressList().get(0);
-        } else {
-            return null;
+        if(address != null) {
+            if (!address.isEmpty()) {
+                return pullAddressList().get(0);
+            } else {
+                return null;
+            }
         }
+        return null;
     }
 
     public Contact getContacts() {

@@ -79,7 +79,7 @@ public class SyncStatusFragment extends LamisBaseFragment<SyncStatusContract.Pre
             @Override
             public void run() {
 
-                List<Person> personList = new Select().from(Person.class).where("synced = ?", 0).orderBy("id DESC").execute();
+                List<Person> personList = new Select().from(Person.class).where("synced = ? AND fromServer = ?", 0, 0).orderBy("id DESC").execute();
                 updateListVisibility(true);
                 updateAdapter(personList);
 

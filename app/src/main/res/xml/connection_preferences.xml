@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Connection type">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="sqlite_database_connection"
+            android:title="@string/preference_connection_sqlite_database_connection" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="remote_cluster_server"
+            android:title="@string/preference_connection_remote_cluster_server" />
+        <EditTextPreference
+            android:defaultValue="localhost"
+            android:key="cluster_server_address"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency="remote_cluster_server"
+            android:title="@string/preference_connection_remote_cluster_server_address" />
+        <EditTextPreference
+            android:defaultValue="25452"
+            android:key="cluster_client_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency="remote_cluster_server"
+            android:title="@string/preference_connection_remote_cluster_client_port" />
+        <EditTextPreference
+            android:defaultValue="24932"
+            android:key="cluster_admin_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency="remote_cluster_server"
+            android:title="@string/preference_connection_remote_cluster_admin_port" />
+        <!--<SwitchPreference
+            android:defaultValue="false"
+            android:key="remote_mmabis_server"
+            android:title="@string/preference_connection_remote_mmabis_server"/>
+        <EditTextPreference
+            android:defaultValue="megamatcher.online"
+            android:key="mmabis_server_address"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency="remote_mmabis_server"
+            android:title="@string/preference_connection_remote_mmabis_server_address"/>
+        <EditTextPreference
+            android:defaultValue="user"
+            android:key="mmabis_username"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency="remote_mmabis_server"
+            android:title="@string/preference_connection_remote_mmabis_username"/>
+        <EditTextPreference
+            android:defaultValue="pass"
+            android:key="mmabis_password"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:dependency="remote_mmabis_server"
+            android:title="@string/preference_connection_remote_mmabis_password"/>-->
+    </PreferenceCategory>
+</PreferenceScreen>

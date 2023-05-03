@@ -19,6 +19,7 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.connectserver.findpatientserver.FindPatientServerActivity;
+import org.lamisplus.datafi.activities.connectserver.nobiometricspatients.NoBiometricsPatientsServerActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.hts.htsprogram.HTSProgramActivity;
 import org.lamisplus.datafi.activities.pmtct.pmtctprogram.PMTCTProgramActivity;
@@ -34,10 +35,10 @@ public class ConnectServerFragment extends LamisBaseFragment<ConnectServerContra
 
     private SparseArray<Bitmap> mBitmapCache;
     private ImageView mFindPatientServerButton;
-    private ImageView mPMTCTButton;
+    private ImageView mNoBiometricsButton;
 
     private LinearLayout mFindPatientServerView;
-    private LinearLayout mPMTCTView;
+    private LinearLayout mNoBiometricsView;
 
 
     @Nullable
@@ -58,15 +59,15 @@ public class ConnectServerFragment extends LamisBaseFragment<ConnectServerContra
 
     private void initiateFragmentViews(View root) {
         mFindPatientServerButton = root.findViewById(R.id.mFindPatientServerButton);
-        mPMTCTButton = root.findViewById(R.id.mPMTCTButton);
+        mNoBiometricsButton = root.findViewById(R.id.mNoBiometricsButton);
 
         mFindPatientServerView = root.findViewById(R.id.mFindPatientServerView);
-        mPMTCTView = root.findViewById(R.id.mPMTCTView);
+        mNoBiometricsView = root.findViewById(R.id.mNoBiometricsView);
     }
 
     private void setListeners() {
         mFindPatientServerView.setOnClickListener(this);
-        mPMTCTView.setOnClickListener(this);
+        mNoBiometricsView.setOnClickListener(this);
     }
 
     @Override
@@ -75,8 +76,8 @@ public class ConnectServerFragment extends LamisBaseFragment<ConnectServerContra
             case R.id.mFindPatientServerView:
                 startNewActivity(FindPatientServerActivity.class);
                 break;
-            case R.id.mPMTCTView:
-                startNewActivity(PMTCTProgramActivity.class);
+            case R.id.mNoBiometricsView:
+                startNewActivity(NoBiometricsPatientsServerActivity.class);
                 break;
             default:
 
@@ -97,8 +98,8 @@ public class ConnectServerFragment extends LamisBaseFragment<ConnectServerContra
      */
     @Override
     public void bindDrawableResources() {
-        bindDrawableResource(mFindPatientServerButton, R.drawable.hts);
-        bindDrawableResource(mPMTCTButton, R.drawable.pmtct);
+        bindDrawableResource(mFindPatientServerButton, R.drawable.user_download);
+        bindDrawableResource(mNoBiometricsButton, R.drawable.user_download);
     }
 
     /**

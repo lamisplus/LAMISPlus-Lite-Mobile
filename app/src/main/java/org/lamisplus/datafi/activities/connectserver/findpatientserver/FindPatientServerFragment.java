@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +32,8 @@ import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
 import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
+import org.lamisplus.datafi.classes.ContactPointClass;
+import org.lamisplus.datafi.models.Address;
 import org.lamisplus.datafi.models.PatientIdentifier;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskStratification;
@@ -163,7 +167,7 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
     public void pullData(String query) {
         if (NetworkUtils.isOnline()) {
             RestApi restApi = RestServiceBuilder.createService(RestApi.class);
-            Call<Object> call = restApi.getPatients(query, 0, 10);
+            Call<Object> call = restApi.getPatients(query, 0, 100);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
@@ -184,6 +188,9 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                 person.setFirstName(objSections.getString("firstName"));
                                 person.setOtherName(objSections.getString("otherName"));
                                 person.setSurname(objSections.getString("surname"));
+                                person.setDateOfRegistration(objSections.getString("dateOfRegistration"));
+                                person.setDateOfBirthEstimated(Boolean.getBoolean(objSections.getString("isDateOfBirthEstimated")));
+                                person.setDeceased(Boolean.getBoolean(objSections.getString("deceased")));
 
                                 JSONObject jsonObjectGender = new JSONObject(objSections.getString("gender"));
                                 Integer genderId = Integer.valueOf(jsonObjectGender.getString("id"));
@@ -191,10 +198,44 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                 person.setPersonId(Integer.valueOf(objSections.getInt("id")));
                                 person.setDateOfBirth(objSections.getString("dateOfBirth"));
 
+                                JSONObject jsonObjectMaritalStatus = new JSONObject(objSections.getString("maritalStatus"));
+                                Integer maritalStatusId = Integer.valueOf(jsonObjectMaritalStatus.getString("id"));
+                                person.setMaritalStatusId(maritalStatusId);
+
+                                if (objSections.has("education")) {
+                                    JSONObject jsonObjectEducation = new JSONObject(objSections.getString("education"));
+                                    Integer educationId = Integer.valueOf(jsonObjectEducation.getString("id"));
+                                    if (educationId != null) {
+                                        person.setEducationId(educationId);
+                                    }
+                                }
+
+                                if (objSections.has("organization")) {
+                                    JSONObject jsonObjectOrganization = new JSONObject(objSections.getString("organization"));
+                                    Integer organizationId = Integer.valueOf(jsonObjectOrganization.getString("id"));
+                                    person.setOrganizationId(organizationId);
+                                }
+
+                                //Address field
+                                JSONObject jsonObjectAddress = new JSONObject(objSections.getString("address"));
+                                JSONArray jsonArrayAddress = jsonObjectAddress.getJSONArray("address");
+                                Address address = new Address();
+                                address.setCity(jsonArrayAddress.getJSONObject(0).getString("city"));
+                                address.setStateId(jsonArrayAddress.getJSONObject(0).getInt("stateId"));
+                                address.setDistrict(jsonArrayAddress.getJSONObject(0).getString("district"));
+                                //String[] line = new String[]{jsonArrayAddress.getJSONObject(0).getString("line")};
+                                address.setLine(new String[]{jsonArrayAddress.getJSONObject(0).getString("line")});
+                                address.setPostalCode(jsonArrayAddress.getJSONObject(0).getString("postalCode"));
+
+                                List<Address> addressList = new ArrayList<>();
+                                addressList.add(address);
+                                person.setAddress(addressList);
+                                person.setAddressList();
+
+
+                                //Identifier field
                                 JSONObject jsonObjectIdentifier = new JSONObject(objSections.getString("identifier"));
                                 JSONArray jsonArrayIdentifier = jsonObjectIdentifier.getJSONArray("identifier");
-
-//                                Log.v("Baron", "The identifier is " + " " + jsonArrayIdentifier.getJSONObject(0).getString("value"));
 
                                 PatientIdentifier patientIdentifier = new PatientIdentifier();
                                 patientIdentifier.setAssignerId(jsonArrayIdentifier.getJSONObject(0).getInt("assignerId"));
@@ -206,6 +247,34 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                 person.setIdentifierList(patientIdentifierList);
                                 person.setIdentifierList();
 
+                                //Contact
+                                JSONObject jsonObjectContactPoint = new JSONObject(objSections.getString("contactPoint"));
+                                JSONArray jsonArrayContactPoint = jsonObjectContactPoint.getJSONArray("contactPoint");
+
+                                List<ContactPointClass.ContactPointItems> contactPointItems = new ArrayList<>();
+                                for (int x = 0; x < jsonArrayContactPoint.length(); x++) {
+                                    JSONObject objSectionsContact = jsonArrayContactPoint.getJSONObject(x);
+                                    LamisCustomHandler.showJson(objSectionsContact.getString("type"));
+                                    if (objSectionsContact.getString("type").equals("phone")) {
+                                        contactPointItems.add(new ContactPointClass.ContactPointItems("phone", objSectionsContact.getString("value")));
+                                    }
+
+                                    if (objSectionsContact.getString("type").equals("email")) {
+                                        if (objSectionsContact.has("value")) {
+                                            contactPointItems.add(new ContactPointClass.ContactPointItems("email", objSectionsContact.getString("value")));
+                                        }
+                                    }
+
+                                    if (objSectionsContact.getString("type").equals("altphone")) {
+                                        if (objSectionsContact.has("value")) {
+                                            contactPointItems.add(new ContactPointClass.ContactPointItems("altphone", objSectionsContact.getString("value")));
+                                        }
+                                    }
+                                }
+                                String json = new Gson().toJson(contactPointItems);
+                                person.setContactPoint(json);
+
+                                person.setFromServer(1);
                                 personList.add(person);
 
 //                                String surname = objSections.getString("surname");

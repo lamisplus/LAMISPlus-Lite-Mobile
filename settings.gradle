@@ -1,2 +1,4 @@
 include ':app'
 rootProject.name = "Updated Lamis Mobile"
+include 'samples-utils'
+project(':samples-utils').projectDir = new File("Common/Android/utils")

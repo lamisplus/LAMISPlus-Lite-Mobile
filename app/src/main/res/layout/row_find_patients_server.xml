@@ -92,8 +92,13 @@
                 android:paddingRight="10dp"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_toEndOf="@+id/syncedPatientBirthDate"
+                android:layout_toRightOf="@+id/syncedPatientBirthDate"
                 android:drawableEnd="@drawable/download_24"/>
+
         </RelativeLayout>
     </LinearLayout>
 

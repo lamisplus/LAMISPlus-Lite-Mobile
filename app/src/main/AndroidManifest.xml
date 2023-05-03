@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -27,6 +31,7 @@
     </queries>
 
     <application
+        android:extractNativeLibs="true"
         android:name=".application.LamisPlus"
         android:allowBackup="false"
         android:fullBackupOnly="false"
@@ -70,6 +75,7 @@
         <activity
             android:name=".activities.addeditpatient.AddEditPatientActivity"
             android:label="@string/app_create_icon_label"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -80,6 +86,7 @@
         <activity
             android:name=".activities.findpatient.FindPatientActivity"
             android:label="@string/app_find_patient_icon_label"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -91,6 +98,7 @@
         <activity
             android:name=".activities.connectserver.ConnectServerActivity"
             android:label="@string/connect_to_server"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -102,6 +110,19 @@
         <activity
             android:name=".activities.connectserver.findpatientserver.FindPatientServerActivity"
             android:label="@string/find_patient_server"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.connectserver.ConnectServerActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.connectserver.ConnectServerActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.connectserver.nobiometricspatients.NoBiometricsPatientsServerActivity"
+            android:label="@string/find_patient_with_no_biometrics_server"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.connectserver.ConnectServerActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -113,6 +134,7 @@
         <activity
             android:name=".activities.patientprogram.PatientProgramActivity"
             android:label="@string/patient_program_label"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.patientprogram.PatientProgramActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -132,6 +154,7 @@
 
         <activity
             android:name=".activities.hts.htsprogram.HTSProgramActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -142,6 +165,7 @@
 
         <activity
             android:name=".activities.hts.htsservices.HTSServicesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.hts.htsprogram.HTSProgramActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -152,6 +176,7 @@
 
         <activity
             android:name=".activities.formdisplay.FormDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.patientprogram.PatientProgramActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -161,6 +186,7 @@
         </activity>
         <activity
             android:name=".activities.forms.hts.rst.RSTActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/rst_form"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
@@ -171,6 +197,7 @@
         </activity>
         <activity
             android:name=".activities.forms.hts.clientintake.ClientIntakeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/client_intake_form"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
@@ -181,6 +208,7 @@
         </activity>
         <activity
             android:name=".activities.forms.hts.pretest.PreTestActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/pre_test_form"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
@@ -191,6 +219,7 @@
         </activity>
         <activity
             android:name=".activities.forms.hts.requestresult.RequestResultActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/request_result_form"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
@@ -201,6 +230,7 @@
         </activity>
         <activity
             android:name=".activities.forms.hts.posttest.PostTestActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/post_test_form"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
@@ -212,6 +242,7 @@
         <activity
             android:name=".activities.forms.hts.recency.RecencyActivity"
             android:label="@string/recency_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -222,6 +253,7 @@
         <activity
             android:name=".activities.forms.hts.elicitation.ElicitationActivity"
             android:label="@string/elicitation"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.hts.htsservices.HTSServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -233,6 +265,7 @@
         <activity
             android:name=".activities.patientdashboard.PatientDashboardActivity"
             android:label="@string/patient_dashboard"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.findpatient.FindPatientActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -243,6 +276,7 @@
 
         <activity
             android:name=".activities.patientprofile.PatientProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.findpatient.FindPatientActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -252,7 +286,85 @@
         </activity>
 
         <activity
+            android:name=".activities.biometricsselect.BiometricsSelectActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.patientdashboard.PatientDashboardActivity"
+            android:label="@string/action_patient_pbs">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.patientdashboard.PatientDashboardActivity" />
+        </activity>
+
+        <activity
             android:name=".activities.biometrics.BiometricsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.biometricsselect.BiometricsSelectActivity"
+            android:label="@string/action_patient_pbs">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.biometricsselect.BiometricsSelectActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.biometrics.neurotech.FingerActivity"
+            android:parentActivityName=".activities.biometricsselect.BiometricsSelectActivity"
+            android:label="@string/action_patient_pbs"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:theme="@android:style/Theme.Holo.Light">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.biometricsselect.BiometricsSelectActivity" />
+        </activity>
+
+        <!-- Preferences -->
+        <activity
+            android:name=".activities.biometrics.neurotech.MultimodalPreferences"
+            android:screenOrientation="portrait"
+            android:parentActivityName="activities.biometrics.neurotech.MultiModalActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activities.biometrics.neurotech.MultiModalActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.biometrics.neurotech.ConnectionPreferences"
+            android:label="@string/face_app_name"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.biometrics.neurotech.MultiModalActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.biometrics.neurotech.MultiModalActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.biometrics.neurotech.FingerPreferences"
+            android:label="@string/finger_app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:parentActivityName=".activities.biometrics.neurotech.FingerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.biometrics.neurotech.FingerActivity" />
+        </activity>
+
+        <!-- Common -->
+        <activity android:name="com.neurotec.samples.app.InfoActivity"
+            android:theme="@android:style/Theme.Holo.Light"></activity>
+        <activity android:name="com.neurotec.samples.app.DirectoryViewer"></activity>
+
+        <!-- Licensing -->
+        <activity
+            android:name="com.neurotec.licensing.gui.ActivationActivity"
+            android:theme="@android:style/Theme.Holo.Light"/>
+
+        <activity
+            android:name=".activities.biometrics.neurotech.MultiModalActivity"
             android:parentActivityName=".activities.patientdashboard.PatientDashboardActivity"
             android:label="@string/action_patient_pbs">
 
@@ -264,6 +376,7 @@
 
         <activity
             android:name=".activities.preferences.PrefrencesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -274,6 +387,7 @@
 
         <activity
             android:name=".activities.syncstatus.SyncStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -284,6 +398,7 @@
 
         <activity
             android:name=".activities.pmtct.pmtctprogram.PMTCTProgramActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -294,6 +409,7 @@
 
         <activity
             android:name=".activities.pmtct.pmtctservices.PMTCTServicesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctprogram.PMTCTProgramActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -305,6 +421,7 @@
         <activity
             android:name=".activities.forms.pmtct.anc.ANCActivity"
             android:label="@string/anc_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -316,6 +433,7 @@
         <activity
             android:name=".activities.forms.pmtct.pmtctenrollment.PMTCTEnrollmentActivity"
             android:label="@string/pmtct_enrollment_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -327,6 +445,7 @@
         <activity
             android:name=".activities.forms.pmtct.labourdelivery.LabourDeliveryActivity"
             android:label="@string/labour_delivery_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -338,6 +457,7 @@
         <activity
             android:name=".activities.forms.pmtct.infantregistration.InfantRegistrationActivity"
             android:label="@string/infant_registration_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->

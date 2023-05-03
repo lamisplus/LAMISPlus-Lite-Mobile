@@ -431,14 +431,15 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             person.pullContactPointList();
             List<ContactPoint> contactPointList = person.pullContactPointList();
 
-            if (contactPointList.size() >= 3 && contactPointList != null) {
+            if (contactPointList.size() >= 0 && contactPointList != null) {
                 if (contactPointList.get(0).getValue() != null && contactPointList.get(0).getType().equals("phone")) {
+                    LamisCustomHandler.showJson(contactPointList.get(0).getValue());
                     edPhone.setText(contactPointList.get(0).getValue());
                 }
-                if (contactPointList.get(1).getValue() != null && contactPointList.get(1).getType().equals("email")) {
+                if (1 < contactPointList.size() && contactPointList.get(1) != null &&  contactPointList.get(1).getValue() != null && contactPointList.get(1).getType().equals("email")) {
                     edEmail.setText(contactPointList.get(1).getValue());
                 }
-                if (contactPointList.get(2).getValue() != null && contactPointList.get(2).getType().equals("altphone")) {
+                if (2 < contactPointList.size() && contactPointList.get(2) != null && contactPointList.get(2).getValue() != null && contactPointList.get(2).getType().equals("altphone")) {
                     edAltPhone.setText(contactPointList.get(2).getValue());
                 }
             }
