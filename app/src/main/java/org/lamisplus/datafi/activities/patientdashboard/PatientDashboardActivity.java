@@ -34,6 +34,7 @@ import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDash
 import org.lamisplus.datafi.activities.patientprogram.PatientProgramActivity;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.TabUtil;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
 public class PatientDashboardActivity extends LamisBaseActivity {
 
@@ -59,11 +60,18 @@ public class PatientDashboardActivity extends LamisBaseActivity {
         } else {
             patientBundle = getIntent().getExtras();
         }
-        mId = String.valueOf(patientBundle.get(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE));
-        initViewPager(new PatientDashboardPagerAdapter(getSupportFragmentManager(), this, mId));
 
-        resources = getResources();
-        setupUpdateDeleteActionFAB();
+        //If at any point the patientBundle is null then move to All clients page
+        if (patientBundle == null) {
+            Intent intent = new Intent(this, FindPatientActivity.class);
+            startActivity(intent);
+        } else {
+            mId = String.valueOf(patientBundle.get(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE));
+            initViewPager(new PatientDashboardPagerAdapter(getSupportFragmentManager(), this, mId));
+
+            resources = getResources();
+            setupUpdateDeleteActionFAB();
+        }
     }
 
     private void initViewPager(PatientDashboardPagerAdapter adapter) {

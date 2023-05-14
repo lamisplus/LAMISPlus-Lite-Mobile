@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
+import org.lamisplus.datafi.activities.connectserver.findpatientserver.FindPatientServerActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.StringUtils;
@@ -71,8 +72,8 @@ public class FindPatientActivity extends LamisBaseActivity {
                 break;
             case R.id.actionAddPatients:
                 //This section was intentionally left blank for future use of downloading patients from the server
-//                Intent intent = new Intent(this, LastViewedPatientsActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(this, FindPatientServerActivity.class);
+                startActivity(intent);
                 break;
             case android.R.id.home:
                 onBackPressed();

@@ -1,12 +1,15 @@
 package org.lamisplus.datafi.activities.biometricsselect;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
 public class BiometricsSelectActivity extends LamisBaseActivity {
 
@@ -55,6 +58,16 @@ public class BiometricsSelectActivity extends LamisBaseActivity {
         bundle.putString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientID);
         onSaveInstanceState(bundle);
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

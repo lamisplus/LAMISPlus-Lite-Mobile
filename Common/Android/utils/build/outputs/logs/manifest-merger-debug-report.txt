@@ -1,29 +1,29 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
+ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:1-7:12
 	package
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:3:2-32
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:3:2-32
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:5:2-32
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:5:2-32
 	xmlns:android
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:11-69
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:4:2-25
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml:4:2-25
 uses-sdk
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-		ADDED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
-		INJECTED from /Users/macbook/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		ADDED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
+		INJECTED from /Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml

@@ -366,17 +366,19 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
     }
 
     public void CheckIfAlreadyCapturedOnLocalDB() {
-        List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(mPresenter.getPatientId());
-        if (biometricsLists != null && biometricsLists.size() > 0) {
-            CustomDebug("Some Finger Print already exit for this patient. You can capture more or clear the existing ones to start afresh", false);
+        if (mPresenter.getPatientId() != null) {
+            List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(mPresenter.getPatientId());
+            if (biometricsLists != null && biometricsLists.size() > 0) {
+                CustomDebug("Some Finger Print already exit for this patient. You can capture more or clear the existing ones to start afresh", false);
 
-            for (BiometricsList item : biometricsLists) {
-                biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(item.getTemplate(), item.getTemplateType()));
-                getImageView(item.getTemplateType()).setImageDrawable(getResources().getDrawable(R.drawable.fingerprint_checked));
-            }
-        } else { //check if already sync
-            if (BiometricsDAO.syncStatus(mPresenter.getPatientId()) != null && BiometricsDAO.syncStatus(mPresenter.getPatientId()) == 1) {
-                CustomDebug("Fingerprint has been captured and synced for this patient", true);
+                for (BiometricsList item : biometricsLists) {
+                    biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(item.getTemplate(), item.getTemplateType()));
+                    getImageView(item.getTemplateType()).setImageDrawable(getResources().getDrawable(R.drawable.fingerprint_checked));
+                }
+            } else { //check if already sync
+                if (BiometricsDAO.syncStatus(mPresenter.getPatientId()) != null && BiometricsDAO.syncStatus(mPresenter.getPatientId()) == 1) {
+                    CustomDebug("Fingerprint has been captured and synced for this patient", true);
+                }
             }
         }
     }

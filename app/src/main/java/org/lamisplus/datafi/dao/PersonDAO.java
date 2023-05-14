@@ -9,6 +9,7 @@ import com.activeandroid.query.Update;
 import org.lamisplus.datafi.databases.DBOpenHelper;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 
 import java.util.List;
 
@@ -21,9 +22,11 @@ public class PersonDAO {
     }
 
     public static Person findPersonById(String id) {
-        Person person = new Select().from(Person.class).where("id=?", id).executeSingle();
-        if(person != null) {
-            return person;
+        if(id != null) {
+            Person person = new Select().from(Person.class).where("id=?", id).executeSingle();
+            if (person != null) {
+                return person;
+            }
         }
         return null;
     }
@@ -39,6 +42,7 @@ public class PersonDAO {
 
     public List<Person> getUnsyncedPatients(){
         List<Person> person = new Select().from(Person.class).where("synced=?", 0).execute();
+        LamisCustomHandler.showJson(person);
         return person;
     }
 

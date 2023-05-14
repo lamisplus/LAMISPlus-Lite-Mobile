@@ -18,6 +18,7 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.biometrics.BiometricsActivity;
 import org.lamisplus.datafi.activities.biometrics.neurotech.FingerActivity;
+import org.lamisplus.datafi.activities.biometrics.neurotech.MultiModalActivity;
 import org.lamisplus.datafi.activities.connectserver.findpatientserver.FindPatientServerActivity;
 import org.lamisplus.datafi.activities.connectserver.nobiometricspatients.NoBiometricsPatientsServerActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
@@ -74,7 +75,7 @@ public class BiometricsSelectFragment extends LamisBaseFragment<BiometricsSelect
                 startActivity(secugenProgram);
                 break;
             case R.id.mFutronicView:
-                Intent futronicProgram = new Intent(getContext(), FingerActivity.class);
+                Intent futronicProgram = new Intent(getContext(), MultiModalActivity.class);
                 futronicProgram.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                         String.valueOf(mPresenter.getPatientId()));
                 startActivity(futronicProgram);
