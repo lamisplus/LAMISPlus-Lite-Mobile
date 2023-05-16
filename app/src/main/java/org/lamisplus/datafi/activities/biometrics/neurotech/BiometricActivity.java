@@ -63,6 +63,8 @@ public abstract class BiometricActivity extends BaseActivity implements Enrollme
 
     private static final String TAG = BiometricActivity.class.getSimpleName();
 
+    private boolean capturedStatus = false;
+
     // ===========================================================
     // Private fields
     // ===========================================================
@@ -100,6 +102,7 @@ public abstract class BiometricActivity extends BaseActivity implements Enrollme
                     case CREATE_TEMPLATE: {
                         if (status == NBiometricStatus.OK) {
                             message = getString(R.string.msg_extraction_succeeded);
+                            setCapturedStatus(true);
                         } else if (task.getSubjects().size() > 0 && task.getSubjects().get(0).getFaces().size() > 0 && task.getStatus() == NBiometricStatus.TIMEOUT) {
                             message = getString(R.string.msg_extraction_failed, getString(R.string.msg_liveness_check_failed));
                         } else {
@@ -148,6 +151,14 @@ public abstract class BiometricActivity extends BaseActivity implements Enrollme
             showError(th);
         }
     };
+
+    public void setCapturedStatus(boolean value){
+        this.capturedStatus = value;
+    }
+
+    public boolean getCapturedStatus(){
+        return this.capturedStatus;
+    }
 
     private LinearLayout captureControls;
 

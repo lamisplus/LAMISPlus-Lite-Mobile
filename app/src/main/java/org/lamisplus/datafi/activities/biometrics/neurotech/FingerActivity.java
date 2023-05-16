@@ -57,6 +57,7 @@ import com.neurotec.samples.util.NImageUtils;
 import com.neurotec.samples.util.ResourceUtils;
 
 import org.lamisplus.datafi.R;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.classes.BiometricsClass;
 import org.lamisplus.datafi.dao.BiometricsDAO;
 import org.lamisplus.datafi.models.Biometrics;
@@ -64,6 +65,7 @@ import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.BiometricsUtil;
 import org.lamisplus.datafi.utilities.FingerPositions;
 import org.lamisplus.datafi.utilities.ImageUtils;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -104,7 +106,7 @@ public final class FingerActivity extends BiometricActivity {
 
     int fingerPrintCaptureCount = 0;
 
-    List<BiometricsClass.BiometricsClassFingers> biometricsClassFingers;
+    List<BiometricsClass.BiometricsClassFingers> biometricsClassFingers = new ArrayList<>();
 
     private ImageView imgViewLeftThumbFinger, imgViewLeftIndexFinger, imgViewLeftMiddleFinger, imgViewLeftRingFinger, imgViewLeftLittleFinger, imgViewRightThumbFinger, imgViewRightIndexFinger, imgViewRightMiddleFinger, imgViewRightRingFinger, imgViewRightLittleFinger;
 
@@ -227,21 +229,6 @@ public final class FingerActivity extends BiometricActivity {
             imgViewRightRingFinger = findViewById(R.id.imgViewRightRingFinger);
             imgViewRightLittleFinger = findViewById(R.id.imgViewRightLittleFinger);
 
-//            mFingerPositions = new HashMap<String, NFPosition>();
-//            mFingerPositions.put(toLowerCase(NFPosition.UNKNOWN.name()), NFPosition.UNKNOWN);
-//
-//            mFingerPositions.put(toLowerCase(NFPosition.LEFT_LITTLE_FINGER.name()), NFPosition.LEFT_LITTLE_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.LEFT_RING_FINGER.name()), NFPosition.LEFT_RING_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.LEFT_MIDDLE_FINGER.name()), NFPosition.LEFT_MIDDLE_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.LEFT_INDEX_FINGER.name()), NFPosition.LEFT_INDEX_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.LEFT_THUMB.name()), NFPosition.LEFT_THUMB);
-//
-//            mFingerPositions.put(toLowerCase(NFPosition.RIGHT_LITTLE_FINGER.name()), NFPosition.RIGHT_LITTLE_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.RIGHT_RING_FINGER.name()), NFPosition.RIGHT_RING_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.RIGHT_MIDDLE_FINGER.name()), NFPosition.RIGHT_MIDDLE_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.RIGHT_INDEX_FINGER.name()), NFPosition.RIGHT_INDEX_FINGER);
-//            mFingerPositions.put(toLowerCase(NFPosition.RIGHT_THUMB.name()), NFPosition.RIGHT_THUMB);
-
             mFingerView = new NFingerView(this);
             layout.addView(mFingerView);
 
@@ -272,35 +259,27 @@ public final class FingerActivity extends BiometricActivity {
                 public void onClick(View v) {
                     String selectedPosition = fingerSpinners.getSelectedItem().toString();
                     Integer itemPosition = fingerSpinners.getSelectedItemPosition();
-                    biometricsClassFingers = new ArrayList<>();
-                    if (itemPosition > 0 && itemPosition != 0) {
-                        try {
-                            byte[] isoTemplate = subject.getTemplateBuffer(CBEFFBiometricOrganizations.ISO_IEC_JTC_1_SC_37_BIOMETRICS,
-                                    CBEFFBDBFormatIdentifiers.ISO_IEC_JTC_1_SC_37_BIOMETRICS_FINGER_MINUTIAE_RECORD_FORMAT,
-                                    FMRecord.VERSION_ISO_20).toByteArray();
+                    try {
+                        if (itemPosition > 0 && itemPosition != 0 && getCapturedStatus()) {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                byte[] isoTemplate = subject.getTemplateBuffer(CBEFFBiometricOrganizations.ISO_IEC_JTC_1_SC_37_BIOMETRICS,
+                                        CBEFFBDBFormatIdentifiers.ISO_IEC_JTC_1_SC_37_BIOMETRICS_FINGER_MINUTIAE_RECORD_FORMAT,
+                                        FMRecord.VERSION_ISO_20).toByteArray();
                                 String value = Base64.getEncoder().encodeToString(isoTemplate);
                                 temporalBiometricsSave.add(value);
                                 fingerPrintCaptureCount = temporalBiometricsSave.size();
-                                //Toast.makeText(FingerActivity.this, "Finger captured " + value, Toast.LENGTH_SHORT).show();
                                 fingerSpinners.setSelection(0);
+                                //This function was created by me in the BiometricActivity to be able to indicate if the capture was successful then after which it is set back to false to prevent subsequent re-use of the already capture fingerprints
+                                setCapturedStatus(false);
                                 biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(value, selectedPosition));
                                 bindDrawableResources(getImageView(selectedPosition));
                             }
-                        } catch (NotActivatedException e) {
-                            ToastUtil.error("Operation must be activated before capturing (" + e.getMessage() + ")");
+                        } else {
+                            ToastUtil.error("Please select Finger Position");
                         }
-                    } else {
-                        ToastUtil.error("Please select Finger Position");
+                    } catch (NotActivatedException e) {
+                        ToastUtil.error("Operation must be activated before capturing (" + e.getMessage() + ")");
                     }
-
-
-                    //b.putByteArray(RECORD_REQUEST_FINGER, Arrays.copyOf(nFTemplate, nFTemplate.length));
-
-                    //intent.putExtras(b);
-                    //setResult(RESULT_OK, intent);
-                    //finish();
-
                 }
             });
             Button setPosition = (Button) findViewById(R.id.multimodal_button_save);
@@ -313,15 +292,18 @@ public final class FingerActivity extends BiometricActivity {
                 }
             });
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             showError(e);
         }
+
     }
 
     private void saveFingerPrint() {
         if (fingerPrintCaptureCount < 6) {
             CustomDebug("Please capture a minimum of 6 prints before saving", false);
         } else {
+
             CustomDebug("Saved successfully", false);
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             String biometricsList = gson.toJson(biometricsClassFingers);
@@ -524,7 +506,7 @@ public final class FingerActivity extends BiometricActivity {
         super.onBackPressed();
     }
 
-    private void USB_Permissions(){
+    private void USB_Permissions() {
         mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
         filter = new IntentFilter(ACTION_USB_PERMISSION);
         this.registerReceiver(mUsbReceiver, filter);

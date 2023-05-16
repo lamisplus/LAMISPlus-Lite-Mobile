@@ -28,6 +28,8 @@ import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.application.LamisPlusLogger;
 import org.lamisplus.datafi.auth.AuthorizationManager;
+import org.lamisplus.datafi.dao.BiometricsDAO;
+import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.databases.LamisPlusDBOpenHelper;
 import org.lamisplus.datafi.models.Person;
@@ -98,7 +100,7 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 //        FormServices broadcastReceiver = new FormServices();
 //        IntentFilter intentFilter = new IntentFilter("org.lamisplus.datafi.FormServices");
@@ -180,8 +182,15 @@ public abstract class LamisBaseActivity extends AppCompatActivity {
 
     public void showMultiDeletePatientDialog(ArrayList<Person> selectedItems) {
         LamisCustomHandler.showJson(selectedItems);
-        for(Person p : selectedItems){
-            PersonDAO.deletePatient(p.getId());
+        for (Person p : selectedItems) {
+            long patientIDLong = p.getId();
+            int patientIDInteger = (int) patientIDLong;
+            //Delete the Patient
+            PersonDAO.deletePatient(patientIDLong);
+            //Delete the Encounters
+            EncounterDAO.deleteAllEncounter(patientIDLong);
+            //Delete the Biometrics
+            BiometricsDAO.deletePrint(patientIDInteger);
         }
         Intent i = new Intent(this, DashboardActivity.class);
         startActivity(i);

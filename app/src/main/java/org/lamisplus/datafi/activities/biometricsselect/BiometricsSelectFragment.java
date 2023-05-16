@@ -25,6 +25,7 @@ import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
 public class BiometricsSelectFragment extends LamisBaseFragment<BiometricsSelectContract.Presenter> implements BiometricsSelectContract.View, View.OnClickListener, SearchView.OnQueryTextListener {
 

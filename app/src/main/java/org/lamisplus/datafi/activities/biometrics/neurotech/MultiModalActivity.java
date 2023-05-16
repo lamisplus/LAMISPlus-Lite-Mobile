@@ -45,6 +45,7 @@ import com.neurotec.samples.licensing.LicensingManager;
 import com.neurotec.util.concurrent.CompletionHandler;
 
 import org.lamisplus.datafi.R;
+import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.ArrayList;
@@ -480,9 +481,20 @@ public final class MultiModalActivity extends BaseActivity implements ActivityCo
 //		mSubjectId = (EditText) findViewById(R.id.subject_id);
 //		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+		Bundle patientBundle = savedInstanceState;
+		if (patientBundle != null) {
+			patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
+		} else {
+			patientBundle = getIntent().getExtras();
+		}
+		if (patientBundle != null) {
+			String patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
 
-		Intent fingerActivity = new Intent(MultiModalActivity.this, FingerActivity.class);
-		startActivityForResult(fingerActivity, MODALITY_CODE_FINGER);
+			Intent fingerActivity = new Intent(MultiModalActivity.this, FingerActivity.class);
+			fingerActivity.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+					String.valueOf(patientID));
+			startActivityForResult(fingerActivity, MODALITY_CODE_FINGER);
+		}
 
 
 //		Button enrollSubject = (Button) findViewById(R.id.multimodal_button_enroll);
