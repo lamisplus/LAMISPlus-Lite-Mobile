@@ -147,11 +147,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_bold"
                         android:gravity="center"
-                        android:text="PMTCT"
+                        android:text="@string/pmtct"
+                        android:textColor="@color/dark_late_gray" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mHepatitisView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/mHepatitisButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+
+                    <TextView
+                        android:id="@+id/hepatitis_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="@string/hepatitis"
                         android:textColor="@color/dark_late_gray" />
 
                 </LinearLayout>
@@ -178,11 +207,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_bold"
                         android:gravity="center"
-                        android:text="All Clients"
+                        android:text="@string/all_clients"
                         android:textColor="@color/dark_late_gray" />
 
                 </LinearLayout>
@@ -209,11 +237,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_bold"
                         android:gravity="center"
-                        android:text="Sync Status"
+                        android:text="@string/sync_status"
                         android:textColor="@color/dark_late_gray" />
 
                 </LinearLayout>
@@ -240,11 +267,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_bold"
                         android:gravity="center"
-                        android:text="Connect to Server"
+                        android:text="@string/connect_to_server"
                         android:textColor="@color/dark_late_gray" />
 
                 </LinearLayout>

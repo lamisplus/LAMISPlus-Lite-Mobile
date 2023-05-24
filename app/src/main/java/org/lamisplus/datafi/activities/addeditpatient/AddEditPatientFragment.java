@@ -420,10 +420,12 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             autoGender.setText(CodesetsDAO.findCodesetsDisplayById(person.getGenderId()), false);
             autoMaritalStatus.setText(CodesetsDAO.findCodesetsDisplayById(person.getMaritalStatusId()), false);
             autoEducationalLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()), false);
-            autoState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()), false);
-            autoProvinceLGA.setText(person.getAddresses().getDistrict(), false);
-            edStreet.setText(person.getAddresses().getCity());
-            edLandmark.setText(person.getAddresses().getLine()[0]);
+            if (person.getAddresses() != null) {
+                autoState.setText(OrganizationUnitDAO.findOrganizationUnitNameById(person.getAddresses().getStateId()), false);
+                autoProvinceLGA.setText(person.getAddresses().getDistrict(), false);
+                edStreet.setText(person.getAddresses().getCity());
+                edLandmark.setText(person.getAddresses().getLine()[0]);
+            }
 
             edhospitalNumber.setText(person.getIdentifiers().getValue());
             edNin.setText(person.getNinNumber());
@@ -431,16 +433,18 @@ public class AddEditPatientFragment extends LamisBaseFragment<AddEditPatientCont
             person.pullContactPointList();
             List<ContactPoint> contactPointList = person.pullContactPointList();
 
-            if (contactPointList.size() >= 0 && contactPointList != null) {
-                if (contactPointList.get(0).getValue() != null && contactPointList.get(0).getType().equals("phone")) {
-                    LamisCustomHandler.showJson(contactPointList.get(0).getValue());
-                    edPhone.setText(contactPointList.get(0).getValue());
-                }
-                if (1 < contactPointList.size() && contactPointList.get(1) != null &&  contactPointList.get(1).getValue() != null && contactPointList.get(1).getType().equals("email")) {
-                    edEmail.setText(contactPointList.get(1).getValue());
-                }
-                if (2 < contactPointList.size() && contactPointList.get(2) != null && contactPointList.get(2).getValue() != null && contactPointList.get(2).getType().equals("altphone")) {
-                    edAltPhone.setText(contactPointList.get(2).getValue());
+            if (contactPointList != null) {
+                if (contactPointList.size() >= 0 && contactPointList != null) {
+                    if (contactPointList.get(0).getValue() != null && contactPointList.get(0).getType().equals("phone")) {
+                        LamisCustomHandler.showJson(contactPointList.get(0).getValue());
+                        edPhone.setText(contactPointList.get(0).getValue());
+                    }
+                    if (1 < contactPointList.size() && contactPointList.get(1) != null && contactPointList.get(1).getValue() != null && contactPointList.get(1).getType().equals("email")) {
+                        edEmail.setText(contactPointList.get(1).getValue());
+                    }
+                    if (2 < contactPointList.size() && contactPointList.get(2) != null && contactPointList.get(2).getValue() != null && contactPointList.get(2).getType().equals("altphone")) {
+                        edAltPhone.setText(contactPointList.get(2).getValue());
+                    }
                 }
             }
 

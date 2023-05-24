@@ -30,6 +30,7 @@ public class ApplicationConstants {
         public static final String HASHED_PASSWORD = "hashedPassword";
         public static final String USER_PERSON_NAME = "userDisplay";
         public static final String USER_UUID = "userUUID";
+        public static final String FACILITY_ID = "userUUID";
         public static final String LOGIN = "login";
     }
 
@@ -52,6 +53,7 @@ public class ApplicationConstants {
         public static final String PMTCT_ENROLLMENT_FORM = "PMTCT Enrollment Form";
         public static final String LABOUR_DELIVERY_FORM = "Labour & Delivery Form";
         public static final String INFANT_INFORMATION_FORM = "Infant Information Form";
+        public static final String PARTNERS_FORM = "Partners Form";
     }
 
 }

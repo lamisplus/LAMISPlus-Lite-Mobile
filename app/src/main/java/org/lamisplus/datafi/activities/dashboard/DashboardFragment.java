@@ -31,6 +31,7 @@ import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.connectserver.ConnectServerActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeActivity;
+import org.lamisplus.datafi.activities.hepatitis.HepatitisActivity;
 import org.lamisplus.datafi.activities.hts.htsprogram.HTSProgramActivity;
 import org.lamisplus.datafi.activities.login.LoginActivity;
 import org.lamisplus.datafi.activities.pmtct.pmtctprogram.PMTCTProgramActivity;
@@ -55,12 +56,14 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
     private ImageView mAllClientsButton;
     private ImageView mSyncStatusButton;
     private ImageView mConnectServerButton;
+    private ImageView mHepatitisButton;
 
     private LinearLayout mHTSView;
     private LinearLayout mPMTCTView;
     private LinearLayout mAllClientsView;
     private LinearLayout mSyncStatusView;
     private LinearLayout mConnectServerView;
+    private LinearLayout mHepatitisView;
 
     AnimatedBottomBar animatedBottomBar;
 
@@ -89,12 +92,14 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mAllClientsButton = root.findViewById(R.id.mAllClientsButton);
         mSyncStatusButton = root.findViewById(R.id.mSyncStatusButton);
         mConnectServerButton = root.findViewById(R.id.mConnectServerButton);
+        mHepatitisButton = root.findViewById(R.id.mHepatitisButton);
 
         mHTSView = root.findViewById(R.id.mHTSView);
         mPMTCTView = root.findViewById(R.id.mPMTCTView);
         mAllClientsView = root.findViewById(R.id.mAllClientsView);
         mSyncStatusView = root.findViewById(R.id.mSyncStatusView);
         mConnectServerView = root.findViewById(R.id.mConnectServerView);
+        mHepatitisView = root.findViewById(R.id.mHepatitisView);
         /**
          * Menu Bottom Navigation Drawer
          * */
@@ -126,6 +131,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         mAllClientsView.setOnClickListener(this);
         mSyncStatusView.setOnClickListener(this);
         mConnectServerView.setOnClickListener(this);
+        mHepatitisView.setOnClickListener(this);
     }
 
     @Override
@@ -145,6 +151,9 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
                 break;
             case R.id.mConnectServerView:
                 startNewActivity(ConnectServerActivity.class);
+                break;
+            case R.id.mHepatitisView:
+                startNewActivity(HepatitisActivity.class);
                 break;
             default:
 
@@ -170,6 +179,7 @@ public class DashboardFragment extends LamisBaseFragment<DashboardContract.Prese
         bindDrawableResource(mAllClientsButton, R.drawable.all_patients);
         bindDrawableResource(mSyncStatusButton, R.drawable.sync_status);
         bindDrawableResource(mConnectServerButton, R.drawable.server_connect);
+        bindDrawableResource(mHepatitisButton, R.drawable.hepatitis);
     }
 
     /**

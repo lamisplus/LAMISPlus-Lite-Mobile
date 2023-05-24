@@ -184,7 +184,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
-                            android:layout_marginLeft="15dp"
                             android:textColor="@color/grey"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
@@ -199,7 +198,7 @@
                         android:background="@color/light_gray" />
 
                     <LinearLayout
-                        android:id="@+id/lvpostTestFormView"
+                        android:id="@+id/lvPartnersFormView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -214,7 +213,7 @@
                             android:src="@drawable/ic_form" />
 
                         <TextView
-                            android:id="@+id/tvposttest"
+                            android:id="@+id/tvPartnersForm"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
@@ -222,77 +221,8 @@
                             android:textColor="@color/grey"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
-                            android:text="@string/post_test_form" />
+                            android:text="@string/partners_form" />
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/light_gray" />
-
-                    <LinearLayout
-                        android:id="@+id/lvrecencyFormView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="20dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="20dp"
-                        android:paddingBottom="15dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_form" />
-
-                        <TextView
-                            android:id="@+id/tvrecency"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="15dp"
-                            android:textColor="@color/grey"
-                            android:fontFamily="@font/nunito_semi_bold"
-                            android:gravity="center_vertical"
-                            android:text="@string/recency_form" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/light_gray" />
-
-                    <LinearLayout
-                        android:id="@+id/lvelicitationFormView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="20dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="20dp"
-                        android:paddingBottom="15dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_form" />
-
-                        <TextView
-                            android:id="@+id/tvelicitation"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="15dp"
-                            android:textColor="@color/grey"
-                            android:fontFamily="@font/nunito_semi_bold"
-                            android:gravity="center_vertical"
-                            android:text="@string/elicitation" />
-                    </LinearLayout>
-
 
                 </LinearLayout>
             </LinearLayout>

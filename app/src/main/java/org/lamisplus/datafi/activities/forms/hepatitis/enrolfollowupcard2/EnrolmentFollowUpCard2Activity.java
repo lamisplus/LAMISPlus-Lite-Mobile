@@ -1,4 +1,4 @@
-package org.lamisplus.datafi.activities.forms.pmtct.infantregistration;
+package org.lamisplus.datafi.activities.forms.hepatitis.enrolfollowupcard2;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,24 +9,24 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 
-public class InfantRegistrationActivity extends LamisBaseActivity {
+public class EnrolmentFollowUpCard2Activity extends LamisBaseActivity {
 
-    public InfantRegistrationContract.Presenter mPresenter;
-    public InfantRegistrationFragment InfantRegistrationFragment;
+    public EnrolmentFollowUpCard2Contract.Presenter mPresenter;
+    public EnrolmentFollowUpCard2Fragment EnrolmentFollowUpCard2Fragment;
 
     String patientID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_infant_registration);
+        setContentView(R.layout.activity_enrolmentfollowupcard2);
 
-        InfantRegistrationFragment = (InfantRegistrationFragment) getSupportFragmentManager().findFragmentById(R.id.infantRegistrationContentFrame);
-        if (InfantRegistrationFragment == null) {
-            InfantRegistrationFragment = InfantRegistrationFragment.newInstance();
+        EnrolmentFollowUpCard2Fragment = (EnrolmentFollowUpCard2Fragment) getSupportFragmentManager().findFragmentById(R.id.enrolFollowCard2ContentFrame);
+        if (EnrolmentFollowUpCard2Fragment == null) {
+            EnrolmentFollowUpCard2Fragment = EnrolmentFollowUpCard2Fragment.newInstance();
         }
-        if (!InfantRegistrationFragment.isActive()) {
-            addFragmentToActivity(getSupportFragmentManager(), InfantRegistrationFragment, R.id.infantRegistrationContentFrame);
+        if (!EnrolmentFollowUpCard2Fragment.isActive()) {
+            addFragmentToActivity(getSupportFragmentManager(), EnrolmentFollowUpCard2Fragment, R.id.enrolFollowCard2ContentFrame);
         }
 
         Bundle patientBundle = savedInstanceState;
@@ -40,7 +40,7 @@ public class InfantRegistrationActivity extends LamisBaseActivity {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
 
-        mPresenter = new InfantRegistrationPresenter(InfantRegistrationFragment, patientID);
+        mPresenter = new EnrolmentFollowUpCard2Presenter(EnrolmentFollowUpCard2Fragment, patientID);
     }
 
     @Override

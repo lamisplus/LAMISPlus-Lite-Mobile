@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.pmtct.pmtctprogram;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import org.lamisplus.datafi.activities.pmtct.pmtctservices.PMTCTServicesActivity
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,36 +69,41 @@ public class PMTCTProgramRecyclerViewAdapter extends RecyclerView.Adapter<PMTCTP
     @Override
     public PatientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_find_synced_patients, parent, false);
-        //FontsUtil.setFont((ViewGroup) itemView);
         return new PatientViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PatientViewHolder holder, int position) {
-        holder.update(mItems.get(position));
-        final Person person = mItems.get(position);
+        //&& DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()) > 10
+        if(CodesetsDAO.findCodesetsDisplayById(mItems.get(position).getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()) > 10) {
+            Log.v("Baron", "Date is " + DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()));
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.update(mItems.get(position));
+            final Person person = mItems.get(position);
 
-        if (null != person.getIdentifier()) {
-            String patientIdentifier = String.format(mContext.getResources().getString(R.string.patient_identifier),
-                    person.getIdentifier());
-            holder.mIdentifier.setText(person.getIdentifiers().getValue());
-        }
-        if (null != person.getFirstName()) {
-            holder.mDisplayName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
-            //holder.mDisplayName.setText(person.getAddresses().getCity());
-        }
-        String personGender = CodesetsDAO.findCodesetsDisplayById(person.getGenderId());
-        if (null != personGender) {
-            holder.mGender.setText(personGender);
-        }
+            if (null != person.getIdentifier()) {
+                String patientIdentifier = String.format(mContext.getResources().getString(R.string.patient_identifier),
+                        person.getIdentifier());
+                holder.mIdentifier.setText(person.getIdentifiers().getValue());
+            }
+            if (null != person.getFirstName()) {
+                holder.mDisplayName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
+                //holder.mDisplayName.setText(person.getAddresses().getCity());
+            }
+            String personGender = CodesetsDAO.findCodesetsDisplayById(person.getGenderId());
+            if (null != personGender) {
+                holder.mGender.setText(personGender);
+            }
 
 
-        try{
-            holder.mBirthDate.setText(person.getDateOfBirth());
-        }
-        catch (Exception e)
-        {
-            holder.mBirthDate.setText("");
+            try {
+                holder.mBirthDate.setText(person.getDateOfBirth());
+            } catch (Exception e) {
+                holder.mBirthDate.setText("");
+            }
+        }else{
+            Log.v("Baron", "Date is bigger than 10 " + DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()));
+            holder.itemView.setVisibility(View.GONE);
         }
     }
 

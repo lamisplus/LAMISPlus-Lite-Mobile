@@ -208,6 +208,7 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                     JSONObject jsonObjectGender = new JSONObject(objSections.getString("gender"));
                                     Integer genderId = Integer.valueOf(jsonObjectGender.getString("id"));
                                     person.setGenderId(genderId);
+                                    person.setSexId(genderId);
                                 }
 
                                 if (objSections.has("id")) {

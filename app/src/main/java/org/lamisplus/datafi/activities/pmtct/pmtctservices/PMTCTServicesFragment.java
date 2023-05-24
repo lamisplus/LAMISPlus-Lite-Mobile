@@ -23,6 +23,7 @@ import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.anc.ANCActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.infantregistration.InfantRegistrationActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.labourdelivery.LabourDeliveryActivity;
+import org.lamisplus.datafi.activities.forms.pmtct.partners.PartnersActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.pmtctenrollment.PMTCTEnrollmentActivity;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.Encounter;
@@ -37,11 +38,13 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
     private LinearLayout lvPmtctEnrollmentFormView;
     private LinearLayout lvLabourDeliveryFormView;
     private LinearLayout lvInfantInformationFormView;
+    private LinearLayout lvPartnersFormView;
 
     private TextView tvAnc;
     private TextView tvPmtctEnrollmentForm;
     private TextView tvLabourDeliveryForm;
     private TextView tvInfantInformationForm;
+    private TextView tvPartnersForm;
 
 
     @Nullable
@@ -66,11 +69,13 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
         lvPmtctEnrollmentFormView = root.findViewById(R.id.lvPmtctEnrollmentFormView);
         lvLabourDeliveryFormView = root.findViewById(R.id.lvLabourDeliveryFormView);
         lvInfantInformationFormView = root.findViewById(R.id.lvInfantInformationFormView);
+        lvPartnersFormView = root.findViewById(R.id.lvPartnersFormView);
 
         tvAnc = root.findViewById(R.id.tvAnc);
         tvPmtctEnrollmentForm = root.findViewById(R.id.tvPmtctEnrollmentForm);
         tvLabourDeliveryForm = root.findViewById(R.id.tvLabourDeliveryForm);
         tvInfantInformationForm = root.findViewById(R.id.tvInfantInformationForm);
+        tvPartnersForm = root.findViewById(R.id.tvPartnersForm);
     }
 
     private void checkExistingEnteredForms() {
@@ -83,13 +88,9 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
             } else if (encounter.getName().equals(ApplicationConstants.Forms.LABOUR_DELIVERY_FORM)) {
                 tvLabourDeliveryForm.setTextColor(getResources().getColor(R.color.black));
             } else if (encounter.getName().equals(ApplicationConstants.Forms.INFANT_INFORMATION_FORM)) {
-//                tvrequestresult.setTextColor(getResources().getColor(R.color.black));
-//            } else if (encounter.getName().equals(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM)) {
-//                tvposttest.setTextColor(getResources().getColor(R.color.black));
-//            } else if (encounter.getName().equals(ApplicationConstants.Forms.HIV_RECENCY_FORM)) {
-//                tvrecency.setTextColor(getResources().getColor(R.color.black));
-//            } else if (encounter.getName().equals(ApplicationConstants.Forms.ELICITATION)) {
-//                tvelicitation.setTextColor(getResources().getColor(R.color.black));
+                tvInfantInformationForm.setTextColor(getResources().getColor(R.color.black));
+            } else if (encounter.getName().equals(ApplicationConstants.Forms.PARTNERS_FORM)) {
+                tvPartnersForm.setTextColor(getResources().getColor(R.color.black));
             }
         }
     }
@@ -99,6 +100,7 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
         lvPmtctEnrollmentFormView.setOnClickListener(this);
         lvLabourDeliveryFormView.setOnClickListener(this);
         lvInfantInformationFormView.setOnClickListener(this);
+        lvPartnersFormView.setOnClickListener(this);
     }
 
 
@@ -135,6 +137,15 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
                     Intent intentInfantReg = new Intent(getActivity(), InfantRegistrationActivity.class);
                     intentInfantReg.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
                     startActivity(intentInfantReg);
+                }
+                break;
+            case R.id.lvPartnersFormView:
+                if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
+                    ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
+                } else {
+                    Intent intentPartners = new Intent(getActivity(), PartnersActivity.class);
+                    intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                    startActivity(intentPartners);
                 }
                 break;
             default:

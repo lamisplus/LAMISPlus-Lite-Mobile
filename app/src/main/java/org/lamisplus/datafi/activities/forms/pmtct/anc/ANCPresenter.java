@@ -12,6 +12,7 @@ import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -43,21 +44,39 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
 
     @Override
     public void confirmCreate(ANC anc, Person person, String packageName) {
-        if (validate(anc) && validatePerson(person)) {
-            //save the person
-            long personId = person.save();
-            //save the ANC form
-            String ancEncounter = new Gson().toJson(anc);
-            Encounter encounter = new Encounter();
-            encounter.setName(ApplicationConstants.Forms.ANC_FORM);
-            encounter.setPerson(String.valueOf(personId));
-            encounter.setPackageName(packageName);
-            encounter.setDataValues(ancEncounter);
-            encounter.save();
+        //If the patient id is not null then it means the patient is an existing
+        if (patientId != null) {
+            if (validate(anc)) {
+                //save the ANC form
+                String ancEncounter = new Gson().toJson(anc);
+                Encounter encounter = new Encounter();
+                encounter.setName(ApplicationConstants.Forms.ANC_FORM);
+                encounter.setPerson(String.valueOf(patientId));
+                encounter.setPackageName(packageName);
+                encounter.setDataValues(ancEncounter);
+                encounter.save();
 
-            ancInfoView.startPMTCTEnrollmentActivity();
+                ancInfoView.startPMTCTEnrollmentActivity();
+            } else {
+                ancInfoView.scrollToTop();
+            }
         } else {
-            ancInfoView.scrollToTop();
+            if (validate(anc) && validatePerson(person)) {
+                //save the person
+                long personId = person.save();
+                //save the ANC form
+                String ancEncounter = new Gson().toJson(anc);
+                Encounter encounter = new Encounter();
+                encounter.setName(ApplicationConstants.Forms.ANC_FORM);
+                encounter.setPerson(String.valueOf(personId));
+                encounter.setPackageName(packageName);
+                encounter.setDataValues(ancEncounter);
+                encounter.save();
+
+                ancInfoView.startPMTCTEnrollmentActivity();
+            } else {
+                ancInfoView.scrollToTop();
+            }
         }
     }
 
@@ -130,10 +149,14 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
         boolean result = !ancNo && !dateOfEnrollment && !parity && !gravida && !lmp && !gaweeks && !sourceRef && !testedSyphilis
                 && !hivStatus;
 
-
+        Log.v("Baron", ancNo + " " + dateOfEnrollment + " " + parity + " " + gravida + " " + lmp + " " + gaweeks + " " + sourceRef + " " + testedSyphilis
+                + " " + hivStatus);
         if (result) {
             return true;
         } else {
+            Log.v("Baron", "There's an error somewhere");
+            Log.v("Baron", ancNo + " " + dateOfEnrollment + " " + parity + " " + gravida + " " + lmp + " " + gaweeks + " " + sourceRef + " " + testedSyphilis
+                    + " " + hivStatus);
             ancInfoView.setErrorsVisibility(ancNo, dateOfEnrollment, parity, gravida, lmp, gaweeks, sourceRef, testedSyphilis, hivStatus);
             return false;
         }

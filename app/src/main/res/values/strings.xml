@@ -87,6 +87,7 @@
     <string name="patient_scroll_tab_details_label">Details</string>
     <string name="patient_scroll_tab_formdetails_label">Form Details</string>
     <string name="patient_scroll_tab_fingerprints_label">Fingerprints</string>
+    <string name="patient_pmtct_followup_visit_label">Follow Up Visit</string>
     <string name="patient_photo">Patient Photo</string>
 
     <!-- fragment_patient_details layout -->
@@ -121,6 +122,7 @@
     <string name="pmtct_enrollment_form">PMTCT Enrollment Form</string>
     <string name="labour_delivery_form">Labour &amp; Delivery Form</string>
     <string name="infant_registration_form">Infant Registration Form</string>
+    <string name="partners_form">Partners Form</string>
 
     <!-- Layout strings -->
     <string name="sync">Sync</string>
@@ -477,6 +479,17 @@
     <string name="preferences_iris_fast_extraction">Fast extraction</string>
     <string name="preferences_iris_maximal_rotation">Maximal rotation</string>
     <string name="title_activity_activation">ActivationActivity</string>
+    <string name="child_follow_up_visit">Child Follow Up Visit</string>
+    <string name="mother_follow_up_visit">Mother Follow Up Visit</string>
+    <string name="pmtct">PMTCT</string>
+    <string name="all_clients">All Clients</string>
+    <string name="sync_status">Sync Status</string>
+    <string name="hepatitis">Hepatitis</string>
+    <string name="pull_patients_without_biometrics">Pull patients without biometrics</string>
+    <string name="pull_patients_from_server">Pull patients from server</string>
+    <string name="enrolment_amp_follow_up_card_1"><![CDATA[Enrolment & Follow up Card 1]]></string>
+    <string name="enrolment_amp_follow_up_card_2"><![CDATA[Enrolment & Follow up Card 2]]></string>
+    <string name="regimen_switch">Regimen Switch</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package org.lamisplus.datafi.activities.forms.pmtct.infantregistration;
+package org.lamisplus.datafi.activities.forms.pmtct.partners;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,24 +9,24 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 
-public class InfantRegistrationActivity extends LamisBaseActivity {
+public class PartnersActivity extends LamisBaseActivity {
 
-    public InfantRegistrationContract.Presenter mPresenter;
-    public InfantRegistrationFragment InfantRegistrationFragment;
+    public PartnersContract.Presenter mPresenter;
+    public PartnersFragment PartnersFragment;
 
     String patientID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_infant_registration);
+        setContentView(R.layout.activity_partners);
 
-        InfantRegistrationFragment = (InfantRegistrationFragment) getSupportFragmentManager().findFragmentById(R.id.infantRegistrationContentFrame);
-        if (InfantRegistrationFragment == null) {
-            InfantRegistrationFragment = InfantRegistrationFragment.newInstance();
+        PartnersFragment = (PartnersFragment) getSupportFragmentManager().findFragmentById(R.id.partnersContentFrame);
+        if (PartnersFragment == null) {
+            PartnersFragment = PartnersFragment.newInstance();
         }
-        if (!InfantRegistrationFragment.isActive()) {
-            addFragmentToActivity(getSupportFragmentManager(), InfantRegistrationFragment, R.id.infantRegistrationContentFrame);
+        if (!PartnersFragment.isActive()) {
+            addFragmentToActivity(getSupportFragmentManager(), PartnersFragment, R.id.partnersContentFrame);
         }
 
         Bundle patientBundle = savedInstanceState;
@@ -40,7 +40,7 @@ public class InfantRegistrationActivity extends LamisBaseActivity {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
 
-        mPresenter = new InfantRegistrationPresenter(InfantRegistrationFragment, patientID);
+        mPresenter = new PartnersPresenter(PartnersFragment, patientID);
     }
 
     @Override

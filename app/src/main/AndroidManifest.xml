@@ -108,6 +108,42 @@
         </activity>
 
         <activity
+            android:name=".activities.hepatitis.HepatitisActivity"
+            android:label="@string/hepatitis"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.dashboard.DashboardActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.hepatitis.enrolfollowupcard1.EnrolmentFollowUpCard1Activity"
+            android:label="@string/enrolment_amp_follow_up_card_1"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.hepatitis.HepatitisActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.hepatitis.HepatitisActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.hepatitis.enrolfollowupcard2.EnrolmentFollowUpCard2Activity"
+            android:label="@string/enrolment_amp_follow_up_card_2"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.hepatitis.HepatitisActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.hepatitis.HepatitisActivity" />
+        </activity>
+
+        <activity
             android:name=".activities.connectserver.findpatientserver.FindPatientServerActivity"
             android:label="@string/find_patient_server"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
@@ -458,6 +494,18 @@
         <activity
             android:name=".activities.forms.pmtct.infantregistration.InfantRegistrationActivity"
             android:label="@string/infant_registration_form"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.dashboard.DashboardActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.forms.pmtct.partners.PartnersActivity"
+            android:label="@string/partners_form"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.pmtct.pmtctservices.PMTCTServicesActivity">
 

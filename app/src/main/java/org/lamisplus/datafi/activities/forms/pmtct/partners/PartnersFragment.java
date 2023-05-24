@@ -1,4 +1,4 @@
-package org.lamisplus.datafi.activities.forms.pmtct.infantregistration;
+package org.lamisplus.datafi.activities.forms.pmtct.partners;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.PMTCTEnrollment;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 
-public class InfantRegistrationFragment extends LamisBaseFragment<InfantRegistrationContract.Presenter> implements InfantRegistrationContract.View, View.OnClickListener {
+public class PartnersFragment extends LamisBaseFragment<PartnersContract.Presenter> implements PartnersContract.View, View.OnClickListener {
 
     private Button mSaveContinueButton;
 
@@ -38,7 +38,7 @@ public class InfantRegistrationFragment extends LamisBaseFragment<InfantRegistra
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_infant_registration, container, false);
+        View root = inflater.inflate(R.layout.fragment_partners, container, false);
         if (root != null) {
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
@@ -50,8 +50,8 @@ public class InfantRegistrationFragment extends LamisBaseFragment<InfantRegistra
         return root;
     }
 
-    public static InfantRegistrationFragment newInstance() {
-        return new InfantRegistrationFragment();
+    public static PartnersFragment newInstance() {
+        return new PartnersFragment();
     }
 
     private void initiateFragmentViews(View root) {

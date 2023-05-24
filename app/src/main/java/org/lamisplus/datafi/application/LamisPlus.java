@@ -124,6 +124,17 @@ public class LamisPlus extends Application {
         editor.apply();
     }
 
+    public void setFacilityId(Integer id) {
+        SharedPreferences.Editor editor = getLamisPlusSharedPreferences().edit();
+        editor.putInt(ApplicationConstants.UserKeys.FACILITY_ID, id);
+        editor.apply();
+    }
+
+    public Integer getFacilityId() {
+        SharedPreferences prefs = getLamisPlusSharedPreferences();
+        return prefs.getInt(ApplicationConstants.UserKeys.FACILITY_ID, 0);
+    }
+
     public void setPassword(String password) {
         SharedPreferences.Editor editor = getLamisPlusSharedPreferences().edit();
         editor.putString(ApplicationConstants.UserKeys.PASSWORD, password);

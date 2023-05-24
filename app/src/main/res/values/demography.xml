@@ -331,6 +331,28 @@
         <item>0.001%</item>
         <item>0.0001%</item>
     </string-array>
+    <string-array name="occupation">
+        <item>Trader</item>
+        <item>Farmer</item>
+        <item>Teacher</item>
+        <item>Civil Servant</item>
+        <item>Public Servant</item>
+        <item>Cleric</item>
+    </string-array>
+    <string-array name="care_entry_point">
+        <item>Referred in</item>
+        <item>Walk-in Client</item>
+        <item>Blood Transfusion Service</item>
+        <item>Out-patient department</item>
+        <item>Inpatient department</item>
+        <item>Community</item>
+        <item>Others</item>
+        <item>ANC</item>
+        <item>hepatology</item>
+        <item>PMTCT</item>
+        <item>OPD</item>
+        <item>Surgical</item>
+    </string-array>
 </resources>
 
 

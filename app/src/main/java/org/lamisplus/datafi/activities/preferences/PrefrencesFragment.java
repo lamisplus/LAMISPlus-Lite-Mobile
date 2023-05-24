@@ -168,6 +168,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
                 String selectedFacility = ViewUtils.getInput(autoLocation);
                 if(!StringUtils.isBlank(selectedFacility)) {
                     AccountDAO.setLocation(selectedFacility);
+                    lamisPlus.setFacilityId(AccountDAO.getUserDetails().getCurrentOrganisationUnitId());
                     ToastUtil.success("Location saved successfully as " + selectedFacility);
                 }else{
                     ToastUtil.error("Please select a Facility before saving");

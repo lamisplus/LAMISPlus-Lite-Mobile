@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -169,9 +170,9 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
             dropDownClickListeners();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
 
-            if(!StringUtils.notEmpty(mPresenter.getPatientId())){
+            if (!StringUtils.notEmpty(mPresenter.getPatientId())) {
                 patientDetailsView.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 patientDetailsView.setVisibility(View.GONE);
             }
             if (mPresenter.patientToUpdate(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId()) != null) {
@@ -352,12 +353,12 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
                     String lmpDate = selectedYear + "-" + stringMonth + "-" + stringDay;
                     edLmp.setText(lmpDate);
                     Integer ga = DateUtils.gestationAge(lmpDate, ViewUtils.getInput(edDateEnrollment));
-                    edGaweeks.setText(ga+"");
+                    edGaweeks.setText(ga + "");
                 }, cYear, cMonth, cDay);
                 mDatePicker.getDatePicker().setMaxDate(regMilli);
                 mDatePicker.setTitle(getString(R.string.date_picker_title));
                 mDatePicker.show();
-            }else{
+            } else {
                 ToastUtil.error("Please select Date of Enrollment first");
             }
         });
@@ -382,7 +383,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
 
             edGaweeks.setText(anc.getGaweeks());
 
-            if(CodesetsDAO.findCodesetsDisplayByCode(anc.getSourceOfReferral()) != null){
+            if (CodesetsDAO.findCodesetsDisplayByCode(anc.getSourceOfReferral()) != null) {
                 autoSourceOfReferral.setText(CodesetsDAO.findCodesetsDisplayByCode(anc.getSourceOfReferral()), false);
             }
 

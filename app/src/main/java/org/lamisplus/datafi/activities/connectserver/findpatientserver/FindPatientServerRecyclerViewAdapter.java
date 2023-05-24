@@ -37,33 +37,6 @@ public class FindPatientServerRecyclerViewAdapter extends RecyclerView.Adapter<F
     private boolean multiSelect = false;
     private ArrayList<Person> selectedItems = new ArrayList<>();
 
-    private androidx.appcompat.view.ActionMode.Callback actionModeCallbacks = new androidx.appcompat.view.ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
-            multiSelect = true;
-            mode.getMenuInflater().inflate(R.menu.delete_multi_patient_menu, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item) {
-            ((LamisBaseActivity) mContext.requireActivity()).showMultiDeletePatientDialog(selectedItems);
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(androidx.appcompat.view.ActionMode mode) {
-            multiSelect = false;
-            selectedItems.clear();
-            notifyDataSetChanged();
-        }
-    };
-
     public FindPatientServerRecyclerViewAdapter(FindPatientServerFragment context, List<Person> items) {
         this.mContext = context;
         this.mItems = items;
@@ -161,11 +134,6 @@ public class FindPatientServerRecyclerViewAdapter extends RecyclerView.Adapter<F
             } else {
                 mRowLayout.setCardBackgroundColor(cardBackgroundColor);
             }
-            itemView.setOnLongClickListener(view -> {
-                ((AppCompatActivity) view.getContext()).startSupportActionMode(actionModeCallbacks);
-                selectItem(value);
-                return true;
-            });
 
             Button download = itemView.findViewById(R.id.downloadPatientButton);
             download.setOnClickListener(view -> {
@@ -176,7 +144,6 @@ public class FindPatientServerRecyclerViewAdapter extends RecyclerView.Adapter<F
                     notifyDataSetChanged();
                     ToastUtil.success("Patient Downloaded");
                 } else {
-                    Log.v("Baron", "Its true");
                     selectItem(value);
                 }
 

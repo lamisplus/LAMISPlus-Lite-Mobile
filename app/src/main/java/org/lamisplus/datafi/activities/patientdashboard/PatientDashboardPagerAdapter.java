@@ -16,8 +16,14 @@ import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboard
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsPresenter;
+import org.lamisplus.datafi.activities.patientdashboard.followupvisits.PatientDashboardFollowUpVisitsFragment;
+import org.lamisplus.datafi.activities.patientdashboard.followupvisits.PatientDashboardFollowUpVisitsPresenter;
 import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsPresenter;
+import org.lamisplus.datafi.dao.CodesetsDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.utilities.DateUtils;
 
 class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
 
@@ -43,10 +49,6 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         switch (i) {
-//            case DETAILS_TAB_POS:
-//                PatientDashboardDetailsFragment patientDashboardDetailsFragment = PatientDashboardDetailsFragment.newInstance();
-//                new PatientDashboardDetailsPresenter(mPatientId, patientDashboardDetailsFragment);
-//                return patientDashboardDetailsFragment;
             case FORM_DETAILS_POS:
                 PatientDashboardFormDetailsFragment patientDashboardFormDetailsFragment = PatientDashboardFormDetailsFragment.newInstance();
                 new PatientDashboardFormDetailsPresenter(mPatientId, patientDashboardFormDetailsFragment);
@@ -56,6 +58,11 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
                 new PatientDashboardFingerPrintsPresenter(mPatientId, patientDashboardFingerPrintsFragment);
                 return patientDashboardFingerPrintsFragment;
             default:
+                if(checkPMTCTEligibility()){
+                    PatientDashboardFollowUpVisitsFragment patientDashboardFollowUpVisitsFragment = PatientDashboardFollowUpVisitsFragment.newInstance();
+                    new PatientDashboardFollowUpVisitsPresenter(mPatientId, patientDashboardFollowUpVisitsFragment);
+                    return patientDashboardFollowUpVisitsFragment;
+                }
                 return null;
         }
     }
@@ -65,13 +72,14 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-//            case DETAILS_TAB_POS:
-//                return context.getString(R.string.patient_scroll_tab_details_label);
             case FORM_DETAILS_POS:
                 return context.getString(R.string.patient_scroll_tab_formdetails_label);
             case FINGERPRINTS_TAB_POS:
                 return context.getString(R.string.patient_scroll_tab_fingerprints_label);
             default:
+                if(checkPMTCTEligibility()){
+                    return context.getString(R.string.patient_pmtct_followup_visit_label);
+                }
                 return super.getPageTitle(position);
         }
     }
@@ -90,9 +98,22 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
         super.destroyItem(container, position, object);
     }
 
+    private boolean checkPMTCTEligibility(){
+        Person person = PersonDAO.findPersonById(mPatientId);
+        if(person != null){
+            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
+        }
+        return false;
+    }
+
+
     @Override
     public int getCount() {
-        return TAB_COUNT;
+        if(checkPMTCTEligibility()) {
+            return TAB_COUNT + 1;
+        }else{
+            return TAB_COUNT;
+        }
     }
 
 }

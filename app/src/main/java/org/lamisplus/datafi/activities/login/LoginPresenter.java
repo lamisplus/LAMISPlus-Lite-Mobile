@@ -96,6 +96,7 @@ public class LoginPresenter extends LamisBasePresenter implements LoginContract.
                                         lamisPlus.setPassword(password);
                                         lamisPlus.setUsername(username);
                                         lamisPlus.setServerUrl(url);
+                                        lamisPlus.setFacilityId(currentOrganisationUnitId);
 
                                         if (AccountDAO.countUsers() <= 0) {
                                             account.setPassword(password);

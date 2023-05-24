@@ -327,6 +327,10 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             } else {
                 noWivesTIL.setVisibility(View.GONE);
             }
+
+            if(person.getPersonId() != null){
+                createPatientView.setVisibility(View.GONE);
+            }
         }
     }
 
