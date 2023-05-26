@@ -8,6 +8,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_location">Location</string>
     <string name="action_submit">Submit</string>
+    <string name="version">Version 1.0.0</string>
 
     <!-- ACBase activity -->
     <string name="error_email_subject_app_crashed">LamisPlus Lite android app crashed</string>

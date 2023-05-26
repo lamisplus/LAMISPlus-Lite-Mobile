@@ -396,6 +396,18 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/unableToLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/calibri"
+                android:text="@string/version"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

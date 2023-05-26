@@ -58,7 +58,7 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
                 new PatientDashboardFingerPrintsPresenter(mPatientId, patientDashboardFingerPrintsFragment);
                 return patientDashboardFingerPrintsFragment;
             default:
-                if(checkPMTCTEligibility()){
+                if (checkPMTCTEligibility()) {
                     PatientDashboardFollowUpVisitsFragment patientDashboardFollowUpVisitsFragment = PatientDashboardFollowUpVisitsFragment.newInstance();
                     new PatientDashboardFollowUpVisitsPresenter(mPatientId, patientDashboardFollowUpVisitsFragment);
                     return patientDashboardFollowUpVisitsFragment;
@@ -77,7 +77,7 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
             case FINGERPRINTS_TAB_POS:
                 return context.getString(R.string.patient_scroll_tab_fingerprints_label);
             default:
-                if(checkPMTCTEligibility()){
+                if (checkPMTCTEligibility()) {
                     return context.getString(R.string.patient_pmtct_followup_visit_label);
                 }
                 return super.getPageTitle(position);
@@ -98,20 +98,21 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
         super.destroyItem(container, position, object);
     }
 
-    private boolean checkPMTCTEligibility(){
-        Person person = PersonDAO.findPersonById(mPatientId);
-        if(person != null){
-            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
-        }
+    private boolean checkPMTCTEligibility() {
+//        Person person = PersonDAO.findPersonById(mPatientId);
+//        if(person != null){
+//            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
+//        }
+//        return false;
         return false;
     }
 
 
     @Override
     public int getCount() {
-        if(checkPMTCTEligibility()) {
+        if (checkPMTCTEligibility()) {
             return TAB_COUNT + 1;
-        }else{
+        } else {
             return TAB_COUNT;
         }
     }

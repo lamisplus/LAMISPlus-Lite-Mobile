@@ -126,10 +126,12 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                     riskAssessmentLayout.setVisibility(View.VISIBLE);
                 }
             }
-            RiskStratification rst = mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
-            if (rst != null) {
-                fillFields(rst);
-                hideDependentFields(rst);
+            if (mPresenter.getPatientId() != null) {
+                RiskStratification rst = mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
+                if (rst != null) {
+                    fillFields(rst);
+                    hideDependentFields(rst);
+                }
             }
         }
         return root;

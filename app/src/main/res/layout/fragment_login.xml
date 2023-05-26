@@ -231,9 +231,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/calibri"
-            android:text="Need Help?"
+            android:text="@string/version"
             android:textAlignment="center"
-            android:textColor="#3e3e3e"
+            android:textColor="@color/primary"
             android:textSize="16sp"
             android:gravity="center_horizontal"
             android:layout_marginBottom="10dp"/>
