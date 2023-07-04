@@ -40,6 +40,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
                         android:hint=""
                         android:inputType="text" />
 
@@ -122,8 +125,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Infant Surname*"
-                    app:helperText="Infant Surname*">
+                    android:hint="Infant Surname"
+                    app:helperText="Infant Surname">
 
                     <EditText
                         android:id="@+id/edInfantSurname"
@@ -201,7 +204,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/saveContinueButton"
+                    android:id="@+id/mSaveContinueButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

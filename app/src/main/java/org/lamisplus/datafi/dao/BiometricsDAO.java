@@ -14,6 +14,7 @@ import net.sqlcipher.Cursor;
 
 import org.lamisplus.datafi.models.Biometrics;
 import org.lamisplus.datafi.models.BiometricsList;
+import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.models.ContactPoint;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
@@ -45,6 +46,8 @@ public class BiometricsDAO {
         }
         return null;
     }
+
+
 
     public static void deletePrint(Integer personId) {
         new Delete().from(Biometrics.class).where("person = ?", personId).execute();
@@ -79,6 +82,14 @@ public class BiometricsDAO {
 
     public static List<Biometrics> getUnsyncedBiometrics() {
         List<Biometrics> biometrics = new Select().from(Biometrics.class).where("syncStatus = ?", 0).execute();
+        if (biometrics != null) {
+            return biometrics;
+        }
+        return null;
+    }
+
+    public static List<BiometricsRecapture> getUnsyncedBiometricsRecapture() {
+        List<BiometricsRecapture> biometrics = new Select().from(BiometricsRecapture.class).where("syncStatus = ?", 0).execute();
         if (biometrics != null) {
             return biometrics;
         }

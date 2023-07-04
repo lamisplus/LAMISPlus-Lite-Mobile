@@ -21,6 +21,7 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.forms.pmtct.anc.ANCActivity;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.utilities.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,10 +97,16 @@ public class PMTCTProgramFragment extends LamisBaseFragment<PMTCTProgramContract
 
             @Override
             public void run() {
-
-                List<Person> personList = new Select().from(Person.class).orderBy("id DESC").execute();
+                List<Person> eligiblePmtct = new ArrayList<>();
+                List<Person> personList = new Select().from(Person.class).where("sexId = 377").orderBy("id DESC").execute();
                 updateListVisibility(true);
-                updateAdapter(personList);
+                //This section loops through all the female patients and filters those greater than 10 years old
+                for(Person p : personList){
+                    if(DateUtils.getAgeFromBirthdateString(p.getDateOfBirth()) >= 10){
+                        eligiblePmtct.add(p);
+                    }
+                }
+                updateAdapter(eligiblePmtct);
 
             }
         });

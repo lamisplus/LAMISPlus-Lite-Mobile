@@ -76,7 +76,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_bold"
                         android:gravity="center"
-                        android:text="Pull patients from server"
+                        android:text="@string/search_patients_from_server"
                         android:textColor="@color/dark_late_gray" />
 
                 </LinearLayout>

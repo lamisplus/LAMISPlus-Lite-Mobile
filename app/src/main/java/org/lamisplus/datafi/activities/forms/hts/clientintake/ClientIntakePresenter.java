@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
@@ -59,6 +60,9 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             Encounter encounterRst = new Encounter();
             encounterRst.setName(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
             encounterRst.setPerson(String.valueOf(personId));
+            if(person.getPersonId() != null) {
+                encounterRst.setPersonId(person.getPersonId());
+            }
             encounterRst.setPackageName(rstFormPackageName);
             encounterRst.setDataValues(rstForm);
             encounterRst.save();
@@ -67,11 +71,46 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.CLIENT_INTAKE_FORM);
             encounter.setPerson(String.valueOf(personId));
+            if(person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(clientIntakeEncounter);
             encounter.save();
 
             clientIntakeInfoView.startActivityForPreTestForm(String.valueOf(personId));
+        }else{
+            clientIntakeInfoView.scrollToTop();
+        }
+    }
+
+    @Override
+    public void confirmCreate(ClientIntake clientIntake, String packageName) {
+        if (validate(clientIntake)) {
+            Person person = PersonDAO.findPersonById(patientId);
+            //save the RST form
+            Encounter encounterRst = new Encounter();
+            encounterRst.setName(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM);
+            encounterRst.setPerson(String.valueOf(patientId));
+            if(person != null && person.getPersonId() != null) {
+                encounterRst.setPersonId(person.getPersonId());
+            }
+            encounterRst.setPackageName(rstFormPackageName);
+            encounterRst.setDataValues(rstForm);
+            encounterRst.save();
+            //Save the Client Intake Form
+            String clientIntakeEncounter = new Gson().toJson(clientIntake);
+            Encounter encounter = new Encounter();
+            encounter.setName(ApplicationConstants.Forms.CLIENT_INTAKE_FORM);
+            encounter.setPerson(String.valueOf(patientId));
+            if(person != null && person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
+            encounter.setPackageName(packageName);
+            encounter.setDataValues(clientIntakeEncounter);
+            encounter.save();
+
+            clientIntakeInfoView.startActivityForPreTestForm(String.valueOf(patientId));
         }else{
             clientIntakeInfoView.scrollToTop();
         }
@@ -220,7 +259,7 @@ public class ClientIntakePresenter extends LamisBasePresenter implements ClientI
 
     @Override
     public void confirmDeleteEncounterClientIntake(String formName, String patientId) {
-        //EncounterDAO.deleteEncounter(formName, patientId);
+        EncounterDAO.deleteEncounter(formName, patientId);
         clientIntakeInfoView.startDashboardActivity();
     }
 

@@ -12,5 +12,6 @@ public class BiometricsContract {
     interface Presenter extends LamisBasePresenterContract{
 
         Integer getPatientId();
+        Boolean isClientRecapturing();
     }
 }

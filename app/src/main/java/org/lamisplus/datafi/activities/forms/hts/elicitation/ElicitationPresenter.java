@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ViewUtils;
@@ -43,6 +45,10 @@ public class ElicitationPresenter extends LamisBasePresenter implements Elicitat
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.ELICITATION);
             encounter.setPerson(patientId);
+            Person person = PersonDAO.findPersonById(patientId);
+            if(person != null && person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(clientIntakeEncounter);
             encounter.save();

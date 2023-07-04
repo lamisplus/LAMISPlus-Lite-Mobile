@@ -41,6 +41,7 @@ public class ClientIntakeContract {
         ClientIntake patientToUpdate(String formName, String patientId);
 
         void confirmCreate(ClientIntake clientIntake, Person person, String packageName);
+        void confirmCreate(ClientIntake clientIntake, String packageName);
 
         void confirmUpdate(ClientIntake clientIntake, Encounter encounter);
         void confirmDeleteEncounterClientIntake(String formName, String patientId);

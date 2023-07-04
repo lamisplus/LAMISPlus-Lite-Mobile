@@ -635,8 +635,6 @@ public final class MultiModalActivity extends BaseActivity implements ActivityCo
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		ToastUtil.success("Menu created");
-		Log.v("Baron", "Menu created");
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.multimodal_menu, menu);
 		return true;

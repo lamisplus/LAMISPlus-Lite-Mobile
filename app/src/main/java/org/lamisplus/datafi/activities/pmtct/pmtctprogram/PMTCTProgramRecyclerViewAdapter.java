@@ -60,7 +60,7 @@ public class PMTCTProgramRecyclerViewAdapter extends RecyclerView.Adapter<PMTCTP
         }
     };
 
-    public PMTCTProgramRecyclerViewAdapter(PMTCTProgramFragment context, List<Person> items){
+    public PMTCTProgramRecyclerViewAdapter(PMTCTProgramFragment context, List<Person> items) {
         this.mContext = context;
         this.mItems = items;
     }
@@ -75,35 +75,29 @@ public class PMTCTProgramRecyclerViewAdapter extends RecyclerView.Adapter<PMTCTP
     @Override
     public void onBindViewHolder(@NonNull PatientViewHolder holder, int position) {
         //&& DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()) > 10
-        if(CodesetsDAO.findCodesetsDisplayById(mItems.get(position).getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()) > 10) {
-            Log.v("Baron", "Date is " + DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()));
-            holder.itemView.setVisibility(View.VISIBLE);
-            holder.update(mItems.get(position));
-            final Person person = mItems.get(position);
+        holder.itemView.setVisibility(View.VISIBLE);
+        holder.update(mItems.get(position));
+        final Person person = mItems.get(position);
 
-            if (null != person.getIdentifier()) {
-                String patientIdentifier = String.format(mContext.getResources().getString(R.string.patient_identifier),
-                        person.getIdentifier());
-                holder.mIdentifier.setText(person.getIdentifiers().getValue());
-            }
-            if (null != person.getFirstName()) {
-                holder.mDisplayName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
-                //holder.mDisplayName.setText(person.getAddresses().getCity());
-            }
-            String personGender = CodesetsDAO.findCodesetsDisplayById(person.getGenderId());
-            if (null != personGender) {
-                holder.mGender.setText(personGender);
-            }
+        if (null != person.getIdentifier()) {
+            String patientIdentifier = String.format(mContext.getResources().getString(R.string.patient_identifier),
+                    person.getIdentifier());
+            holder.mIdentifier.setText(person.getIdentifiers().getValue());
+        }
+        if (null != person.getFirstName()) {
+            holder.mDisplayName.setText(person.getFirstName() + " " + person.getOtherName() + " " + person.getSurname());
+            //holder.mDisplayName.setText(person.getAddresses().getCity());
+        }
+        String personGender = CodesetsDAO.findCodesetsDisplayById(person.getGenderId());
+        if (null != personGender) {
+            holder.mGender.setText(personGender);
+        }
 
 
-            try {
-                holder.mBirthDate.setText(person.getDateOfBirth());
-            } catch (Exception e) {
-                holder.mBirthDate.setText("");
-            }
-        }else{
-            Log.v("Baron", "Date is bigger than 10 " + DateUtils.getAgeFromBirthdateString(mItems.get(position).getDateOfBirth()));
-            holder.itemView.setVisibility(View.GONE);
+        try {
+            holder.mBirthDate.setText(person.getDateOfBirth());
+        } catch (Exception e) {
+            holder.mBirthDate.setText("");
         }
     }
 

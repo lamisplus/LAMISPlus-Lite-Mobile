@@ -12,9 +12,11 @@ public class LabourDeliveryContract {
 
         void scrollToTop();
 
-        void startPMTCTEnrollmentActivity();
+        void startPMTCTServicesActivity();
 
-        void setErrorsVisibility(boolean dateOfBirth, boolean entryPoint, boolean settings, boolean modality, boolean visitDate, boolean targetGroup, boolean autolastHivTestBasedOnRequest);
+        void setErrorsVisibility(boolean bookingStatus, boolean dateOfDelivery, boolean romDelivery, boolean modeOfDelivery, boolean episiotomy,
+                                 boolean vaginalTear, boolean feedingDecision, boolean childGivenARVwithin72hrs, boolean onArt, boolean hivExposedInfant24hrs, boolean timeDelivery,
+                                 boolean artStartedLDWard, boolean hbStatus, boolean hcStatus, boolean maternalOutcome, boolean childStatus, boolean noChildAlive, boolean noChildDead);
     }
 
     interface Presenter extends LamisBasePresenterContract{

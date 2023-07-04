@@ -54,6 +54,10 @@ public class Biometrics extends Model implements Serializable {
     @SerializedName("syncStatus")
     private int SyncStatus;
 
+    @Column(name = "dateTime")
+    @SerializedName("dateTime")
+    private String dateTime;
+
 
     public Integer getPatientId() {
         return patientId;
@@ -117,5 +121,13 @@ public class Biometrics extends Model implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }

@@ -3,6 +3,7 @@ package org.lamisplus.datafi.utilities;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -12,14 +13,14 @@ import java.util.Date;
 
 public class DateUtils {
 
-    public static long getAgeFromBirthdate(int year, int month, int day) {
-        ZoneId timeZoneId = ZoneId.of("Africa/Lagos"); // assuming you're in Poland - put the your time zone name here ;-)
-        LocalDate today = LocalDate.now(timeZoneId);
-        LocalDate birthday = LocalDate.of(year, month, day);
-        Period lifePeriod = Period.between(birthday, today);
-        long age = lifePeriod.getYears();
-        return age;
-    }
+//    public static long getAgeFromBirthdate(int year, int month, int day) {
+//        ZoneId timeZoneId = ZoneId.of("Africa/Lagos"); // assuming you're in Poland - put the your time zone name here ;-)
+//        LocalDate today = LocalDate.now(timeZoneId);
+//        LocalDate birthday = LocalDate.of(year, month, day);
+//        Period lifePeriod = Period.between(birthday, today);
+//        long age = lifePeriod.getYears();
+//        return age;
+//    }
 
     /**
      * Pass a date string to this function to give the age
@@ -79,9 +80,20 @@ public class DateUtils {
             LocalDate lastEnrollment = LocalDate.of(yearDateEnrollment, monthDateEnrollment, dayDateEnrollment);
 
             Integer ga = (int) ChronoUnit.WEEKS.between(lastMP, lastEnrollment);
-            if (ga < 0) ga = 0;
+            if (ga < 0) {
+                ga = 0;
+            }
             return ga;
         }
         return 0;
+    }
+
+    public static String currentDate(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            return dtf.format(now);
+        }
+        return "";
     }
 }

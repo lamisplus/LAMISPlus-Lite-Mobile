@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:iconifiedByDefault="false"
                     android:queryBackground="@android:color/transparent"
-                    android:queryHint="Search"
+                    android:queryHint="Search with Name/Hospital No."
                     android:searchIcon="@drawable/ic_search"
                     android:theme="@style/SearchView"
                     app:queryBackground="@android:color/transparent" />

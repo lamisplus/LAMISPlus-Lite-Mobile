@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
+import org.lamisplus.datafi.activities.biometricsrecapture.BiometricsRecaptureActivity;
 import org.lamisplus.datafi.activities.forms.hts.pretest.PreTestActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.application.LamisPlus;
@@ -43,6 +44,7 @@ import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.OrganizationUnitDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Biometrics;
+import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.BiometricsUtil;
@@ -78,10 +80,12 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
     private TextView tvState;
     private TextView tvLGA;
     private TextView tvStreet;
+    private TextView biometricsStatus;
 
     private Button btn_Dashboard;
 
     private Button btn_EditProfile;
+    private Button mRecaptureButton;
 
     @Nullable
     @Override
@@ -103,6 +107,7 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
     public void setListeners() {
         btn_Dashboard.setOnClickListener(this);
         btn_EditProfile.setOnClickListener(this);
+        mRecaptureButton.setOnClickListener(this);
     }
 
     public void initiateFragmentViews(View root) {
@@ -118,9 +123,11 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
         tvLGA = root.findViewById(R.id.tvLGA);
         tvStreet = root.findViewById(R.id.tvStreet);
         your_profile = root.findViewById(R.id.your_profile);
+        biometricsStatus = root.findViewById(R.id.biometricsStatus);
 
         btn_Dashboard = root.findViewById(R.id.btnPatientDashboard);
         btn_EditProfile = root.findViewById(R.id.btn_edit);
+        mRecaptureButton = root.findViewById(R.id.mRecaptureButton);
     }
 
     @Override
@@ -137,9 +144,18 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
                 editPatient.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                         String.valueOf(mPresenter.getPatientId()));
                 startActivity(editPatient);
+            case R.id.mRecaptureButton:
+                Intent recaptureBtn = new Intent(LamisPlus.getInstance(), BiometricsRecaptureActivity.class);
+                recaptureBtn.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                        String.valueOf(mPresenter.getPatientId()));
+                startActivity(recaptureBtn);
                 break;
         }
     }
+
+//    private boolean sameDayBiometricCapture(){
+//
+//    }
 
     private void fillFields(View root) {
         Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
@@ -189,6 +205,14 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
                     tvStreet.setText(person.getAddresses().getCity());
                 }
 
+            }
+
+            if(person.isBiometricStatus()){
+                biometricsStatus.setTextColor(getResources().getColor(R.color.teal_200));
+                biometricsStatus.setText("Biometrics Captured");
+            }else{
+                biometricsStatus.setTextColor(getResources().getColor(R.color.red));
+                biometricsStatus.setText("Biometrics Not Captured");
             }
         }
     }

@@ -7,8 +7,10 @@ import com.google.gson.Gson;
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeContract;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PostTest;
 import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -47,6 +49,10 @@ public class PostTestPresenter extends LamisBasePresenter implements PostTestCon
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM);
             encounter.setPerson(patientId);
+            Person person = PersonDAO.findPersonById(patientId);
+            if(person != null && person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(postTestEncounter);
             encounter.save();

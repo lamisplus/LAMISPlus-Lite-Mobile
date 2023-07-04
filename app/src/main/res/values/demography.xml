@@ -63,7 +63,7 @@
         <item>Uncle</item>
         <item>Partner</item>
     </string-array>
-    
+
     <string-array name="settings">
         <item>CT</item>
         <item>TB</item>
@@ -78,6 +78,7 @@
         <item>SNT</item>
         <item>PNS</item>
         <item>Self Testing</item>
+        <item>CPMTCT</item>
     </string-array>
 
     <string-array name="community_entry_point">
@@ -130,6 +131,14 @@
         <item>Other Community</item>
         <item>SNS</item>
         <item>VCT</item>
+    </string-array>
+
+    <string-array name="cpmtct">
+        <item>Spoke health facility</item>
+        <item>Congregational setting</item>
+        <item>Delivery homes</item>
+        <item>TBA Orthodx</item>
+        <item>TBA rt-HCW</item>
     </string-array>
 
     <string-array name="standalone_hts">
@@ -352,6 +361,206 @@
         <item>PMTCT</item>
         <item>OPD</item>
         <item>Surgical</item>
+    </string-array>
+    <string-array name="booking_status">
+        <item>Booked</item>
+        <item>Unbooked</item>
+        <item>Emergency</item>
+    </string-array>
+    <string-array name="rom_delivery_interval">
+        <item>&lt;4hrs</item>
+        <item>&gt;4hrs</item>
+    </string-array>
+    <string-array name="mode_of_delivery">
+        <item>Vaginal</item>
+        <item>Elective CS</item>
+        <item>Emergency CS</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="feeding_decision">
+        <item>EBF</item>
+        <item>ERF</item>
+    </string-array>
+    <string-array name="time_of_diagnosis">
+        <item>Previous pregnancy (L&amp;D)</item>
+        <item>Previous pregnancy (PP &lt;72hrs)</item>
+        <item>ANC</item>
+        <item>Labour</item>
+        <item>Post Partum &lt;=72hrs</item>
+        <item>Post Partum &gt;72hrs</item>
+        <item>Newly tested HIV positive (ANC)</item>
+        <item>Previously known HIV positive (ANC)</item>
+    </string-array>
+    <string-array name="maternal_outcome">
+        <item>Alive</item>
+        <item>Dead</item>
+        <item>Active in PMTCT</item>
+        <item>Transferred out</item>
+        <item>Transferred to another PMTCT cohort (new pregnancy)</item>
+        <item>Transitioned to ART clinic</item>
+        <item>Lost to follow-up</item>
+    </string-array>
+    <string-array name="child_status">
+        <item>Alive</item>
+        <item>Still Birth</item>
+        <item>Neonantal Death</item>
+    </string-array>
+    <string-array name="referred_to_partners_pmtct">
+        <item>FP</item>
+        <item>ART</item>
+        <item>OTHERS</item>
+    </string-array>
+    <string-array name="fp_method">
+        <item>No FP Method</item>
+        <item>Condom</item>
+        <item>Oral Pills</item>
+        <item>Injectable</item>
+        <item>Implant</item>
+        <item>IUD</item>
+        <item>Other</item>
+        <item>Diaphragm/cervical cap</item>
+        <item>Intrauterine device</item>
+        <item>Vasectomy/tubal ligation/hysterectomy</item>
+    </string-array>
+    <string-array name="dsd_model_type_facility">
+        <item>Fast-track</item>
+        <item>Facility ART group: HCW led</item>
+        <item>Facility ART group: Support group led</item>
+        <item>Decentralization (Hub and Spoke)</item>
+        <item>After hours</item>
+        <item>Weekends and public holidays</item>
+        <item>Child/Teen/Adolescents club (Peer Managed)</item>
+        <item>Mother infant pair/Mentor other led</item>
+    </string-array>
+    <string-array name="dsd_model_type_community">
+        <item>Community Pharmacy ART refill</item>
+        <item>Community ART Refill Group: Healthcare Worker – led</item>
+        <item>Community ART Refill Group: PLHIV – led</item>
+        <item>Adolescent Community ART/Peer-led groups</item>
+        <item>Home delivery</item>
+        <item>OSS Community platforms</item>
+    </string-array>
+    <string-array name="client_visit_status">
+        <item>Active in PMTCT</item>
+        <item>Transfer In</item>
+        <item>Transfer Out</item>
+        <item>Transfered to another PMTCT cohort (new pregnancy)</item>
+        <item>Still Breastfeeding</item>
+        <item>Transitioned to ART clinic</item>
+        <item>Missed Appointment/Defaulted (assign at end of month)</item>
+        <item>Lost to follow-up</item>
+        <item>Dead</item>
+    </string-array>
+    <string-array name="infant_visit_status">
+        <item>Active</item>
+        <item>Transferred in</item>
+        <item>Transferred out</item>
+        <item>Linked to ART (if infant diagnosed HIV-positive)</item>
+        <item>Discharged from PMTCT</item>
+        <item>Missed Appointment/Defaulted (assign at end of month)</item>
+        <item>Lost to follow-up</item>
+        <item>Dead</item>
+    </string-array>
+    <string-array name="timing_mothers_art_initiation">
+        <item>Prior to this pregnancy</item>
+        <item>Initiated ART during pregnancy &lt;36 weeks gestation period</item>
+        <item>Initiated ART during pregnancy &#x2265;36 weeks gestation period</item>
+        <item>Initiated ART at L&amp;D</item>
+        <item>Initiated ART after delivery (post-partum)</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="original_regimen_line">
+        <item>ART First Line Adult</item>
+        <item>ART Second Line Adult</item>
+        <item>Third Line</item>
+    </string-array>
+
+    <string-array name="first_line_original_regimen">
+        <item>AZT(300mg)+3TC(150mg)+NVP(200mg)</item>
+        <item>AZT(300mg)+3TC(150mg)+EFV(600mg)</item>
+        <item>AZT(300mg)+3TC(150mg)+ABC(300mg)</item>
+        <item>AZT(300mg)+3TC(150mg)+TDF(300mg)</item>
+        <item>ABC(300mg)+3TC(150mg)+NVP(200mg)</item>
+        <item>ABC(300mg)+3TC(150mg)+EFV(600mg)</item>
+        <item>d4T(30mg)+3TC(150mg)+NVP(200mg)</item>
+        <item>d4T(30mg)+3TC(150mg)+EFV(600mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+NVP(200mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+EFV(600mg)</item>
+        <item>TDF/FTC(300/200mg)+NVP(200mg)</item>
+        <item>TDF/FTC(300/200mg)+EFV(600mg)</item>
+        <item>AZT/3TC(300/150mg)+NVP(200mg)</item>
+        <item>AZT/3TC/NVP(300/150/200mg)</item>
+        <item>AZT/3TC(300/150mg)+EFV(600mg)</item>
+        <item>AZT/3TC(300/150mg)+LPV/r(200/50mg)</item>
+        <item>AZT/3TC(300/150mg)+EFV(200mg)</item>
+        <item>TDF(300mg)+FTC(200mg)+DTG(50mg)</item>
+        <item>ABC(600mg)+3TC(300mg)+DTG(50mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+DTG(50mg)</item>
+        <item>Zidovudine(60mg)+Lamivudine(30mg)</item>
+        <item>Zidovudine(120mg)+Lamivudine(60mg)</item>
+        <item>LPV/r(200/50mg)</item>
+        <item>TDF(300mg)+3TC</item>
+        <item>ABC(600mg)+3TC(300mg)+LPV/r(200/50mg)+DTG(50mg)</item>
+        <item>Dolutegravir(50mg)</item>
+    </string-array>
+    <string-array name="second_line_original_regimen">
+        <item>d4T(30mg)+3TC(150mg)+LPV/r(200/50mg)</item>
+        <item>TDF/FTC(300/200mg)+LPV/r(200/50mg)</item>
+        <item>TDF(300mg)+3TC(150mg)+LPV/r(200/50mg)</item>
+        <item>TDF(300mg)+3TC(150mg)+ATV/r(300/100mg)</item>
+        <item>AZT(300mg)+3TC(150mg)+LPV/r(200/50mg)</item>
+        <item>AZT(300mg)+TDF/FTC(300/200mg)+LPV/r(200/50mg)</item>
+        <item>ABC(300mg)+DDI(400mg)+IDV/r(400/50mg)</item>
+        <item>ABC(300mg)+DDI(400mg)+LPV/r(200/50mg)</item>
+        <item>AZT(300mg)+TDF(300mg)+3TC(150mg)+ATV/r(300mg/100mg)</item>
+        <item>AZT(300mg)+TDF(300mg)+3TC(150mg)+LPV/r(200mg/50mg)</item>
+        <item>AZT(300mg)+3TC(150mg)+ATV/r(300mg/100mg)</item>
+        <item>3TC/FTC(300/300mg)+ATV/r(300/100mg)</item>
+        <item>3TC/FTC(300/300mg)+EFV(600mg)</item>
+        <item>3TC/FTC(300/300mg)+LPV/r(200/50mg)</item>
+        <item>3TC/FTC(300/300mg)+NVP(200mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+ATV/r(300/100mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+LPV/r(200/50mg)</item>
+        <item>TDF/FTC(300mg/200mg)+ATV/r(300/100mg)</item>
+        <item>ABC(300mg)+3TC(150mg)+ATV/r(300/100mg)</item>
+        <item>ABC(300mg)+3TC(150mg)+LPV/r(200/50mg)</item>
+    </string-array>
+    <string-array name="third_line_original_regimen">
+        <item>AZT(300mg)+TDF(300mg)+3TC(150mg)+ATV/r(300mg/100mg)</item>
+        <item>AZT(300mg)+TDF(300mg)+3TC(150mg)+LPV/r(200mg/50mg)</item>
+        <item>ABC(600mg)+3TC(300mg)+LPV/r(200/50mg)+DTG(50mg)</item>
+        <item>TDF(300mg)+3TC(300mg)+LPV/r(200/50mg)+DTG(50mg)</item>
+        <item>DTG(50mg)+LPV/r(200/50mg)</item>
+    </string-array>
+    <string-array name="age_ctx_initiation">
+        <item>&lt; 2 months</item>
+        <item>&#x2265; 2 months</item>
+    </string-array>
+    <string-array name="infant_arv_type">
+        <item>None</item>
+        <item>NVP</item>
+        <item>NVP + AZT</item>
+        <item>Other (specify)</item>
+    </string-array>
+    <string-array name="timing_arv_prophylaxis">
+        <item>Within 72 hour</item>
+        <item>After 72 hour</item>
+    </string-array>
+    <string-array name="place_of_delivery">
+        <item>Facility Delivery</item>
+        <item>Delivered outside facility</item>
+    </string-array>
+    <string-array name="infant_sample_type">
+        <item>First PCR</item>
+        <item>Second PCR</item>
+        <item>Confirmatory PCR</item>
+        <item>First Rapid Antibody</item>
+        <item>Second Rapid Antibody</item>
+    </string-array>
+    <string-array name="infant_pcr_result">
+        <item>Indeterminate</item>
+        <item>Negative</item>
+        <item>Positive</item>
     </string-array>
 </resources>
 

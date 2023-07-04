@@ -33,6 +33,7 @@ import org.lamisplus.datafi.api.RestServiceBuilder;
 import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.classes.ContactPointClass;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Address;
 import org.lamisplus.datafi.models.PatientIdentifier;
 import org.lamisplus.datafi.models.Person;
@@ -178,7 +179,7 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                         try {
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                             String records = jsonObject.getString("records");
-                            Log.v("Baron", records);
+                            //Log.v("Baron", records);
 
                             JSONArray jsonArray = jsonObject.getJSONArray("records");
                             List<Person> personList = new ArrayList<>();
@@ -200,6 +201,11 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                 if (objSections.has("isDateOfBirthEstimated")) {
                                     person.setDateOfBirthEstimated(Boolean.getBoolean(objSections.getString("isDateOfBirthEstimated")));
                                 }
+
+                                if (objSections.has("biometricStatus")) {
+                                    person.setBiometricStatus(Boolean.getBoolean(objSections.getString("biometricStatus")));
+                                }
+
                                 if (objSections.has("deceased")) {
                                     person.setDeceased(Boolean.getBoolean(objSections.getString("deceased")));
                                 }
@@ -213,6 +219,10 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
 
                                 if (objSections.has("id")) {
                                     person.setPersonId(Integer.valueOf(objSections.getInt("id")));
+                                }
+
+                                if (objSections.has("personUuid")) {
+                                    person.setPersonUuId(objSections.getString("personUuid"));
                                 }
 
                                 if (objSections.has("dateOfBirth")) {
@@ -315,14 +325,18 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                 }
                                 person.setSynced(true);
                                 person.setFromServer(1);
-                                personList.add(person);
-
-//                                String surname = objSections.getString("surname");
-//                                Log.v("Baron", "The surname is " + surname);
+                                //Check if Person Id already exists on mobile before adding the user
+                                if (objSections.has("id")) {
+                                    Boolean personIdExists = PersonDAO.checkPersonIdExists(objSections.getString("id"));
+                                    if(!personIdExists) {
+                                        personList.add(person);
+                                    }
+                                }
                             }
                             updateListVisibility(true);
                             updateAdapter(personList);
                         } catch (Exception e) {
+                            LamisCustomFileHandler.writeLogToFile("Search Patients Error: " + e.getMessage());
                             mProgressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }

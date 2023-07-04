@@ -5,7 +5,9 @@ import com.google.gson.Gson;
 import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.activities.forms.hts.pretest.PreTestContract;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.models.Recency;
 import org.lamisplus.datafi.models.RiskStratification;
@@ -45,6 +47,10 @@ public class RecencyPresenter extends LamisBasePresenter implements RecencyContr
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.HIV_RECENCY_FORM);
             encounter.setPerson(patientId);
+            Person person = PersonDAO.findPersonById(patientId);
+            if(person != null && person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(recencyEncounter);
             encounter.save();

@@ -58,10 +58,13 @@ import org.lamisplus.datafi.dao.BiometricsDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Biometrics;
 import org.lamisplus.datafi.models.BiometricsList;
+import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.BiometricsUtil;
+import org.lamisplus.datafi.utilities.DateUtils;
 import org.lamisplus.datafi.utilities.FingerPositions;
+import org.lamisplus.datafi.utilities.HashUtil;
 import org.lamisplus.datafi.utilities.ImageUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.NetworkUtils;
@@ -69,6 +72,7 @@ import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.URLValidator;
 import org.lamisplus.datafi.utilities.ViewUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -76,16 +80,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import SecuGen.Driver.Constant;
 import SecuGen.FDxSDKPro.JSGFPLib;
+import SecuGen.FDxSDKPro.SGANSITemplateInfo;
 import SecuGen.FDxSDKPro.SGAutoOnEventNotifier;
 import SecuGen.FDxSDKPro.SGFDxConstant;
 import SecuGen.FDxSDKPro.SGFDxDeviceName;
 import SecuGen.FDxSDKPro.SGFDxErrorCode;
+import SecuGen.FDxSDKPro.SGFDxSecurityLevel;
 import SecuGen.FDxSDKPro.SGFDxTemplateFormat;
+import SecuGen.FDxSDKPro.SGFPImageInfo;
 import SecuGen.FDxSDKPro.SGFingerInfo;
+import SecuGen.FDxSDKPro.SGFingerPresentEvent;
+import SecuGen.FDxSDKPro.SGISOTemplateInfo;
 import SecuGen.FDxSDKPro.SGImpressionType;
+import SecuGen.FDxSDKPro.SGWSQLib;
 
-public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Presenter> implements BiometricsContract.View, View.OnClickListener {
+public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Presenter> implements BiometricsContract.View, Runnable, SGFingerPresentEvent, View.OnClickListener {
 
     private View root;
 
@@ -170,6 +181,11 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
     }
 
     public void createViewObject(View root) {
+        if (!mPresenter.isClientRecapturing()) {
+            ToastUtil.success("This patient did not come for recapturing");
+        } else {
+            ToastUtil.success("This patient came for recapturing");
+        }
         //Selecting Different Fingers
         //Declare the variables for the different fingers
         imgViewLeftThumbFinger = root.findViewById(R.id.imgViewLeftThumbFinger);
@@ -220,16 +236,17 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
 
 
         //USB Permissions
-        mPermissionIntent = PendingIntent.getBroadcast(getContext(), 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+        //mPermissionIntent = PendingIntent.getBroadcast(getContext(), 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+        mPermissionIntent = PendingIntent.getBroadcast(requireActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
         filter = new IntentFilter(ACTION_USB_PERMISSION);
-        sgfplib = new JSGFPLib(getContext(), (UsbManager) getContext().getSystemService(Context.USB_SERVICE));
+        sgfplib = new JSGFPLib(requireActivity(), (UsbManager) requireActivity().getSystemService(Context.USB_SERVICE));
         bSecuGenDeviceOpened = false;
         usbPermissionRequested = false;
 
         debugMessage("Starting Activity\n");
         debugMessage("JSGFPLib version: " + sgfplib.GetJSGFPLibVersion() + "\n");
         mAutoOnEnabled = false;
-        //autoOn = new SGAutoOnEventNotifier(sgfplib, getContext());
+        autoOn = new SGAutoOnEventNotifier(sgfplib, this);
         nCaptureModeN = 0;
         Log.d(TAG, "Exit onCreate()");
     }
@@ -302,6 +319,10 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                 //Save fingerprint
                 boolean isGoodQuality = checkForQuality(fpInfo.ImageQuality);
 
+                Integer imageQuality = fpInfo.ImageQuality;
+
+                String hashed = HashUtil.bcryptHash(mRegisterTemplate);
+
                 int[] size = new int[1];
                 result = sgfplib.GetTemplateSize(mRegisterTemplate, size);
                 debugMessage("GetTemplateSize() ret:" + result + " size [" + size[0] + "]\n");
@@ -320,7 +341,7 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                         CustomDebug("This finger has been captured before for " + previousCapture, false);
                     } else {
                         //save to temp list to be discard later
-                        biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(template, ViewUtils.getInput(autoFingerprintSelect)));
+                        biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(template, ViewUtils.getInput(autoFingerprintSelect), hashed, imageQuality));
                         bindDrawableResources(getImageView(ViewUtils.getInput(autoFingerprintSelect)));
 
                     }
@@ -366,20 +387,24 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
     }
 
     public void CheckIfAlreadyCapturedOnLocalDB() {
-        if (mPresenter.getPatientId() != null) {
-            List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(mPresenter.getPatientId());
-            if (biometricsLists != null && biometricsLists.size() > 0) {
-                CustomDebug("Some Finger Print already exit for this patient. You can capture more or clear the existing ones to start afresh", false);
+        if (!mPresenter.isClientRecapturing()) {
+            if (mPresenter.getPatientId() != null) {
+                List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(mPresenter.getPatientId());
+                if (biometricsLists != null && biometricsLists.size() > 0) {
+                    CustomDebug("Some Finger Print already exit for this patient. You can capture more or clear the existing ones to start afresh", false);
 
-                for (BiometricsList item : biometricsLists) {
-                    biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(item.getTemplate(), item.getTemplateType()));
-                    getImageView(item.getTemplateType()).setImageDrawable(getResources().getDrawable(R.drawable.fingerprint_checked));
-                }
-            } else { //check if already sync
-                if (BiometricsDAO.syncStatus(mPresenter.getPatientId()) != null && BiometricsDAO.syncStatus(mPresenter.getPatientId()) == 1) {
-                    CustomDebug("Fingerprint has been captured and synced for this patient", true);
+                    for (BiometricsList item : biometricsLists) {
+                        biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(item.getTemplate(), item.getTemplateType()));
+                        getImageView(item.getTemplateType()).setImageDrawable(getResources().getDrawable(R.drawable.fingerprint_checked));
+                    }
+                } else { //check if already sync
+                    if (BiometricsDAO.syncStatus(mPresenter.getPatientId()) != null && BiometricsDAO.syncStatus(mPresenter.getPatientId()) == 1) {
+                        CustomDebug("Fingerprint has been captured and synced for this patient", true);
+                    }
                 }
             }
+        } else {
+            //Do nothing for now
         }
     }
 
@@ -396,20 +421,39 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         if (fingerPrintCaptureCount < 6) {
             CustomDebug("Please capture a minimum of 6 prints before saving", false);
         } else {
-            CustomDebug("Saved successfully", false);
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String biometricsList = gson.toJson(biometricsClassFingers);
-            Biometrics biometrics = new Biometrics();
-            biometrics.setPerson(mPresenter.getPatientId());
-            if (BiometricsDAO.getPatientId(mPresenter.getPatientId()) != null) {
-                biometrics.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
+            if (!mPresenter.isClientRecapturing()) {
+                CustomDebug("Saved successfully", false);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String biometricsList = gson.toJson(biometricsClassFingers);
+                Biometrics biometrics = new Biometrics();
+                biometrics.setPerson(mPresenter.getPatientId());
+                if (BiometricsDAO.getPatientId(mPresenter.getPatientId()) != null) {
+                    biometrics.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
+                }
+                biometrics.setIso(true);
+                biometrics.setDeviceName("Secugen");
+                biometrics.setBiometricType("FINGERPRINT");
+                biometrics.setCapturedBiometricsList(biometricsList);
+                biometrics.setType("SUCCESS");
+                biometrics.setDateTime(DateUtils.currentDate());
+                biometrics.save();
+            } else {
+                CustomDebug("Saved successfully", false);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String biometricsList = gson.toJson(biometricsClassFingers);
+                BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
+                biometricsRecapture.setPerson(mPresenter.getPatientId());
+                if (BiometricsDAO.getPatientId(mPresenter.getPatientId()) != null) {
+                    biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
+                }
+                biometricsRecapture.setIso(true);
+                biometricsRecapture.setDeviceName("Secugen");
+                biometricsRecapture.setBiometricType("FINGERPRINT");
+                biometricsRecapture.setCapturedBiometricsList(biometricsList);
+                biometricsRecapture.setType("SUCCESS");
+                biometricsRecapture.setDateTime(DateUtils.currentDate());
+                biometricsRecapture.save();
             }
-            biometrics.setIso(true);
-            biometrics.setDeviceName("Secugen");
-            biometrics.setBiometricType("FINGERPRINT");
-            biometrics.setCapturedBiometricsList(biometricsList);
-            biometrics.setType("SUCCESS");
-            biometrics.save();
         }
 
 
@@ -597,10 +641,11 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         Log.d(TAG, "Enter onResume()");
         debugMessage("Enter onResume()\n");
         super.onResume();
-        requireActivity().registerReceiver(mUsbReceiver, filter);
+        //DisableControls();
+        getActivity().registerReceiver(mUsbReceiver, filter);
         long error = sgfplib.Init(SGFDxDeviceName.SG_DEV_AUTO);
         if (error != SGFDxErrorCode.SGFDX_ERROR_NONE) {
-            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(requireActivity());
             if (error == SGFDxErrorCode.SGFDX_ERROR_DEVICE_NOT_FOUND)
                 dlgAlert.setMessage("The attached fingerprint device is not supported on Android");
             else
@@ -609,7 +654,7 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
             dlgAlert.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            getActivity().finish();
+                            requireActivity().finish();
                             return;
                         }
                     }
@@ -619,13 +664,13 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         } else {
             UsbDevice usbDevice = sgfplib.GetUsbDevice();
             if (usbDevice == null) {
-                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(requireActivity());
                 dlgAlert.setMessage("SecuGen fingerprint sensor not found!");
                 dlgAlert.setTitle("SecuGen Fingerprint SDK");
                 dlgAlert.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                getActivity().finish();
+                                requireActivity().finish();
                                 return;
                             }
                         }
@@ -659,7 +704,11 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                 }
                 if (hasPermission) {
                     debugMessage("Opening SecuGen Device\n");
-                    error = sgfplib.OpenDevice(0);
+                    try {
+                        error = sgfplib.OpenDevice(0);
+                    } catch (Exception e) {
+                        ToastUtil.success(e.getMessage());
+                    }
                     debugMessage("OpenDevice() ret: " + error + "\n");
                     if (error == SGFDxErrorCode.SGFDX_ERROR_NONE) {
                         bSecuGenDeviceOpened = true;
@@ -705,13 +754,13 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                         sgfplib.GetMaxTemplateSize(mMaxTemplateSize);
                         debugMessage("TEMPLATE_FORMAT_ISO19794 SIZE: " + mMaxTemplateSize[0] + "\n");
                         mRegisterTemplate = new byte[(int) mMaxTemplateSize[0]];
-                        //mVerifyTemplate = new byte[(int)mMaxTemplateSize[0]];
-                        //EnableControls();
-//                        boolean smartCaptureEnabled = this.mSwitchSmartCapture.isChecked();
-//                        if (smartCaptureEnabled)
-//                            sgfplib.WriteData(SGFDxConstant.WRITEDATA_COMMAND_ENABLE_SMART_CAPTURE, (byte)1);
-//                        else
-//                            sgfplib.WriteData(SGFDxConstant.WRITEDATA_COMMAND_ENABLE_SMART_CAPTURE, (byte)0);
+//                        mVerifyTemplate = new byte[(int)mMaxTemplateSize[0]];
+//                        EnableControls();
+                        boolean smartCaptureEnabled = true;
+                        if (smartCaptureEnabled)
+                            sgfplib.WriteData(SGFDxConstant.WRITEDATA_COMMAND_ENABLE_SMART_CAPTURE, (byte) 1);
+                        else
+                            sgfplib.WriteData(SGFDxConstant.WRITEDATA_COMMAND_ENABLE_SMART_CAPTURE, (byte) 0);
                         if (mAutoOnEnabled) {
                             autoOn.start();
                             //DisableControls();
@@ -809,5 +858,44 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    public void run() {
+
+        //Log.d(TAG, "Enter run()");
+        //ByteBuffer buffer = ByteBuffer.allocate(1);
+        //UsbRequest request = new UsbRequest();
+        //request.initialize(mSGUsbInterface.getConnection(), mEndpointBulk);
+        //byte status = -1;
+        while (true) {
+
+
+            // queue a request on the interrupt endpoint
+            //request.queue(buffer, 1);
+            // send poll status command
+            //  sendCommand(COMMAND_STATUS);
+            // wait for status event
+            /*
+            if (mSGUsbInterface.getConnection().requestWait() == request) {
+                byte newStatus = buffer.get(0);
+                if (newStatus != status) {
+                    Log.d(TAG, "got status " + newStatus);
+                    status = newStatus;
+                    if ((status & COMMAND_FIRE) != 0) {
+                        // stop firing
+                        sendCommand(COMMAND_STOP);
+                    }
+                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+            } else {
+                Log.e(TAG, "requestWait failed, exiting");
+                break;
+            }
+            */
+        }
+    }
 
 }

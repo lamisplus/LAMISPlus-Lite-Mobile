@@ -113,10 +113,12 @@ build.finalizedBy(publishApk)
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/AlCamera.jar')
     implementation files('libs/FDxSDKProFDAndroid.jar')
 
     implementation ":neurotec-biometrics-client-android"
     implementation ":neurotec-devices-fscanners-futronic-android"
+    //implementation ":neurotec-devices-fscanners-secugen-android"
     implementation ":neurotec-devices-media-android"
     implementation ":neurotec-biometrics-android"
     implementation ":neurotec-devices-android"

@@ -8,10 +8,6 @@ import java.io.Serializable;
 
 public class ANC implements Serializable {
 
-    /**
-     * {"ancNo":"9748484894984","gaweeks":1,"gravida":"3","expectedDeliveryDate":"","firstAncDate":"","lmp":"2023-03-29","parity":"3","person_uuid":"2f9e67d7-0934-4ac5-883a-4e4716f7d396","hivDiognosicTime":"","referredSyphilisTreatment":"Yes","testResultSyphilis":"Positive","testedSyphilis":"Yes","treatedSyphilis":"Yes","personDto":{},"pmtctHtsInfo":{},"syphilisInfo":{},"partnerNotification":{},"sourceOfReferral":"SOURCE_REFERRAL_PMTCT_PRIVATECOMMERCIAL_HEALTH_FACILITY","staticHivStatus":"Positive","uniqueId":"00116"}
-     */
-
     @SerializedName("personId")
     @Expose
     private String personId;

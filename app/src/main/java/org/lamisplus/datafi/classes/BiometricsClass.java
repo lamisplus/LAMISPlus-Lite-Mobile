@@ -19,7 +19,21 @@ public class BiometricsClass{
     public static class BiometricsClassFingers {
         String template;
         String templateType;
+        String hashed;
+        Integer imageQuality;
 
+        public BiometricsClassFingers(String template, String templateType, String hashed, Integer imageQuality) {
+            this.template = template;
+            this.templateType = templateType;
+            this.hashed = hashed;
+            this.imageQuality = imageQuality;
+        }
+
+        /**
+         * This constructor is to be used to check if a particular fingerprint already exists on the database
+         * @param template
+         * @param templateType
+         */
         public BiometricsClassFingers(String template, String templateType) {
             this.template = template;
             this.templateType = templateType;
@@ -39,6 +53,22 @@ public class BiometricsClass{
 
         public String getTemplateType(){
             return templateType;
+        }
+
+        public String getHashed() {
+            return hashed;
+        }
+
+        public void setHashed(String hashed) {
+            this.hashed = hashed;
+        }
+
+        public Integer getImageQuality() {
+            return imageQuality;
+        }
+
+        public void setImageQuality(Integer imageQuality) {
+            this.imageQuality = imageQuality;
         }
     }
 }

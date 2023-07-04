@@ -39,6 +39,7 @@ public class ApplicationConstants {
 
         public static final String PATIENT_ID_BUNDLE = "patientID";
         public static final String PATIENT_QUERY_BUNDLE = "patientQuery";
+        public static final String BIOMETRICS_RECAPTURE = "biometricsRecapture";
     }
 
     public abstract static class Forms{
@@ -54,6 +55,8 @@ public class ApplicationConstants {
         public static final String LABOUR_DELIVERY_FORM = "Labour & Delivery Form";
         public static final String INFANT_INFORMATION_FORM = "Infant Information Form";
         public static final String PARTNERS_FORM = "Partners Form";
+        public static final String MOTHER_FOLLOW_UP_VISIT_FORM = "Mother Follow Up Visit Form";
+        public static final String CHILD_FOLLOW_UP_VISIT_FORM = "Child Follow Up Visit Form";
     }
 
 }

@@ -28,6 +28,7 @@ import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.listeners.retrofit.DefaultCallbackListener;
 import org.lamisplus.datafi.models.Biometrics;
+import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -281,6 +282,8 @@ public class SyncServices extends IntentService {
             if (personList.size() == 0) {
                 if (BiometricsDAO.getUnsyncedBiometrics().size() > 0) {
                     syncBiometrics();
+                } else if (BiometricsDAO.getUnsyncedBiometricsRecapture().size() > 0){
+                    syncBiometricsRecapture();
                 } else if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) > 0) {
                     countUnsyncedRSTAndSync();
                 } else if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) == 0 && EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.CLIENT_INTAKE_FORM) > 0) {
@@ -333,8 +336,38 @@ public class SyncServices extends IntentService {
         }).start();
     }
 
+    private void syncBiometricsRecapture() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<BiometricsRecapture> biometricsList = BiometricsDAO.getUnsyncedBiometricsRecapture();
+                final ListIterator<BiometricsRecapture> it = biometricsList.listIterator();
+                while (it.hasNext()) {
+                    BiometricsRecapture biometrics = it.next();
+                    if (biometrics.getSyncStatus() == 0) {
+                        getBiometricsRecaptureAndSync(biometrics);
+                    }
+                }
+            }
+        }).start();
+    }
+
     private synchronized void getBiometricsAndSync(Biometrics biometrics) {
         new BiometricsRepository().syncBiometrics(biometrics, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private synchronized void getBiometricsRecaptureAndSync(BiometricsRecapture biometricsRecapture) {
+        new BiometricsRepository().syncBiometricsRecapture(biometricsRecapture, new DefaultCallbackListener() {
             @Override
             public void onResponse() {
 

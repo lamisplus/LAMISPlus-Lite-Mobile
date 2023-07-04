@@ -63,17 +63,6 @@ public class NoBiometricsPatientsServerRecyclerViewAdapter extends RecyclerView.
             holder.mGender.setText(personGender);
         }
 
-        List<Person> personDb = PersonDAO.getAllPatients();
-        for (Person p : personDb) {
-            if (p.getPersonId() == person.getPersonId()) {
-                Log.v("Baron", p.getPersonId() + " is same as " + person.getPersonId());
-                holder.downloadPatientButton.setEnabled(false);
-            } else {
-                Log.v("Baron", p.getPersonId() + " Are visible with " + person.getPersonId());
-                //holder.downloadPatientButton.setEnabled(true);
-                holder.downloadPatientButton.setVisibility(View.VISIBLE);
-            }
-        }
 
         try {
             holder.mBirthDate.setText(person.getDateOfBirth());

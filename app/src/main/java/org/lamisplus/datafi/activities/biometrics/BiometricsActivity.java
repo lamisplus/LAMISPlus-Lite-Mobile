@@ -14,6 +14,7 @@ public class BiometricsActivity extends LamisBaseActivity {
     public BiometricsContract.Presenter mPresenter;
     public BiometricsFragment biometricsFragment;
     String patientID = "";
+    Boolean recapture = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,20 @@ public class BiometricsActivity extends LamisBaseActivity {
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
-        mPresenter = new BiometricsPresenter(biometricsFragment, patientID);
+
+        Bundle recaptureBundle = savedInstanceState;
+        if (recaptureBundle != null) {
+            recaptureBundle.getString(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+        } else {
+            recaptureBundle = getIntent().getExtras();
+        }
+
+        if(recaptureBundle != null){
+            recapture = recaptureBundle.getBoolean(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+        }
+
+
+        mPresenter = new BiometricsPresenter(biometricsFragment, patientID, recapture);
     }
 
     @Override

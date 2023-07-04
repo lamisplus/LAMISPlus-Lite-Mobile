@@ -3,20 +3,26 @@ package org.lamisplus.datafi.activities.forms.hepatitis.enrolfollowupcard1;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -31,6 +37,9 @@ import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.PMTCTEnrollment;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.StringUtils;
+import org.lamisplus.datafi.utilities.ToastUtil;
+import org.lamisplus.datafi.utilities.ViewUtils;
 
 import java.util.Calendar;
 
@@ -52,11 +61,12 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
     private AutoCompleteTextView autoTreatmentEligible;
     private AutoCompleteTextView autoPMTCT;
     private AutoCompleteTextView autoAscites;
+    private AutoCompleteTextView autoEncephalopathy;
     private AutoCompleteTextView autoHBsAg;
     private AutoCompleteTextView autoHCVAb;
     private AutoCompleteTextView autoHBeAg;
     private AutoCompleteTextView autoAntiHDV;
-    private AutoCompleteTextView autoFacilityName;
+    private EditText edFacilityName;
     private AutoCompleteTextView autoTreatmentExperience;
     private AutoCompleteTextView autoAdverseEvent;
     private AutoCompleteTextView autoAdverseEventReported;
@@ -82,8 +92,13 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
     private EditText edDateStartedHCVTreatment;
     private EditText edDateCompletedHCVTreatment;
     private EditText edRetreatmentDateSVR12Tested;
+    private EditText edHeight;
+    private EditText edWeight;
+    private EditText edBMI;
 
     private Button saveContinueButton;
+    private LinearLayout autoPregnantView;
+    private LinearLayout autoBreastfeedingView;
 
     private String packageName;
 
@@ -120,11 +135,12 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
         autoTreatmentEligible = root.findViewById(R.id.autoTreatmentEligible);
         autoPMTCT = root.findViewById(R.id.autoPMTCT);
         autoAscites = root.findViewById(R.id.autoAscites);
+        autoEncephalopathy = root.findViewById(R.id.autoEncephalopathy);
         autoHBsAg = root.findViewById(R.id.autoHBsAg);
         autoHCVAb = root.findViewById(R.id.autoHCVAb);
         autoHBeAg = root.findViewById(R.id.autoHBeAg);
         autoAntiHDV = root.findViewById(R.id.autoAntiHDV);
-        autoFacilityName = root.findViewById(R.id.autoFacilityName);
+        edFacilityName = root.findViewById(R.id.edFacilityName);
         autoTreatmentExperience = root.findViewById(R.id.autoTreatmentExperience);
         autoAdverseEvent = root.findViewById(R.id.autoAdverseEvent);
         autoAdverseEventReported = root.findViewById(R.id.autoAdverseEventReported);
@@ -151,15 +167,17 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
         edDateStartedHCVTreatment = root.findViewById(R.id.edDateStartedHCVTreatment);
         edDateCompletedHCVTreatment = root.findViewById(R.id.edDateCompletedHCVTreatment);
         edRetreatmentDateSVR12Tested = root.findViewById(R.id.edRetreatmentDateSVR12Tested);
+        edHeight = root.findViewById(R.id.edHeight);
+        edWeight = root.findViewById(R.id.edWeight);
+        edBMI = root.findViewById(R.id.edBMI);
+
+        autoPregnantView = root.findViewById(R.id.autoPregnantView);
+        autoBreastfeedingView = root.findViewById(R.id.autoBreastfeedingView);
 
         saveContinueButton = root.findViewById(R.id.saveContinueButton);
     }
 
     public void initDropDowns() {
-        String[] facilityName = {"Abuja National Hospital", "Sabo GH Kaduna", "General Hospital Ankpa", "General Hospital Dekina", "FMC Gombe"};
-        ArrayAdapter<String> adapterFacilityName = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, facilityName);
-        autoFacilityName.setAdapter(adapterFacilityName);
-
         String[] gender = getResources().getStringArray(R.array.gender);
         ArrayAdapter<String> adapterGender = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, gender);
         autoSex.setAdapter(adapterGender);
@@ -205,11 +223,46 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
         autoHCVAb.setAdapter(adapterReactiveNonReactive);
         autoHBeAg.setAdapter(adapterReactiveNonReactive);
         autoAntiHDV.setAdapter(adapterReactiveNonReactive);
+
+        String[] encephalopathy = {"0", "1", "2", "3", "4"};
+        ArrayAdapter<String> adapterEncephalopathy = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, encephalopathy);
+        autoEncephalopathy.setAdapter(adapterEncephalopathy);
     }
 
     private void setListeners() {
         saveContinueButton.setOnClickListener(this);
 
+        autoSex.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (autoSex.getText().toString().equals("Male")) {
+                    autoPregnantView.setVisibility(View.GONE);
+                    autoBreastfeedingView.setVisibility(View.GONE);
+                } else {
+                    autoPregnantView.setVisibility(View.VISIBLE);
+                    autoBreastfeedingView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        edHeight.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!StringUtils.isBlank(ViewUtils.getInput(edWeight)) && !StringUtils.isBlank(ViewUtils.getInput(edHeight))){
+                    Integer weight = Integer.parseInt(ViewUtils.getInput(edWeight));
+                    Integer height = Integer.parseInt(ViewUtils.getInput(edHeight));
+
+                    Integer bmi = weight/height;
+                    edBMI.setText(bmi + "");
+                }
+            }
+        });
     }
 
     private void showDatePickers() {
@@ -230,7 +283,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateRegistration.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -252,7 +305,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 eddateFirstPositiveScreening.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -274,7 +327,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 eddateHBVTest.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -296,7 +349,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 eddateHBVSample.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -318,7 +371,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 eddateHBVReported.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -340,7 +393,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edstagingDateLiverBiopsy.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -362,7 +415,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStarted.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -384,7 +437,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStartedNewRegimen.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -406,7 +459,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStopped.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -428,7 +481,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStartedHCV.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -450,7 +503,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateCompletedHCV.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -472,7 +525,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edNewRegimenHCV.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -494,7 +547,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStartedHCVs.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -516,7 +569,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateCompletedHCVs.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -538,7 +591,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateSVR12Tested.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -560,7 +613,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateStartedHCVTreatment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -582,7 +635,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edDateCompletedHCVTreatment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
@@ -604,7 +657,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 edRetreatmentDateSVR12Tested.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
             }, cYear, cMonth, cDay);
 
-            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });

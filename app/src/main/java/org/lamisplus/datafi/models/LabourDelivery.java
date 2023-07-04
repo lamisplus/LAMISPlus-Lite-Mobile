@@ -45,7 +45,7 @@ public class LabourDelivery implements Serializable {
 
     @SerializedName("gaweeks")
     @Expose
-    private Integer gaweeks;
+    private String gaweeks;
 
     @SerializedName("hbstatus")
     @Expose
@@ -163,11 +163,11 @@ public class LabourDelivery implements Serializable {
         this.feedingDecision = feedingDecision;
     }
 
-    public Integer getGaweeks() {
+    public String getGaweeks() {
         return gaweeks;
     }
 
-    public void setGaweeks(Integer gaweeks) {
+    public void setGaweeks(String gaweeks) {
         this.gaweeks = gaweeks;
     }
 

@@ -61,9 +61,11 @@ import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.classes.BiometricsClass;
 import org.lamisplus.datafi.dao.BiometricsDAO;
 import org.lamisplus.datafi.models.Biometrics;
+import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.BiometricsUtil;
 import org.lamisplus.datafi.utilities.FingerPositions;
+import org.lamisplus.datafi.utilities.HashUtil;
 import org.lamisplus.datafi.utilities.ImageUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.ToastUtil;
@@ -114,6 +116,7 @@ public final class FingerActivity extends BiometricActivity {
 
     private PendingIntent mPermissionIntent;
     private IntentFilter filter;
+    Boolean recapture = false;
     // ===========================================================
     // Private methods
     // ===========================================================
@@ -213,6 +216,18 @@ public final class FingerActivity extends BiometricActivity {
         if (patientBundle != null) {
             patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
         }
+
+        Bundle recaptureBundle = savedInstanceState;
+        if (recaptureBundle != null) {
+            recaptureBundle.getString(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+        } else {
+            recaptureBundle = getIntent().getExtras();
+        }
+
+        if (recaptureBundle != null) {
+            recapture = recaptureBundle.getBoolean(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+        }
+
         try {
 
             PreferenceManager.setDefaultValues(this, R.xml.finger_preferences, false);
@@ -269,9 +284,12 @@ public final class FingerActivity extends BiometricActivity {
                                 temporalBiometricsSave.add(value);
                                 fingerPrintCaptureCount = temporalBiometricsSave.size();
                                 fingerSpinners.setSelection(0);
+                                Integer imageQuality = (int) client.getFingersQualityThreshold();
+                                String hashed = HashUtil.bcryptHash(isoTemplate);
+
                                 //This function was created by me in the BiometricActivity to be able to indicate if the capture was successful then after which it is set back to false to prevent subsequent re-use of the already capture fingerprints
                                 setCapturedStatus(false);
-                                biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(value, selectedPosition));
+                                biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(value, selectedPosition, hashed, imageQuality));
                                 bindDrawableResources(getImageView(selectedPosition));
                             }
                         } else {
@@ -303,22 +321,39 @@ public final class FingerActivity extends BiometricActivity {
         if (fingerPrintCaptureCount < 6) {
             CustomDebug("Please capture a minimum of 6 prints before saving", false);
         } else {
-
-            CustomDebug("Saved successfully", false);
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String biometricsList = gson.toJson(biometricsClassFingers);
-            Biometrics biometrics = new Biometrics();
-            Integer pid = Integer.valueOf(patientID);
-            biometrics.setPerson(pid);
-            if (BiometricsDAO.getPatientId(pid) != null) {
-                biometrics.setPatientId(BiometricsDAO.getPatientId(pid));
+            if (!recapture) {
+                CustomDebug("Saved successfully", false);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String biometricsList = gson.toJson(biometricsClassFingers);
+                Biometrics biometrics = new Biometrics();
+                Integer pid = Integer.valueOf(patientID);
+                biometrics.setPerson(pid);
+                if (BiometricsDAO.getPatientId(pid) != null) {
+                    biometrics.setPatientId(BiometricsDAO.getPatientId(pid));
+                }
+                biometrics.setIso(true);
+                biometrics.setDeviceName("Futronic");
+                biometrics.setBiometricType("FINGERPRINT");
+                biometrics.setCapturedBiometricsList(biometricsList);
+                biometrics.setType("SUCCESS");
+                biometrics.save();
+            } else {
+                CustomDebug("Saved successfully", false);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String biometricsList = gson.toJson(biometricsClassFingers);
+                BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
+                Integer pid = Integer.valueOf(patientID);
+                biometricsRecapture.setPerson(pid);
+                if (BiometricsDAO.getPatientId(pid) != null) {
+                    biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(pid));
+                }
+                biometricsRecapture.setIso(true);
+                biometricsRecapture.setDeviceName("Futronic");
+                biometricsRecapture.setBiometricType("FINGERPRINT");
+                biometricsRecapture.setCapturedBiometricsList(biometricsList);
+                biometricsRecapture.setType("SUCCESS");
+                biometricsRecapture.save();
             }
-            biometrics.setIso(true);
-            biometrics.setDeviceName("Futronic");
-            biometrics.setBiometricType("FINGERPRINT");
-            biometrics.setCapturedBiometricsList(biometricsList);
-            biometrics.setType("SUCCESS");
-            biometrics.save();
         }
     }
 
@@ -414,6 +449,7 @@ public final class FingerActivity extends BiometricActivity {
 
     @Override
     protected void updatePreferences(NBiometricClient client) {
+        Log.v("Baron", "The captured Quality is " + client.getFingersQualityThreshold());
         FingerPreferences.updateClient(client, this);
     }
 

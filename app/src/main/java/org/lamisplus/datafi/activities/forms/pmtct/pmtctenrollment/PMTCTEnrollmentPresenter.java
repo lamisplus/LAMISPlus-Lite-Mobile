@@ -74,7 +74,6 @@ public class PMTCTEnrollmentPresenter extends LamisBasePresenter implements PMTC
     }
 
     public boolean validate(PMTCTEnrollment pmtctEnrollment) {
-        LamisCustomHandler.showJson(pmtctEnrollment);
         boolean dateEnrollment = false;
         boolean entryPoint = false;
         boolean artStartDate = false;

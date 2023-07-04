@@ -6,12 +6,13 @@
     android:padding="10dp">
 
     <LinearLayout
+        android:id="@+id/mMotherFollowupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/motherFollowUpVisit"
+            android:id="@+id/motherFollowUpVisitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/mother"
@@ -22,12 +23,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mChildFollowupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/childFollowUpVisit"
+            android:id="@+id/childFollowUpVisitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/child_follow_up_visit"

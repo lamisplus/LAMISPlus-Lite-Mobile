@@ -31,6 +31,17 @@ public class PersonDAO {
         return null;
     }
 
+    public static Boolean checkPersonIdExists(String id) {
+        if(id != null) {
+            Person person = new Select().from(Person.class).where("personId=?", id).executeSingle();
+            if (person != null) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     public void updatePatient(Person person, String id){
         Person foo = Person.load(Person.class, Long.parseLong(id));
         person.save();

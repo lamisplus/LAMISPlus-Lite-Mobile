@@ -46,7 +46,6 @@
                     android:background="@drawable/bg_search" />
 
 
-
             </RelativeLayout>
 
             <LinearLayout
@@ -82,10 +81,10 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
                             android:layout_marginLeft="15dp"
-                            android:textColor="@color/black"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
-                            android:hint="@string/anc_form" />
+                            android:hint="@string/anc_form"
+                            android:textColor="@color/black" />
                     </LinearLayout>
 
                     <View
@@ -117,9 +116,9 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginLeft="15dp"
                             android:fontFamily="@font/nunito_semi_bold"
-                            android:textColor="@color/grey"
                             android:gravity="center_vertical"
-                            android:text="@string/pmtct_enrollment_form" />
+                            android:text="@string/pmtct_enrollment_form"
+                            android:textColor="@color/grey" />
                     </LinearLayout>
 
                     <View
@@ -143,7 +142,7 @@
                             android:id="@+id/genderImage"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_form"/>
+                            android:src="@drawable/ic_form" />
 
                         <TextView
                             android:id="@+id/tvLabourDeliveryForm"
@@ -151,10 +150,10 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
                             android:layout_marginLeft="15dp"
-                            android:textColor="@color/grey"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
-                            android:text="@string/labour_delivery_form" />
+                            android:text="@string/labour_delivery_form"
+                            android:textColor="@color/grey" />
                     </LinearLayout>
 
                     <View
@@ -184,10 +183,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
-                            android:textColor="@color/grey"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
-                            android:text="@string/infant_registration_form" />
+                            android:text="@string/infant_registration_form"
+                            android:textColor="@color/grey" />
                     </LinearLayout>
 
                     <View
@@ -218,13 +217,33 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="15dp"
                             android:layout_marginLeft="15dp"
-                            android:textColor="@color/grey"
                             android:fontFamily="@font/nunito_semi_bold"
                             android:gravity="center_vertical"
-                            android:text="@string/partners_form" />
+                            android:text="@string/partners_form"
+                            android:textColor="@color/grey" />
                     </LinearLayout>
 
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <Button
+                    android:id="@+id/patientDashboardButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:drawableLeft="@drawable/dashboard"
+                    android:text="Go to Patient Dashboard"
+                    android:textAllCaps="false"
+                    android:padding="20dp"
+                    android:textSize="16sp" />
+
             </LinearLayout>
 
 

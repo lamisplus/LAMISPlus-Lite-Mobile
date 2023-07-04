@@ -8,11 +8,15 @@ import com.activeandroid.query.Update;
 import com.google.gson.Gson;
 
 import org.lamisplus.datafi.models.ANC;
+import org.lamisplus.datafi.models.ChildFollowupVisit;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Elicitation;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.InfantRegistration;
 import org.lamisplus.datafi.models.LabourDelivery;
+import org.lamisplus.datafi.models.MotherFollowupVisit;
 import org.lamisplus.datafi.models.PMTCTEnrollment;
+import org.lamisplus.datafi.models.PartnerRegistration;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PostTest;
 import org.lamisplus.datafi.models.PreTest;
@@ -200,6 +204,38 @@ public class EncounterDAO {
     }
 
     /**
+     * This function is useful for editing Mother Followup Visit form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
+     *
+     * @param formName  The name of the form
+     * @param patientId The patient id
+     * @return Recency
+     */
+    public static MotherFollowupVisit findMotherFollowUpVisitFromForm(String formName, String patientId) {
+        Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+        if (encounter != null) {
+            MotherFollowupVisit motherFollowupVisit = new Gson().fromJson(encounter.getDataValues(), MotherFollowupVisit.class);
+            return motherFollowupVisit;
+        }
+        return null;
+    }
+
+    /**
+     * This function is useful for editing Child Followup Visit form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
+     *
+     * @param formName  The name of the form
+     * @param patientId The patient id
+     * @return Recency
+     */
+    public static ChildFollowupVisit findChildFollowUpVisitFromForm(String formName, String patientId) {
+        Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+        if (encounter != null) {
+            ChildFollowupVisit childFollowupVisit = new Gson().fromJson(encounter.getDataValues(), ChildFollowupVisit.class);
+            return childFollowupVisit;
+        }
+        return null;
+    }
+
+    /**
      * This function is useful for editing Labour Delivery form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
      *
      * @param formName  The name of the form
@@ -215,8 +251,48 @@ public class EncounterDAO {
         return null;
     }
 
+    /**
+     * This function is useful for editing Infant Registration form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
+     *
+     * @param formName  The name of the form
+     * @param patientId The patient id
+     * @return Recency
+     */
+    public static InfantRegistration findInfantRegistrationFromForm(String formName, String patientId) {
+        Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+        if (encounter != null) {
+            InfantRegistration infantRegistration = new Gson().fromJson(encounter.getDataValues(), InfantRegistration.class);
+            return infantRegistration;
+        }
+        return null;
+    }
+
+    /**
+     * This function is useful for editing Partner Registration form. It searches for the form and when it finds it, it returns the form and maps it to the corresponding serialized class
+     *
+     * @param formName  The name of the form
+     * @param patientId The patient id
+     * @return Recency
+     */
+    public static PartnerRegistration findPartnerRegistrationFromForm(String formName, String patientId) {
+        Encounter encounter = new Select().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).executeSingle();
+        if (encounter != null) {
+            PartnerRegistration partnerRegistration = new Gson().fromJson(encounter.getDataValues(), PartnerRegistration.class);
+            return partnerRegistration;
+        }
+        return null;
+    }
+
     public static void deleteEncounter(String formName, String patientId) {
         new Delete().from(Encounter.class).where("person = ? AND name = ?", patientId, formName).execute();
+    }
+
+    public static List<Encounter> getAllForms(String formName) {
+        List<Encounter> encounter = new Select().from(Encounter.class).where("name = ?", formName).execute();
+        if(encounter != null){
+            return encounter;
+        }
+        return null;
     }
 
     public static void deleteAllEncounter(long patientId) {

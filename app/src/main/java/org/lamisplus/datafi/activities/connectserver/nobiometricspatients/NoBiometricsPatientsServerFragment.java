@@ -28,6 +28,7 @@ import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.classes.ContactPointClass;
 import org.lamisplus.datafi.dao.CodesetsDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Address;
 import org.lamisplus.datafi.models.PatientIdentifier;
 import org.lamisplus.datafi.models.Person;
@@ -163,7 +164,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                     if (response.isSuccessful()) {
                         mProgressBar.setVisibility(View.GONE);
                         String values = new Gson().toJson(response.body());
-                        //Log.v("Baron", values);
+                        LamisCustomHandler.showJson(response.body());
                         try {
                             JSONArray jsonArray = new JSONArray(new Gson().toJson(response.body()));
 
@@ -188,6 +189,10 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                     person.setPersonId(objSections.getInt("id"));
                                 }
 
+                                if (objSections.has("personUuid")) {
+                                    person.setPersonUuId(objSections.getString("personUuid"));
+                                }
+
                                 if (objSections.has("dateOfBirth")) {
                                     person.setDateOfBirth(objSections.getString("dateOfBirth"));
                                 }
@@ -205,9 +210,6 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                         int sexId = CodesetsDAO.findCodesetsIdByDisplay(objSections.getString("sex"));
                                         person.setSexId(sexId);
                                         person.setGenderId(sexId);
-                                        Log.v("Baron", "Sex is not null and value is " + sexId);
-                                    }else{
-                                        Log.v("Baron", "Sex is null");
                                     }
                                 }
 
@@ -226,7 +228,14 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
 
                                 person.setSynced(true);
                                 person.setFromServer(1);
-                                personList.add(person);
+                                //personList.add(person);
+                                //Check if Person Id already exists on mobile before adding the user
+                                if (objSections.has("id")) {
+                                    Boolean personIdExists = PersonDAO.checkPersonIdExists(objSections.getString("id"));
+                                    if(!personIdExists) {
+                                        personList.add(person);
+                                    }
+                                }
                             }
                             updateListVisibility(true);
                             updateAdapter(personList);
@@ -236,156 +245,6 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                             e.printStackTrace();
                         }
 
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-//                            String records = jsonObject.getString("records");
-//                            Log.v("Baron", records);
-//
-//                            JSONArray jsonArray = jsonObject.getJSONArray("records");
-//                            List<Person> personList = new ArrayList<>();
-//                            for (int j = 0; j < jsonArray.length(); j++) {
-//                                JSONObject objSections = jsonArray.getJSONObject(j);
-//                                Person person = new Person();
-//                                if (objSections.has("firstName")) {
-//                                    person.setFirstName(objSections.getString("firstName"));
-//                                }
-//                                if (objSections.has("otherName")) {
-//                                    person.setOtherName(objSections.getString("otherName"));
-//                                }
-//                                if (objSections.has("surname")) {
-//                                    person.setSurname(objSections.getString("surname"));
-//                                }
-//                                if (objSections.has("dateOfRegistration")) {
-//                                    person.setDateOfRegistration(objSections.getString("dateOfRegistration"));
-//                                }
-//                                if (objSections.has("isDateOfBirthEstimated")) {
-//                                    person.setDateOfBirthEstimated(Boolean.getBoolean(objSections.getString("isDateOfBirthEstimated")));
-//                                }
-//                                if (objSections.has("deceased")) {
-//                                    person.setDeceased(Boolean.getBoolean(objSections.getString("deceased")));
-//                                }
-//
-//                                if (objSections.has("gender")) {
-//                                    JSONObject jsonObjectGender = new JSONObject(objSections.getString("gender"));
-//                                    Integer genderId = Integer.valueOf(jsonObjectGender.getString("id"));
-//                                    person.setGenderId(genderId);
-//                                }
-//
-//                                if (objSections.has("id")) {
-//                                    person.setPersonId(Integer.valueOf(objSections.getInt("id")));
-//                                }
-//
-//                                if (objSections.has("dateOfBirth")) {
-//                                    person.setDateOfBirth(objSections.getString("dateOfBirth"));
-//                                }
-//
-//                                if (objSections.has("maritalStatus")) {
-//                                    JSONObject jsonObjectMaritalStatus = new JSONObject(objSections.getString("maritalStatus"));
-//                                    Integer maritalStatusId = Integer.valueOf(jsonObjectMaritalStatus.getString("id"));
-//                                    person.setMaritalStatusId(maritalStatusId);
-//                                }
-//
-//                                if (objSections.has("education")) {
-//                                    JSONObject jsonObjectEducation = new JSONObject(objSections.getString("education"));
-//                                    Integer educationId = Integer.valueOf(jsonObjectEducation.getString("id"));
-//                                    if (educationId != null) {
-//                                        person.setEducationId(educationId);
-//                                    }
-//                                }
-//
-//                                if (objSections.has("organization")) {
-//                                    JSONObject jsonObjectOrganization = new JSONObject(objSections.getString("organization"));
-//                                    Integer organizationId = Integer.valueOf(jsonObjectOrganization.getString("id"));
-//                                    person.setOrganizationId(organizationId);
-//                                }
-//
-//                                //Address field
-//                                if (objSections.has("address")) {
-//                                    JSONObject jsonObjectAddress = new JSONObject(objSections.getString("address"));
-//                                    JSONArray jsonArrayAddress = jsonObjectAddress.getJSONArray("address");
-//                                    Address address = new Address();
-//                                    if (objSections.has("city")) {
-//                                        address.setCity(jsonArrayAddress.getJSONObject(0).getString("city"));
-//                                    }
-//                                    if (objSections.has("stateId")) {
-//                                        address.setStateId(jsonArrayAddress.getJSONObject(0).getInt("stateId"));
-//                                    }
-//                                    if (objSections.has("district")) {
-//                                        address.setDistrict(jsonArrayAddress.getJSONObject(0).getString("district"));
-//                                    }
-//                                    if (objSections.has("line")) {
-//                                        address.setLine(new String[]{jsonArrayAddress.getJSONObject(0).getString("line")});
-//                                    }
-//                                    if (objSections.has("postalCode")) {
-//                                        address.setPostalCode(jsonArrayAddress.getJSONObject(0).getString("postalCode"));
-//                                    }
-//
-//                                    List<Address> addressList = new ArrayList<>();
-//                                    addressList.add(address);
-//                                    person.setAddress(addressList);
-//                                    person.setAddressList();
-//                                }
-//
-//                                //Identifier field
-//                                if(objSections.has("identifier")) {
-//                                    JSONObject jsonObjectIdentifier = new JSONObject(objSections.getString("identifier"));
-//                                    JSONArray jsonArrayIdentifier = jsonObjectIdentifier.getJSONArray("identifier");
-//
-//                                    PatientIdentifier patientIdentifier = new PatientIdentifier();
-//                                    patientIdentifier.setAssignerId(jsonArrayIdentifier.getJSONObject(0).getInt("assignerId"));
-//                                    patientIdentifier.setType(jsonArrayIdentifier.getJSONObject(0).getString("type"));
-//                                    if (jsonArrayIdentifier.getJSONObject(0).has("value")) {
-//                                        patientIdentifier.setValue(jsonArrayIdentifier.getJSONObject(0).getString("value"));
-//                                    }
-//                                    List<PatientIdentifier> patientIdentifierList = new ArrayList<>();
-//                                    patientIdentifierList.add(patientIdentifier);
-//
-//                                    person.setIdentifierList(patientIdentifierList);
-//                                    person.setIdentifierList();
-//                                }
-//
-//                                //Contact
-//                                if(objSections.has("contactPoint")) {
-//                                    JSONObject jsonObjectContactPoint = new JSONObject(objSections.getString("contactPoint"));
-//                                    JSONArray jsonArrayContactPoint = jsonObjectContactPoint.getJSONArray("contactPoint");
-//
-//                                    List<ContactPointClass.ContactPointItems> contactPointItems = new ArrayList<>();
-//                                    for (int x = 0; x < jsonArrayContactPoint.length(); x++) {
-//                                        JSONObject objSectionsContact = jsonArrayContactPoint.getJSONObject(x);
-//                                        LamisCustomHandler.showJson(objSectionsContact.getString("type"));
-//                                        if (objSectionsContact.getString("type").equals("phone")) {
-//                                            if(objSectionsContact.has("value")) {
-//                                                contactPointItems.add(new ContactPointClass.ContactPointItems("phone", objSectionsContact.getString("value")));
-//                                            }
-//                                        }
-//
-//                                        if (objSectionsContact.getString("type").equals("email")) {
-//                                            if (objSectionsContact.has("value")) {
-//                                                contactPointItems.add(new ContactPointClass.ContactPointItems("email", objSectionsContact.getString("value")));
-//                                            }
-//                                        }
-//
-//                                        if (objSectionsContact.getString("type").equals("altphone")) {
-//                                            if (objSectionsContact.has("value")) {
-//                                                contactPointItems.add(new ContactPointClass.ContactPointItems("altphone", objSectionsContact.getString("value")));
-//                                            }
-//                                        }
-//                                    }
-//                                    String json = new Gson().toJson(contactPointItems);
-//                                    person.setContactPoint(json);
-//                                }
-//                                person.setSynced(true);
-//                                person.setFromServer(1);
-//                                personList.add(person);
-//
-//                            }
-//                            updateListVisibility(true);
-//                            updateAdapter(personList);
-//                        } catch (Exception e) {
-//                            LamisCustomFileHandler.writeLogToFile("NoBiometricis Patient Error: " + e.getMessage());
-//                            mProgressBar.setVisibility(View.GONE);
-//                            e.printStackTrace();
-//                        }
                     }
                 }
 
@@ -399,4 +258,5 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
             ToastUtil.error("No Internet Connection");
         }
     }
+
 }

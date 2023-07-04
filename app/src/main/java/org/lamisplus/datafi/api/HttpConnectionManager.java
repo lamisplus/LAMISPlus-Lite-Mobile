@@ -48,11 +48,6 @@ public class HttpConnectionManager {
         ) {
 //            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 //            return Objects.requireNonNull(response.body()).string();
-            if (!response.isSuccessful()){
-                Log.v("Baron", "Response from post: " + response.message() + " " + response.code());
-            }else{
-                Log.v("Baron", "Successful Response from post: " + response.message() + " " + response.code());
-            }
             return Objects.requireNonNull(response.body()).string();
         }
     }

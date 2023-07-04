@@ -69,14 +69,6 @@ public class FindPatientServerRecyclerViewAdapter extends RecyclerView.Adapter<F
             holder.mGender.setText(personGender);
         }
 
-        List<Person> personDb = PersonDAO.getAllPatients();
-        for (Person p : personDb) {
-            if (p.getPersonId() == person.getPersonId()) {
-                holder.downloadPatientButton.setVisibility(View.GONE);
-            }else{
-                holder.downloadPatientButton.setVisibility(View.VISIBLE);
-            }
-        }
 
         try {
             holder.mBirthDate.setText(person.getDateOfBirth());

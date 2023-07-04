@@ -117,7 +117,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
             setListeners();
             showDatePickers();
             packageName = LamisPlus.getInstance().getPackageName(getActivity());
-            if (mPresenter.getPatientId() != null) {
+            if (mPresenter.getPatientId() != null && !mPresenter.getPatientId().equals("")) {
                 person = PersonDAO.findPersonById(mPresenter.getPatientId());
             }
             if (person != null) {
@@ -126,7 +126,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                     riskAssessmentLayout.setVisibility(View.VISIBLE);
                 }
             }
-            if (mPresenter.getPatientId() != null) {
+            if (mPresenter.getPatientId() != null && !mPresenter.getPatientId().equals("")) {
                 RiskStratification rst = mPresenter.patientToUpdate(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM, mPresenter.getPatientId());
                 if (rst != null) {
                     fillFields(rst);

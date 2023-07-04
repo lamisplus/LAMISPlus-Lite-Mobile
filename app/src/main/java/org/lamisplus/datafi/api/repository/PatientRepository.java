@@ -81,12 +81,13 @@ public class PatientRepository extends RetrofitRepository {
                                 syncedIds.add(person.getId());
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                                 String serverId = jsonObject.getString("id");
-                                //The Id from the server is a string so we had to convert it using the Number format to int
+                                String serverUuid = jsonObject.getString("uuid");
                                 NumberFormat defForm = NumberFormat.getInstance();
                                 Number d = defForm.parse(serverId);
                                 int id = d.intValue();
 
                                 person.setPersonId(id);
+                                person.setPersonUuId(serverUuid);
                                 person.setSynced(true);
                                 person.save();
 

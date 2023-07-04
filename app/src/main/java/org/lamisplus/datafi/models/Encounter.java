@@ -46,6 +46,14 @@ public class Encounter extends Model implements Serializable {
     @Expose
     private boolean synced;
 
+    @Column(name = "dateTime")
+    @SerializedName("dateTime")
+    private String dateTime;
+
+    @Column(name = "lastEditDateTime")
+    @SerializedName("lastEditDateTime")
+    private String lastEditDateTime;
+
     public String getName() {
         return name;
     }
@@ -92,5 +100,21 @@ public class Encounter extends Model implements Serializable {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getLastEditDateTime() {
+        return lastEditDateTime;
+    }
+
+    public void setLastEditDateTime(String lastEditDateTime) {
+        this.lastEditDateTime = lastEditDateTime;
     }
 }

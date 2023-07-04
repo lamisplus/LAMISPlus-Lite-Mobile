@@ -41,10 +41,18 @@ public class Person extends Model implements Serializable {
     @SerializedName("personId")
     private Integer personId = null;
 
+    @Column(name = "personUuId")
+    @SerializedName("personUuId")
+    private String personUuId = null;
+
     @Column(name = "active")
     @SerializedName("active")
     @Expose
     private boolean active;
+
+    @Column(name = "biometricStatus")
+    @SerializedName("biometricStatus")
+    private boolean biometricStatus;
 
     @SerializedName("addressList")
     private List<Address> addressList = new ArrayList<>();
@@ -162,6 +170,14 @@ public class Person extends Model implements Serializable {
         this.synced = synced;
     }
 
+    public boolean isBiometricStatus() {
+        return biometricStatus;
+    }
+
+    public void setBiometricStatus(boolean biometricStatus) {
+        this.biometricStatus = biometricStatus;
+    }
+
     public Integer getFromServer() {
         return fromServer;
     }
@@ -176,6 +192,14 @@ public class Person extends Model implements Serializable {
 
     public void setPersonId(Integer personId) {
         this.personId = personId;
+    }
+
+    public String getPersonUuId() {
+        return personUuId;
+    }
+
+    public void setPersonUuId(String personUuId) {
+        this.personUuId = personUuId;
     }
 
     public boolean isActive() {

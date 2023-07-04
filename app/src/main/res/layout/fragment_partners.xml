@@ -41,6 +41,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:hint=""
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -95,7 +98,7 @@
                     app:helperText="Partner Full Name *">
 
                     <EditText
-                        android:id="@+id/edPartnerFullName"
+                        android:id="@+id/edFullName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -115,7 +118,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/edInfantGivenNameTIL"
+                    android:id="@+id/edAgeTIL"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,7 +127,7 @@
                     app:helperText="Partner age *">
 
                     <EditText
-                        android:id="@+id/edInfantGivenName"
+                        android:id="@+id/edAge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -245,7 +248,7 @@
                     app:helperText="HBV Status">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoHBVStatus"
+                        android:id="@+id/autoHBStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -275,7 +278,7 @@
                     app:helperText="HCV Status">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autoHCVStatus"
+                        android:id="@+id/autoHCStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
@@ -350,7 +353,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/saveContinueButton"
+                    android:id="@+id/mSaveContinueButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

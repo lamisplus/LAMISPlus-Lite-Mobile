@@ -648,7 +648,12 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                 if (isUpdateClientIntake) {
                     mPresenter.confirmUpdate(updateEncounter(updatedClientIntake), updatedForm);
                 } else {
-                    mPresenter.confirmCreate(createEncounter(), createPatient(), packageName);
+                    //If the mPresenter.getPatientId is not null then this user is already exisiting and needs the details updated
+                    if(mPresenter.getPatientId() != null && !mPresenter.getPatientId().equals("")) {
+                        mPresenter.confirmCreate(createEncounter(), packageName);
+                    }else{
+                        mPresenter.confirmCreate(createEncounter(), createPatient(), packageName);
+                    }
                 }
                 break;
             default:

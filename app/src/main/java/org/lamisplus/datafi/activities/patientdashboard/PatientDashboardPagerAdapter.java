@@ -99,12 +99,12 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     }
 
     private boolean checkPMTCTEligibility() {
-//        Person person = PersonDAO.findPersonById(mPatientId);
-//        if(person != null){
-//            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
-//        }
-//        return false;
+        Person person = PersonDAO.findPersonById(mPatientId);
+        if(person != null){
+            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
+        }
         return false;
+        //return false;
     }
 
 

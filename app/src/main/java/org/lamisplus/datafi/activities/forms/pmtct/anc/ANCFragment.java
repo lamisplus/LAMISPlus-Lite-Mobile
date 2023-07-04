@@ -175,7 +175,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
             } else {
                 patientDetailsView.setVisibility(View.GONE);
             }
-            if (mPresenter.patientToUpdate(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId()) != null) {
+            if (StringUtils.notEmpty(mPresenter.getPatientId()) && mPresenter.patientToUpdate(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId()) != null) {
                 fillFields(mPresenter.patientToUpdate(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId()));
             }
         }
@@ -305,24 +305,40 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         });
 
         edDateEnrollment.setOnClickListener(v -> {
-            int cYear;
-            int cMonth;
-            int cDay;
+            if (!StringUtils.isBlank(ViewUtils.getInput(edRegistrationDate))) {
+                int cYear;
+                int cMonth;
+                int cDay;
 
-            Calendar currentDate = Calendar.getInstance();
-            cYear = currentDate.get(Calendar.YEAR);
-            cMonth = currentDate.get(Calendar.MONTH);
-            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
+                cYear = currentDate.get(Calendar.YEAR);
+                cMonth = currentDate.get(Calendar.MONTH);
+                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                int adjustedMonth = selectedMonth + 1;
-                String stringMonth = String.format("%02d", adjustedMonth);
-                String stringDay = String.format("%02d", selectedDay);
-                edDateEnrollment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-            }, cYear, cMonth, cDay);
-            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            mDatePicker.setTitle(getString(R.string.date_picker_title));
-            mDatePicker.show();
+                String dateTestVisitDate = ViewUtils.getInput(edRegistrationDate);
+                String[] explodeDate = dateTestVisitDate.split("-");
+                int yearVisit = Integer.valueOf(explodeDate[0]);
+                int monthVisit = Integer.valueOf(explodeDate[1]);
+                int dayVisit = Integer.valueOf(explodeDate[2]);
+
+
+                LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
+                DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
+                Long regMillis = bdt.getMillis();
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    int adjustedMonth = selectedMonth + 1;
+                    String stringMonth = String.format("%02d", adjustedMonth);
+                    String stringDay = String.format("%02d", selectedDay);
+                    edDateEnrollment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                }, cYear, cMonth, cDay);
+                mDatePicker.getDatePicker().setMinDate(regMillis);
+                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.setTitle(getString(R.string.date_picker_title));
+                mDatePicker.show();
+            }else{
+                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Date of Registration first");
+            }
         });
 
         edLmp.setOnClickListener(v -> {
@@ -773,6 +789,8 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
                 int max_age = 60;
                 if (strEnteredVal != null && !strEnteredVal.equals("")) {
                     int num = Integer.parseInt(strEnteredVal);
+                   String dateOfBirth = DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge)));
+                   edDateofBirth.setText(dateOfBirth);
                     if (num > max_age) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 getContext());
@@ -866,7 +884,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
 
         if (gravida) {
             edGravidaTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edGravidaTIL.setError("This field is required");
+            edGravidaTIL.setError("This field is required or check that Gravida is not less than parity");
         }
 
         if (lmp) {
@@ -916,7 +934,8 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
 
         if (dateOfBirthError) {
             edDateofBirthTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edDateofBirthTIL.setError("Select the Date of Birth");
+            edDateofBirthTIL.setError("Please check the Date of Birth or confirm that this patient is above 10 years old");
+            labelAge.setError("Please check the Date of Birth or confirm that this patient is above 10 years old");
         }
 
         if (dateOfRegisterError) {

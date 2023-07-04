@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import org.lamisplus.datafi.activities.forms.pmtct.infantregistration.InfantRegi
 import org.lamisplus.datafi.activities.forms.pmtct.labourdelivery.LabourDeliveryActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.partners.PartnersActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.pmtctenrollment.PMTCTEnrollmentActivity;
+import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
@@ -45,6 +47,7 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
     private TextView tvLabourDeliveryForm;
     private TextView tvInfantInformationForm;
     private TextView tvPartnersForm;
+    private Button patientDashboardButton;
 
 
     @Nullable
@@ -70,6 +73,7 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
         lvLabourDeliveryFormView = root.findViewById(R.id.lvLabourDeliveryFormView);
         lvInfantInformationFormView = root.findViewById(R.id.lvInfantInformationFormView);
         lvPartnersFormView = root.findViewById(R.id.lvPartnersFormView);
+        patientDashboardButton = root.findViewById(R.id.patientDashboardButton);
 
         tvAnc = root.findViewById(R.id.tvAnc);
         tvPmtctEnrollmentForm = root.findViewById(R.id.tvPmtctEnrollmentForm);
@@ -101,6 +105,7 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
         lvLabourDeliveryFormView.setOnClickListener(this);
         lvInfantInformationFormView.setOnClickListener(this);
         lvPartnersFormView.setOnClickListener(this);
+        patientDashboardButton.setOnClickListener(this);
     }
 
 
@@ -144,6 +149,15 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
                 } else {
                     Intent intentPartners = new Intent(getActivity(), PartnersActivity.class);
+                    intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                    startActivity(intentPartners);
+                }
+                break;
+            case R.id.patientDashboardButton:
+                if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
+                    ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
+                } else {
+                    Intent intentPartners = new Intent(getActivity(), PatientDashboardActivity.class);
                     intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
                     startActivity(intentPartners);
                 }

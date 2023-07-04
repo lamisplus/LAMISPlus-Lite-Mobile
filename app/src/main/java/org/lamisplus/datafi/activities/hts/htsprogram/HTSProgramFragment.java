@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.hts.htsprogram;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.FontsUtil;
+import org.lamisplus.datafi.utilities.LamisCustomHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +102,7 @@ public class HTSProgramFragment extends LamisBaseFragment<HTSProgramContract.Pre
             public void run() {
 
                 List<Person> personList = new Select().from(Person.class).orderBy("id DESC").execute();
+                LamisCustomHandler.showJson(personList);
                 updateListVisibility(true);
                 updateAdapter(personList);
 

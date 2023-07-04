@@ -10,8 +10,10 @@ import org.lamisplus.datafi.activities.LamisBasePresenter;
 import org.lamisplus.datafi.activities.forms.hts.clientintake.ClientIntakeContract;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.ClientIntake;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.PreTest;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
@@ -51,6 +53,10 @@ public class PreTestPresenter extends LamisBasePresenter implements PreTestContr
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM);
             encounter.setPerson(patientId);
+            Person person = PersonDAO.findPersonById(patientId);
+            if(person != null && person.getPersonId() != null) {
+                encounter.setPersonId(person.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(clientIntakeEncounter);
             encounter.save();

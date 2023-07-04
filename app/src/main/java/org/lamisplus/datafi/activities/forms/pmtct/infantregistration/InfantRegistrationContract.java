@@ -3,7 +3,7 @@ package org.lamisplus.datafi.activities.forms.pmtct.infantregistration;
 import org.lamisplus.datafi.activities.LamisBasePresenterContract;
 import org.lamisplus.datafi.activities.LamisBaseView;
 import org.lamisplus.datafi.models.Encounter;
-import org.lamisplus.datafi.models.PMTCTEnrollment;
+import org.lamisplus.datafi.models.InfantRegistration;
 
 public class InfantRegistrationContract {
 
@@ -11,20 +11,20 @@ public class InfantRegistrationContract {
 
         void scrollToTop();
 
-        void startPMTCTEnrollmentActivity();
+        void startPMTCTServicesActivity();
 
-        void setErrorsVisibility(boolean dateOfBirth, boolean entryPoint, boolean settings, boolean modality, boolean visitDate, boolean targetGroup, boolean autolastHivTestBasedOnRequest);
+        void setErrorsVisibility(boolean InfantGivenName, boolean sex, boolean hospitalNumber);
     }
 
     interface Presenter extends LamisBasePresenterContract{
 
         String getPatientId();
 
-        PMTCTEnrollment patientToUpdate(String formName, String patientId);
+        InfantRegistration patientToUpdate(String formName, String patientId);
 
-        void confirmCreate(PMTCTEnrollment pmtctEnrollment, String packageName);
+        void confirmCreate(InfantRegistration infantRegistration, String packageName);
 
-        void confirmUpdate(PMTCTEnrollment pmtctEnrollment, Encounter encounter);
+        void confirmUpdate(InfantRegistration infantRegistration, Encounter encounter);
         void confirmDeleteEncounter(String formName, String patientId);
     }
 }

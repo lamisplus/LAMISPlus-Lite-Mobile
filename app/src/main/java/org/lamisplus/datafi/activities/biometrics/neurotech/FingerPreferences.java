@@ -57,7 +57,7 @@ public final class FingerPreferences extends PreferenceActivity {
         client.setFingersMaximalRotation(Float.valueOf(preferences.getInt(MAXIMAL_ROTATION, 180)));
 
         client.setFingersTemplateSize(NTemplateSize.get(Integer.valueOf(preferences.getString(TEMPLATE_SIZE, String.valueOf(NTemplateSize.SMALL.getValue())))));
-        client.setFingersQualityThreshold((byte) preferences.getInt(QUALITY_THRESHOLD, (byte) 39));
+        client.setFingersQualityThreshold((byte) preferences.getInt(QUALITY_THRESHOLD, (byte) 60));
         client.setFingersFastExtraction(preferences.getBoolean(FAST_EXTRACTION, false));
         client.setFingersReturnBinarizedImage(preferences.getBoolean(RETURN_BINARIZED_IMAGE, false));
 
