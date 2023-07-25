@@ -19,6 +19,7 @@ import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.listeners.retrofit.DefaultCallbackListener;
 import org.lamisplus.datafi.models.Biometrics;
 import org.lamisplus.datafi.models.BiometricsRecapture;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 
@@ -46,6 +47,8 @@ public class BiometricsRepository extends RetrofitRepository {
         final String payload = biometricsJson.replaceAll("\\\\", "").replaceAll("\"\\[\\{", "[{").replaceAll("\\}\\]\"", "}]");
         LamisCustomHandler.showJson(payload.replaceAll("\\/", ""));
         //LamisCustomFileHandler.writeLogToFile(payload.replaceAll("\\/", ""));
+        Integer personTable = biometrics.getPerson();
+
         JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
         if (NetworkUtils.isOnline()) {
             if(biometrics.getSyncStatus() == 0) {
@@ -55,6 +58,10 @@ public class BiometricsRepository extends RetrofitRepository {
                     public void onResponse(Call<Object> call, Response<Object> response) {
                         if (response.isSuccessful()) {
                             LamisCustomFileHandler.writeLogToFile("Patient Biometrics Synced successfully");
+
+                            Person person = Person.load(Person.class, personTable);
+                            person.setBiometricStatus(true);
+                            person.save();
 
                             biometrics.setSyncStatus(1);
                             biometrics.save();

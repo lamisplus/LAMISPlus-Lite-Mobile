@@ -26,10 +26,7 @@ public class BiometricsPresenter extends LamisBasePresenter implements Biometric
 
     @Override
     public Integer getPatientId() {
-        if(patientId != null) {
-            return Integer.parseInt(patientId);
-        }
-        return null;
+        return Integer.parseInt(patientId);
     }
 
     @Override

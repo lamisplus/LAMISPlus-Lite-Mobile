@@ -21,6 +21,7 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.api.CustomApiCallback;
 import org.lamisplus.datafi.api.repository.BiometricsRepository;
 import org.lamisplus.datafi.api.repository.HTSRepository;
+import org.lamisplus.datafi.api.repository.PMTCTRepository;
 import org.lamisplus.datafi.api.repository.PatientRepository;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.BiometricsDAO;
@@ -240,23 +241,23 @@ public class SyncServices extends IntentService {
                 while (it.hasNext()) {
                     Encounter encounter = it.next();
                     if (encounter.getName().equals(ApplicationConstants.Forms.PRE_TEST_COUNSELING_FORM)) {
-                        if (encounter != null && !encounter.isSynced()) {
+                        if (!encounter.isSynced()) {
                             getPreTestAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.REQUEST_RESULT_FORM)) {
-                        if (encounter != null && !encounter.isSynced()) {
+                        if (!encounter.isSynced()) {
                             getRequestResultAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.POST_TEST_COUNSELING_FORM)) {
-                        if (encounter != null && !encounter.isSynced()) {
+                        if (!encounter.isSynced()) {
                             getPostTestAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.HIV_RECENCY_FORM)) {
-                        if (encounter != null && !encounter.isSynced()) {
+                        if (!encounter.isSynced()) {
                             getHivRecencyAndSync(encounter);
                         }
                     } else if (encounter.getName().equals(ApplicationConstants.Forms.ELICITATION)) {
-                        if (encounter != null && !encounter.isSynced()) {
+                        if (!encounter.isSynced()) {
                             getIndexElicitationAndSync(encounter);
                         }
                     }
@@ -289,6 +290,8 @@ public class SyncServices extends IntentService {
                 } else if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) == 0 && EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.CLIENT_INTAKE_FORM) > 0) {
                     countUnsyncedClientIntakeAndSync();
                 } else {
+                    syncANC();
+                    syncPMTCTEnrollment();
                     if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) == 0 && EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.CLIENT_INTAKE_FORM) == 0) {
                         syncOtherHTSForms();
                     }
@@ -380,6 +383,72 @@ public class SyncServices extends IntentService {
         });
     }
 
+    private synchronized void getANCAndSync(Encounter encounter) {
+        new PMTCTRepository().syncANC(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncANC() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterANCList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.ANC_FORM);
+                final ListIterator<Encounter> it = encounterANCList.listIterator();
+                if (encounterANCList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getANCAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+
+    private synchronized void getPMTCTEnrollmentAndSync(Encounter encounter) {
+        new PMTCTRepository().syncPMTCTEnrollment(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncPMTCTEnrollment() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterPMTCTEnrollmentList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.PMTCT_ENROLLMENT_FORM);
+                final ListIterator<Encounter> it = encounterPMTCTEnrollmentList.listIterator();
+                if (encounterPMTCTEnrollmentList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getPMTCTEnrollmentAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
 
 }
 

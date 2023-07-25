@@ -46,13 +46,18 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
     @Override
     public void confirmCreate(ANC anc, Person person, String packageName) {
         //If the patient id is not null then it means the patient is an existing
-        if (patientId != null && StringUtils.notEmpty(patientId)) {
+        if (StringUtils.notEmpty(patientId)) {
             if (validate(anc)) {
                 //save the ANC form
                 String ancEncounter = new Gson().toJson(anc);
                 Encounter encounter = new Encounter();
                 encounter.setName(ApplicationConstants.Forms.ANC_FORM);
                 encounter.setPerson(String.valueOf(patientId));
+                //Get the person ANC and save along
+                Person personANC = PersonDAO.findPersonById(patientId);
+                if(personANC != null && personANC.getPersonId() != null) {
+                    encounter.setPersonId(personANC.getPersonId());
+                }
                 encounter.setPackageName(packageName);
                 encounter.setDataValues(ancEncounter);
                 encounter.save();
@@ -115,7 +120,7 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
             ancNo = true;
         }
 
-        if (StringUtils.isBlank(anc.getDateOfEnrollment())) {
+        if (StringUtils.isBlank(anc.getFirstAncDate())) {
             dateOfEnrollment = true;
         }
 
@@ -166,6 +171,7 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
         boolean genderError = false;
         boolean maritalNull = false;
         boolean educationNull = false;
+        boolean employmentStatusNull = false;
         boolean phoneNull = false;
         boolean stateError = false;
         boolean provinceError = false;
@@ -176,7 +182,7 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
         boolean dateOfRegisterError = false;
         boolean hospitalError = false;
 
-        ancInfoView.setErrorsVisibilityPatient(dateOfRegisterError, hospitalError, firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError,
+        ancInfoView.setErrorsVisibilityPatient(dateOfRegisterError, hospitalError, firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, employmentStatusNull, phoneNull, stateError, provinceError, addressError,
                 nokFirstNameError, nokMiddleNameError, nokLastNameError);
 
         if (StringUtils.isBlank(person.getFirstName())
@@ -222,6 +228,10 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
             educationNull = true;
         }
 
+        if (person.getEmploymentStatusId() == null) {
+            employmentStatusNull = true;
+        }
+
         if (StringUtils.isBlank(person.pullContactPointList().get(0).getValue())
                 || !ViewUtils.validateText(person.pullContactPointList().get(0).getValue(), ViewUtils.ILLEGAL_CHARACTERS)) {
             phoneNull = true;
@@ -252,12 +262,12 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
         }
 
         boolean result = !firstNameError && !lastNameError && !middleNameError && !dateOfRegisterError && !dateOfBirthError && !hospitalError && !genderError && !maritalNull
-                && !educationNull && !phoneNull && !stateError && !provinceError && !addressError && !nokFirstNameError && !nokMiddleNameError && !nokLastNameError;
+                && !educationNull && !employmentStatusNull && !phoneNull && !stateError && !provinceError && !addressError && !nokFirstNameError && !nokMiddleNameError && !nokLastNameError;
 
         if (result) {
             return true;
         } else {
-            ancInfoView.setErrorsVisibilityPatient(dateOfRegisterError, hospitalError, firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, phoneNull, stateError, provinceError, addressError,
+            ancInfoView.setErrorsVisibilityPatient(dateOfRegisterError, hospitalError, firstNameError, lastNameError, middleNameError, dateOfBirthError, genderError, maritalNull, educationNull, employmentStatusNull, phoneNull, stateError, provinceError, addressError,
                     nokFirstNameError, nokMiddleNameError, nokLastNameError);
             return false;
         }
@@ -265,7 +275,7 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
 
     @Override
     public void confirmDeleteEncounter(String formName, String patientId) {
-        //EncounterDAO.deleteEncounter(formName, patientId);
+        EncounterDAO.deleteEncounter(formName, patientId);
         ancInfoView.startPMTCTEnrollmentActivity();
     }
 

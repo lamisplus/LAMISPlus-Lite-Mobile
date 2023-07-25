@@ -127,6 +127,11 @@ public class Person extends Model implements Serializable {
     @Expose
     private Integer educationId;
 
+    @SerializedName("employmentStatusId")
+    @Column(name = "employmentStatusId")
+    @Expose
+    private Integer employmentStatusId;
+
     @SerializedName("maritalStatusId")
     @Column(name = "maritalStatusId")
     @Expose
@@ -399,6 +404,14 @@ public class Person extends Model implements Serializable {
 
     public void setEducationId(Integer educationId) {
         this.educationId = educationId;
+    }
+
+    public Integer getEmploymentStatusId() {
+        return employmentStatusId;
+    }
+
+    public void setEmploymentStatusId(Integer employmentStatusId) {
+        this.employmentStatusId = employmentStatusId;
     }
 
     public String getEmrId() {

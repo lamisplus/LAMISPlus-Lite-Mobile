@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.neurotec.biometrics.NBiometricStatus;
@@ -68,6 +70,7 @@ import org.lamisplus.datafi.utilities.FingerPositions;
 import org.lamisplus.datafi.utilities.HashUtil;
 import org.lamisplus.datafi.utilities.ImageUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
+import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -117,6 +120,8 @@ public final class FingerActivity extends BiometricActivity {
     private PendingIntent mPermissionIntent;
     private IntentFilter filter;
     Boolean recapture = false;
+    private TextInputLayout edReasonTIL;
+    private EditText edReason;
     // ===========================================================
     // Private methods
     // ===========================================================
@@ -244,6 +249,9 @@ public final class FingerActivity extends BiometricActivity {
             imgViewRightRingFinger = findViewById(R.id.imgViewRightRingFinger);
             imgViewRightLittleFinger = findViewById(R.id.imgViewRightLittleFinger);
 
+            edReasonTIL = findViewById(R.id.edReasonTIL);
+            edReason = findViewById(R.id.edReason);
+
             mFingerView = new NFingerView(this);
             layout.addView(mFingerView);
 
@@ -332,27 +340,33 @@ public final class FingerActivity extends BiometricActivity {
                     biometrics.setPatientId(BiometricsDAO.getPatientId(pid));
                 }
                 biometrics.setIso(true);
-                biometrics.setDeviceName("Futronic");
+                biometrics.setDeviceName("Futronic Mobile");
                 biometrics.setBiometricType("FINGERPRINT");
                 biometrics.setCapturedBiometricsList(biometricsList);
                 biometrics.setType("SUCCESS");
                 biometrics.save();
             } else {
-                CustomDebug("Saved successfully", false);
-                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-                String biometricsList = gson.toJson(biometricsClassFingers);
-                BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
-                Integer pid = Integer.valueOf(patientID);
-                biometricsRecapture.setPerson(pid);
-                if (BiometricsDAO.getPatientId(pid) != null) {
-                    biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(pid));
+                if (fingerPrintCaptureCount < 10 && StringUtils.isBlank(ViewUtils.getInput(edReason))) {
+                    edReasonTIL.setVisibility(View.VISIBLE);
+                    CustomDebug("Captured fingerprints is less than 10 for recapture. Enter the reason on the box shown", false);
+                } else {
+                    CustomDebug("Saved successfully", false);
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    String biometricsList = gson.toJson(biometricsClassFingers);
+                    BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
+                    Integer pid = Integer.valueOf(patientID);
+                    biometricsRecapture.setPerson(pid);
+                    if (BiometricsDAO.getPatientId(pid) != null) {
+                        biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(pid));
+                    }
+                    biometricsRecapture.setIso(true);
+                    biometricsRecapture.setDeviceName("Futronic Mobile");
+                    biometricsRecapture.setBiometricType("FINGERPRINT");
+                    biometricsRecapture.setCapturedBiometricsList(biometricsList);
+                    biometricsRecapture.setType("SUCCESS");
+                    biometricsRecapture.setReason(ViewUtils.getInput(edReason));
+                    biometricsRecapture.save();
                 }
-                biometricsRecapture.setIso(true);
-                biometricsRecapture.setDeviceName("Futronic");
-                biometricsRecapture.setBiometricType("FINGERPRINT");
-                biometricsRecapture.setCapturedBiometricsList(biometricsList);
-                biometricsRecapture.setType("SUCCESS");
-                biometricsRecapture.save();
             }
         }
     }

@@ -39,7 +39,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -66,7 +65,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -99,7 +97,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -143,7 +140,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -169,7 +165,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -196,7 +191,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -223,7 +217,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:maxLength="11"
                         android:inputType="number" />
 
@@ -251,7 +244,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -418,8 +410,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
-                        android:inputType="text" />
+                        android:inputType="number"
+                        android:maxLength="3"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -446,8 +438,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
-                        android:inputType="text" />
+                        android:maxLength="3"
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -474,7 +466,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
-                        android:hint=""
                         android:clickable="false"
                         android:cursorVisible="false"
                         android:focusable="false"
@@ -488,7 +479,8 @@
                 android:id="@+id/autoPregnantView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/autoPregnantTIL"
@@ -517,7 +509,8 @@
                 android:id="@+id/autoBreastfeedingView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/autoBreastfeedingTIL"
@@ -650,7 +643,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -758,7 +750,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -790,7 +781,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -822,7 +812,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -852,8 +841,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
-                        android:inputType="text" />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -881,7 +869,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -911,7 +898,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1001,7 +987,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:id="@+id/autoPMTCTView"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/autoPMTCTTIL"
@@ -1046,7 +1034,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1091,8 +1078,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
-                        android:inputType="text" />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1111,7 +1097,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1225,7 +1210,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1246,7 +1230,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1266,7 +1249,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1296,7 +1278,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1317,7 +1298,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1337,7 +1317,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1367,8 +1346,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
-                        android:inputType="text" />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1387,7 +1365,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1417,7 +1394,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1448,7 +1424,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1479,7 +1454,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1508,7 +1482,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1537,7 +1510,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1567,7 +1539,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1596,7 +1567,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1678,7 +1648,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1707,7 +1676,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1745,7 +1713,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1864,7 +1831,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1893,7 +1859,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1925,7 +1890,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -1968,7 +1932,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2000,7 +1963,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2056,7 +2018,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2088,7 +2049,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2151,7 +2111,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2224,7 +2183,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2256,7 +2214,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2288,7 +2245,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2344,7 +2300,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2402,7 +2357,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2434,7 +2388,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2507,7 +2460,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2538,7 +2490,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2558,7 +2509,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2603,7 +2553,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2632,7 +2581,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2690,7 +2638,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2722,7 +2669,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2769,7 +2715,6 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2799,7 +2744,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -2819,7 +2763,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_design"
                         android:fontFamily="@font/nunito_semi_bold"
-                        android:hint=""
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>

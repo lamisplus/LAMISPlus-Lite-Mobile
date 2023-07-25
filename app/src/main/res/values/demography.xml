@@ -275,6 +275,7 @@
 
     <!-- PMTCT -->
     <string-array name="source_of_referral">
+        <item>Community Mobilization</item>
         <item>PMTCT Outreach</item>
         <item>Sex Worker Outreach</item>
         <item>Medical Outpatient</item>
@@ -290,26 +291,23 @@
 
     <string-array name="pmtct_point_of_entry">
         <item>ANC</item>
-        <item>L&amp;D</item>
-        <item>Postnatal ward</item>
+        <item>PMTCT</item>
     </string-array>
 
     <string-array name="timing_art_initiation">
         <item>Prior to this pregnancy</item>
         <item>Initiated ART during pregnancy &lt;36 weeks gestation period</item>
-        <item>Initiated ART during pregnancy &#x2265;36 weeks gestation period</item>
+        <item>Initiated ART during pregnancy &#x2265; 36 weeks gestation period</item>
         <item>Initiated ART at L&amp;D</item>
         <item>Initiated ART at L&amp;D/Initiated ART after delivery (post-partum)</item>
     </string-array>
 
     <string-array name="tb_status">
-        <item>No sign or symptoms of TB</item>
-        <item>TB suspected and referred for evaluation</item>
-        <item>Currently on INH prophylaxis</item>
-        <item>Currently on TB treatment</item>
-        <item>TB positive not on TB drugs</item>
-        <item>Presumptive TB</item>
         <item>Confirmed TB</item>
+        <item>Currently on TB treatment</item>
+        <item>Currently on TPT</item>
+        <item>No sign or symptoms of TB</item>
+        <item>Presumptive TB</item>
     </string-array>
 
     <!--neurotach -->
@@ -561,6 +559,11 @@
         <item>Indeterminate</item>
         <item>Negative</item>
         <item>Positive</item>
+    </string-array>
+    <string-array name="pmtct_hiv_status">
+        <item>Positive</item>
+        <item>Negative</item>
+        <item>Unknown</item>
     </string-array>
 </resources>
 

@@ -99,6 +99,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
     private Button saveContinueButton;
     private LinearLayout autoPregnantView;
     private LinearLayout autoBreastfeedingView;
+    private LinearLayout autoPMTCTView;
 
     private String packageName;
 
@@ -173,6 +174,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
 
         autoPregnantView = root.findViewById(R.id.autoPregnantView);
         autoBreastfeedingView = root.findViewById(R.id.autoBreastfeedingView);
+        autoPMTCTView = root.findViewById(R.id.autoPMTCTView);
 
         saveContinueButton = root.findViewById(R.id.saveContinueButton);
     }
@@ -238,9 +240,11 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                 if (autoSex.getText().toString().equals("Male")) {
                     autoPregnantView.setVisibility(View.GONE);
                     autoBreastfeedingView.setVisibility(View.GONE);
+                    autoPMTCTView.setVisibility(View.GONE);
                 } else {
                     autoPregnantView.setVisibility(View.VISIBLE);
                     autoBreastfeedingView.setVisibility(View.VISIBLE);
+                    autoPMTCTView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -258,7 +262,7 @@ public class EnrolmentFollowUpCard1Fragment extends LamisBaseFragment<EnrolmentF
                     Integer weight = Integer.parseInt(ViewUtils.getInput(edWeight));
                     Integer height = Integer.parseInt(ViewUtils.getInput(edHeight));
 
-                    Integer bmi = weight/height;
+                    Integer bmi = weight/(height * height);
                     edBMI.setText(bmi + "");
                 }
             }

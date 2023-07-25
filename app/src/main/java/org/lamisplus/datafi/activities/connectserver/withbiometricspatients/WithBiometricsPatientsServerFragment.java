@@ -1,4 +1,4 @@
-package org.lamisplus.datafi.activities.connectserver.nobiometricspatients;
+package org.lamisplus.datafi.activities.connectserver.withbiometricspatients;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +22,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
+import org.lamisplus.datafi.activities.connectserver.findpatientserver.FindPatientServerActivity;
+import org.lamisplus.datafi.activities.connectserver.nobiometricspatients.NoBiometricsPatientsServerActivity;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
 import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
-import org.lamisplus.datafi.classes.ContactPointClass;
+import org.lamisplus.datafi.dao.BiometricsDAO;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
-import org.lamisplus.datafi.models.Address;
+import org.lamisplus.datafi.models.Biometrics;
 import org.lamisplus.datafi.models.PatientIdentifier;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
@@ -38,12 +40,13 @@ import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiometricsPatientsServerContract.Presenter> implements NoBiometricsPatientsServerContract.View, View.OnClickListener, SearchView.OnQueryTextListener {
+public class WithBiometricsPatientsServerFragment extends LamisBaseFragment<WithBiometricsPatientsServerContract.Presenter> implements WithBiometricsPatientsServerContract.View, View.OnClickListener, SearchView.OnQueryTextListener {
 
     private TextView mEmptyList;
     private RecyclerView mFindPatientRecyclerView;
@@ -60,11 +63,11 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_find_patient_with_no_biometrics_server, container, false);
+        View root = inflater.inflate(R.layout.fragment_find_patient_with_biometrics_server, container, false);
         // Patient list config
         mFindPatientRecyclerView = root.findViewById(R.id.findPatientRecyclerView);
         mFindPatientRecyclerView.setHasFixedSize(true);
-        mFindPatientRecyclerView.setAdapter(new NoBiometricsPatientsServerRecyclerViewAdapter(this,
+        mFindPatientRecyclerView.setAdapter(new WithBiometricsPatientsServerRecyclerViewAdapter(this,
                 new ArrayList<>()));
         mFindPatientRecyclerView.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
@@ -82,8 +85,8 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
         return root;
     }
 
-    public static NoBiometricsPatientsServerFragment newInstance() {
-        return new NoBiometricsPatientsServerFragment();
+    public static WithBiometricsPatientsServerFragment newInstance() {
+        return new WithBiometricsPatientsServerFragment();
     }
 
     private void setListener() {
@@ -97,7 +100,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
 
     @Override
     public void updateAdapter(List<Person> patientList) {
-        NoBiometricsPatientsServerRecyclerViewAdapter adapter = new NoBiometricsPatientsServerRecyclerViewAdapter(this, patientList);
+        WithBiometricsPatientsServerRecyclerViewAdapter adapter = new WithBiometricsPatientsServerRecyclerViewAdapter(this, patientList);
         adapter.notifyDataSetChanged();
         mFindPatientRecyclerView.setAdapter(adapter);
     }
@@ -165,21 +168,22 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
     public void downloadAll(){
         if (NetworkUtils.isOnline()) {
             RestApi restApi = RestServiceBuilder.createService(RestApi.class);
-            Call<Object> call = restApi.getAllPatientWithoutBiomentic(LamisPlus.getInstance().getFacilityId());
+            Call<Object> call = restApi.getAllPatientWithBiometric("*", 0, 1000000);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if (response.isSuccessful()) {
                         mProgressBar.setVisibility(View.GONE);
-                        String values = new Gson().toJson(response.body());
+                        //String values = new Gson().toJson(response.body());
                         LamisCustomHandler.showJson(response.body());
                         try {
-                            JSONArray jsonArray = new JSONArray(new Gson().toJson(response.body()));
+                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("records");
 
                             List<Person> personList = new ArrayList<>();
                             for (int j = 0; j < jsonArray.length(); j++) {
                                 JSONObject objSections = jsonArray.getJSONObject(j);
-                                //Log.v("Baron", objSections.getString("surname"));
                                 Person person = new Person();
                                 if (objSections.has("surname")) {
                                     person.setSurname(objSections.getString("surname"));
@@ -197,8 +201,8 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                     person.setPersonId(objSections.getInt("id"));
                                 }
 
-                                if (objSections.has("personUuid")) {
-                                    person.setPersonUuId(objSections.getString("personUuid"));
+                                if (objSections.has("uuid")) {
+                                    person.setPersonUuId(objSections.getString("uuid"));
                                 }
 
                                 if (objSections.has("dateOfBirth")) {
@@ -220,6 +224,8 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                         person.setGenderId(sexId);
                                     }
                                 }
+
+                                person.setBiometricStatus(true);
 
                                 if (objSections.has("hospitalNumber")) {
                                     PatientIdentifier patientIdentifier = new PatientIdentifier();
@@ -241,6 +247,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                 if (objSections.has("id")) {
                                     Boolean personIdExists = PersonDAO.checkPersonIdExists(objSections.getString("id"));
                                     if(!personIdExists) {
+                                        //If the patient does not exist already then go ahead and save
                                         person.save();
                                     }
                                 }
@@ -248,7 +255,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                             updateListVisibility(true);
                             updateAdapter(personList);
                         } catch (Exception e) {
-                            LamisCustomFileHandler.writeLogToFile("No Biometrics Patient Error: " + e.getMessage());
+                            LamisCustomFileHandler.writeLogToFile("Download All With Biometrics Patient Error: " + e.getMessage());
                             mProgressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
@@ -270,21 +277,22 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
     public void pullData() {
         if (NetworkUtils.isOnline()) {
             RestApi restApi = RestServiceBuilder.createService(RestApi.class);
-            Call<Object> call = restApi.getAllPatientWithoutBiomentic(LamisPlus.getInstance().getFacilityId());
+            Call<Object> call = restApi.getAllPatientWithBiometric("*", 0, 1000000);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     if (response.isSuccessful()) {
                         mProgressBar.setVisibility(View.GONE);
-                        String values = new Gson().toJson(response.body());
+                        //String values = new Gson().toJson(response.body());
                         LamisCustomHandler.showJson(response.body());
                         try {
-                            JSONArray jsonArray = new JSONArray(new Gson().toJson(response.body()));
+                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("records");
 
                             List<Person> personList = new ArrayList<>();
                             for (int j = 0; j < jsonArray.length(); j++) {
                                 JSONObject objSections = jsonArray.getJSONObject(j);
-                                //Log.v("Baron", objSections.getString("surname"));
                                 Person person = new Person();
                                 if (objSections.has("surname")) {
                                     person.setSurname(objSections.getString("surname"));
@@ -302,8 +310,8 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                     person.setPersonId(objSections.getInt("id"));
                                 }
 
-                                if (objSections.has("personUuid")) {
-                                    person.setPersonUuId(objSections.getString("personUuid"));
+                                if (objSections.has("uuid")) {
+                                    person.setPersonUuId(objSections.getString("uuid"));
                                 }
 
                                 if (objSections.has("dateOfBirth")) {
@@ -325,6 +333,8 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                                         person.setGenderId(sexId);
                                     }
                                 }
+
+                                person.setBiometricStatus(true);
 
                                 if (objSections.has("hospitalNumber")) {
                                     PatientIdentifier patientIdentifier = new PatientIdentifier();
@@ -353,7 +363,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                             updateListVisibility(true);
                             updateAdapter(personList);
                         } catch (Exception e) {
-                            LamisCustomFileHandler.writeLogToFile("No Biometrics Patient Error: " + e.getMessage());
+                            LamisCustomFileHandler.writeLogToFile("With Biometrics Patient Error: " + e.getMessage());
                             mProgressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }

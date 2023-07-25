@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class ANC implements Serializable {
 
     @SerializedName("personId")
-    @Expose
     private String personId;
 
     @SerializedName("ancNo")
@@ -66,19 +65,19 @@ public class ANC implements Serializable {
 
     @SerializedName("personDto")
     @Expose
-    private String personDto;
+    private PersonDto personDto;
 
     @SerializedName("pmtctHtsInfo")
     @Expose
-    private String pmtctHtsInfo;
+    private PMTCTHtsInfo pmtctHtsInfo;
 
     @SerializedName("syphilisInfo")
     @Expose
-    private String syphilisInfo;
+    private SyphilisInfo syphilisInfo;
 
     @SerializedName("partnerNotification")
     @Expose
-    private String partnerNotification;
+    private PartnerNotification partnerNotification;
 
     @SerializedName("sourceOfReferral")
     @Expose
@@ -208,35 +207,35 @@ public class ANC implements Serializable {
         this.treatedSyphilis = treatedSyphilis;
     }
 
-    public String getPersonDto() {
+    public PersonDto getPersonDto() {
         return personDto;
     }
 
-    public void setPersonDto(String personDto) {
+    public void setPersonDto(PersonDto personDto) {
         this.personDto = personDto;
     }
 
-    public String getPmtctHtsInfo() {
+    public PMTCTHtsInfo getPmtctHtsInfo() {
         return pmtctHtsInfo;
     }
 
-    public void setPmtctHtsInfo(String pmtctHtsInfo) {
+    public void setPmtctHtsInfo(PMTCTHtsInfo pmtctHtsInfo) {
         this.pmtctHtsInfo = pmtctHtsInfo;
     }
 
-    public String getSyphilisInfo() {
+    public SyphilisInfo getSyphilisInfo() {
         return syphilisInfo;
     }
 
-    public void setSyphilisInfo(String syphilisInfo) {
+    public void setSyphilisInfo(SyphilisInfo syphilisInfo) {
         this.syphilisInfo = syphilisInfo;
     }
 
-    public String getPartnerNotification() {
+    public PartnerNotification getPartnerNotification() {
         return partnerNotification;
     }
 
-    public void setPartnerNotification(String partnerNotification) {
+    public void setPartnerNotification(PartnerNotification partnerNotification) {
         this.partnerNotification = partnerNotification;
     }
 
@@ -270,5 +269,22 @@ public class ANC implements Serializable {
 
     public void setDateOfEnrollment(String dateOfEnrollment) {
         this.dateOfEnrollment = dateOfEnrollment;
+    }
+
+
+    public static class PartnerNotification implements Serializable {
+
+    }
+
+    public static class PersonDto implements Serializable {
+
+    }
+
+    public static class PMTCTHtsInfo implements Serializable {
+
+    }
+
+    public static class SyphilisInfo implements Serializable {
+
     }
 }

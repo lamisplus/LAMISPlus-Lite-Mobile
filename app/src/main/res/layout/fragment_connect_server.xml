@@ -112,6 +112,37 @@
 
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/mWithBiometricsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_search"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/mWithBiometricsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+
+                    <TextView
+                        android:id="@+id/patientsWithBiometricsTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nunito_bold"
+                        android:gravity="center"
+                        android:text="Pull patients with biometrics"
+                        android:textColor="@color/dark_late_gray" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </RelativeLayout>

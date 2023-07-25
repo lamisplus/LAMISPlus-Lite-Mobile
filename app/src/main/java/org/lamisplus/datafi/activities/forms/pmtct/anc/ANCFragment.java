@@ -72,6 +72,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
     private AutoCompleteTextView autoGender;
     private AutoCompleteTextView autoMaritalStatus;
     private AutoCompleteTextView autoEducationalLevel;
+    private AutoCompleteTextView autoEmploymentStatus;
     private AutoCompleteTextView autoState;
     private AutoCompleteTextView autoProvinceLGA;
     private EditText edRegistrationDate;
@@ -117,6 +118,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
     private TextInputLayout edDateofBirthTIL;
     private TextInputLayout fillMaritalStatusTIL;
     private TextInputLayout fillEducationLevelTIL;
+    private TextInputLayout fillEmploymentStatusTIL;
     private TextInputLayout edPhoneTIL;
     private TextInputLayout fillStateTIL;
     private TextInputLayout fillProvinceDistrictLGATIL;
@@ -238,7 +240,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         ArrayAdapter<String> adapterTreatedSyphilis = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, treatedSyphilis);
         autoTreatedSyphilis.setAdapter(adapterTreatedSyphilis);
 
-        String[] hivStatus = getResources().getStringArray(R.array.positive_negative);
+        String[] hivStatus = getResources().getStringArray(R.array.pmtct_hiv_status);
         ArrayAdapter<String> adapterHivStatus = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, hivStatus);
         autoStaticHivStatus.setAdapter(adapterHivStatus);
     }
@@ -259,6 +261,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
                 String stringMonth = String.format("%02d", adjustedMonth);
                 String stringDay = String.format("%02d", selectedDay);
                 edRegistrationDate.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+                edDateEnrollment.getText().clear();
             }, cYear, cMonth, cDay);
             mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePicker.setTitle(getString(R.string.date_picker_title));
@@ -305,16 +308,17 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         });
 
         edDateEnrollment.setOnClickListener(v -> {
+            int cYear;
+            int cMonth;
+            int cDay;
+
+            Calendar currentDate = Calendar.getInstance();
+            cYear = currentDate.get(Calendar.YEAR);
+            cMonth = currentDate.get(Calendar.MONTH);
+            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+            Long regMillis = 0L;
             if (!StringUtils.isBlank(ViewUtils.getInput(edRegistrationDate))) {
-                int cYear;
-                int cMonth;
-                int cDay;
-
-                Calendar currentDate = Calendar.getInstance();
-                cYear = currentDate.get(Calendar.YEAR);
-                cMonth = currentDate.get(Calendar.MONTH);
-                cDay = currentDate.get(Calendar.DAY_OF_MONTH);
-
                 String dateTestVisitDate = ViewUtils.getInput(edRegistrationDate);
                 String[] explodeDate = dateTestVisitDate.split("-");
                 int yearVisit = Integer.valueOf(explodeDate[0]);
@@ -324,21 +328,19 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
 
                 LocalDate birthdate = new LocalDate(yearVisit, monthVisit, dayVisit);
                 DateTime bdt = birthdate.toDateTimeAtStartOfDay().toDateTime();
-                Long regMillis = bdt.getMillis();
-
-                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                    int adjustedMonth = selectedMonth + 1;
-                    String stringMonth = String.format("%02d", adjustedMonth);
-                    String stringDay = String.format("%02d", selectedDay);
-                    edDateEnrollment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-                }, cYear, cMonth, cDay);
-                mDatePicker.getDatePicker().setMinDate(regMillis);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-                mDatePicker.setTitle(getString(R.string.date_picker_title));
-                mDatePicker.show();
-            }else{
-                ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Select the Date of Registration first");
+                regMillis = bdt.getMillis();
             }
+
+            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                int adjustedMonth = selectedMonth + 1;
+                String stringMonth = String.format("%02d", adjustedMonth);
+                String stringDay = String.format("%02d", selectedDay);
+                edDateEnrollment.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
+            }, cYear, cMonth, cDay);
+            mDatePicker.getDatePicker().setMinDate(regMillis);
+            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            mDatePicker.setTitle(getString(R.string.date_picker_title));
+            mDatePicker.show();
         });
 
         edLmp.setOnClickListener(v -> {
@@ -389,7 +391,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
 
             edancNo.setText(anc.getAncNo());
 
-            edDateEnrollment.setText(anc.getDateOfEnrollment());
+            edDateEnrollment.setText(anc.getFirstAncDate());
 
             edParity.setText(anc.getParity());
 
@@ -433,7 +435,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         }
 
         if (!ViewUtils.isEmpty(edDateEnrollment)) {
-            anc.setDateOfEnrollment(ViewUtils.getInput(edDateEnrollment));
+            anc.setFirstAncDate(ViewUtils.getInput(edDateEnrollment));
         }
 
         if (!ViewUtils.isEmpty(edParity)) {
@@ -476,10 +478,10 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
             anc.setStaticHivStatus(ViewUtils.getInput(autoStaticHivStatus));
         }
 
-        anc.setPersonDto("{}");
-        anc.setPmtctHtsInfo("{}");
-        anc.setSyphilisInfo("{}");
-        anc.setPartnerNotification("{}");
+        anc.setPersonDto(new ANC.PersonDto());
+        anc.setPmtctHtsInfo(new ANC.PMTCTHtsInfo());
+        anc.setSyphilisInfo(new ANC.SyphilisInfo());
+        anc.setPartnerNotification(new ANC.PartnerNotification());
 
         return anc;
     }
@@ -533,6 +535,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         autoGender = root.findViewById(R.id.fillGender);
         autoMaritalStatus = root.findViewById(R.id.fillMaritalStatus);
         autoEducationalLevel = root.findViewById(R.id.fillEducationLevel);
+        autoEmploymentStatus = root.findViewById(R.id.fillEmploymentStatus);
         autoState = root.findViewById(R.id.fillState);
         autoCountry = root.findViewById(R.id.fillCountry);
         autoProvinceLGA = root.findViewById(R.id.fillProvinceDistrictLGA);
@@ -598,6 +601,11 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         ArrayAdapter<String> adapterEducationalLevel = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, educationalLevel);
         autoEducationalLevel.setAdapter(adapterEducationalLevel);
 
+
+        String[] employment = getResources().getStringArray(R.array.employment_status);
+        ArrayAdapter<String> adapterEmployment = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, employment);
+        autoEmploymentStatus.setAdapter(adapterEmployment);
+
         autoCountry.setText("Nigeria");
 
         allStates = getResources().getStringArray(R.array.nigeria);
@@ -658,6 +666,11 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         if (!ViewUtils.isEmpty(autoEducationalLevel)) {
             int educationLevelId = CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoEducationalLevel));
             person.setEducationId(educationLevelId);
+        }
+
+        if (!ViewUtils.isEmpty(autoEmploymentStatus)) {
+            int employmentId = CodesetsDAO.findCodesetsIdByDisplay(ViewUtils.getInput(autoEmploymentStatus));
+            person.setEmploymentStatusId(employmentId);
         }
 
 
@@ -789,8 +802,8 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
                 int max_age = 60;
                 if (strEnteredVal != null && !strEnteredVal.equals("")) {
                     int num = Integer.parseInt(strEnteredVal);
-                   String dateOfBirth = DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge)));
-                   edDateofBirth.setText(dateOfBirth);
+                    String dateOfBirth = DateUtils.getAgeFromBirthdate(Integer.parseInt(ViewUtils.getInput(edAge)));
+                    edDateofBirth.setText(dateOfBirth);
                     if (num > max_age) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 getContext());
@@ -915,7 +928,7 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
     }
 
     @Override
-    public void setErrorsVisibilityPatient(boolean dateOfRegisterError, boolean hospitalError, boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError, boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError,
+    public void setErrorsVisibilityPatient(boolean dateOfRegisterError, boolean hospitalError, boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError, boolean maritalNull, boolean educationNull, boolean employmentNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError,
                                            boolean nokFirstNameError, boolean nokMiddleNameError, boolean nokLastNameError) {
         if (firstNameError) {
             edfirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
@@ -961,6 +974,11 @@ public class ANCFragment extends LamisBaseFragment<ANCContract.Presenter> implem
         if (educationNull) {
             fillEducationLevelTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             fillEducationLevelTIL.setError("Select the Education Level");
+        }
+
+        if (employmentNull) {
+            fillEmploymentStatusTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            fillEmploymentStatusTIL.setError("Select the Employment status");
         }
 
         if (phoneNull) {

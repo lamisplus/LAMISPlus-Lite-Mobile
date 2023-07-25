@@ -1,5 +1,6 @@
 package org.lamisplus.datafi.activities.biometrics;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -7,7 +8,9 @@ import androidx.annotation.Nullable;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseActivity;
+import org.lamisplus.datafi.activities.dashboard.DashboardActivity;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
+import org.lamisplus.datafi.utilities.StringUtils;
 
 public class BiometricsActivity extends LamisBaseActivity {
 
@@ -15,16 +18,17 @@ public class BiometricsActivity extends LamisBaseActivity {
     public BiometricsFragment biometricsFragment;
     String patientID = "";
     Boolean recapture = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biometrics);
 
         biometricsFragment = (BiometricsFragment) getSupportFragmentManager().findFragmentById(R.id.biometricsContentFrame);
-        if(biometricsFragment == null){
+        if (biometricsFragment == null) {
             biometricsFragment = BiometricsFragment.newInstance();
         }
-        if(!biometricsFragment.isActive()){
+        if (!biometricsFragment.isActive()) {
             addFragmentToActivity(getSupportFragmentManager(), biometricsFragment, R.id.biometricsContentFrame);
         }
 
@@ -46,12 +50,13 @@ public class BiometricsActivity extends LamisBaseActivity {
             recaptureBundle = getIntent().getExtras();
         }
 
-        if(recaptureBundle != null){
+        if (recaptureBundle != null) {
             recapture = recaptureBundle.getBoolean(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
         }
 
 
         mPresenter = new BiometricsPresenter(biometricsFragment, patientID, recapture);
+
     }
 
     @Override

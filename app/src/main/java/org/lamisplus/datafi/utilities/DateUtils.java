@@ -1,5 +1,12 @@
 package org.lamisplus.datafi.utilities;
 
+import android.util.Log;
+
+import org.joda.time.DateTime;
+import org.joda.time.Weeks;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -10,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class DateUtils {
 
@@ -58,42 +67,99 @@ public class DateUtils {
         return dateFormat.format(currentDatePlusOne);
     }
 
-    public static Integer gestationAge(String lmp, String dateEnrollment){
-//        LocalDate d1 = null;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            d1 = LocalDate.parse("2018-05-26", DateTimeFormatter.ISO_LOCAL_DATE);
-//            LocalDate d2 = LocalDate.parse("2018-05-28", DateTimeFormatter.ISO_LOCAL_DATE);
-//            Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-//            long diffDays = diff.toDays();
-//        }
+    public static Integer gestationAge(String lmp, String dateEnrollment) {
+        DateTimeFormatter formatter = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String[] splitLMP = lmp.split("-");
-            Integer yearLMP = Integer.parseInt(splitLMP[0]);
-            Integer monthLMP = Integer.parseInt(splitLMP[1]);
-            Integer dayLMP = Integer.parseInt(splitLMP[1]);
-            LocalDate lastMP = LocalDate.of(yearLMP, monthLMP, dayLMP);
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            formatter = formatter.withLocale(Locale.US);  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
 
-            String[] splitDateEnrollment = dateEnrollment.split("-");
-            Integer yearDateEnrollment = Integer.parseInt(splitDateEnrollment[0]);
-            Integer monthDateEnrollment = Integer.parseInt(splitDateEnrollment[1]);
-            Integer dayDateEnrollment = Integer.parseInt(splitDateEnrollment[1]);
-            LocalDate lastEnrollment = LocalDate.of(yearDateEnrollment, monthDateEnrollment, dayDateEnrollment);
+            LocalDate lmpDate = LocalDate.parse(lmp, formatter);
+            LocalDate dateEnroll = LocalDate.parse(dateEnrollment, formatter);
 
-            Integer ga = (int) ChronoUnit.WEEKS.between(lastMP, lastEnrollment);
-            if (ga < 0) {
-                ga = 0;
-            }
+            int ga = (int) ChronoUnit.WEEKS.between(lmpDate, dateEnroll);
+            if (ga < 0) ga = 0;
             return ga;
         }
         return 0;
     }
 
-    public static String currentDate(){
+
+    //   public int calculateGA2(String hospitalNumber, LocalDate visitDate) {
+//        Calendar a = new GregorianCalendar();
+//        Calendar b = new GregorianCalendar();
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            Date start = dateFormat.parse(lmp);
+//            Date end = dateFormat.parse(dateEnrollment);
+//            assert start != null;
+//            a.setTime(start);
+//            assert end != null;
+//            b.setTime(end);
+//            Integer value = b.get(Calendar.WEEK_OF_YEAR) - a.get(Calendar.WEEK_OF_YEAR);
+//            if(value < 0){
+//                Log.v("Baron", " values " + value + " <=> " + b.get(Calendar.WEEK_OF_YEAR) + " " + a.get(Calendar.WEEK_OF_YEAR));
+//                return b.get(Calendar.WEEK_OF_YEAR);
+//            }
+//            return value;
+//        } catch (ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+    //  }
+
+    public static Integer gestationAge2(String lmp, String dateEnrollment) {
+        Calendar a = new GregorianCalendar();
+        Calendar b = new GregorianCalendar();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date start = dateFormat.parse(lmp);
+            Date end = dateFormat.parse(dateEnrollment);
+            a.setTime(start);
+            b.setTime(end);
+            return b.get(Calendar.WEEK_OF_YEAR) - a.get(Calendar.WEEK_OF_YEAR);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String currentDate() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             return dtf.format(now);
         }
         return "";
+    }
+
+    public static Boolean compareDate(String dateParam) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                String currentDate = dtf.format(now);
+
+                SimpleDateFormat dateFormatCurrent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dateCurrrent = dateFormatCurrent.parse(currentDate);
+
+                Calendar a = new GregorianCalendar();
+                Calendar b = new GregorianCalendar();
+
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dateCaptured = dateFormat.parse(dateParam);
+
+                a.setTime(dateCaptured);
+                b.setTime(dateCurrrent);
+
+                boolean sameDay = a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR) &&
+                        a.get(Calendar.YEAR) == b.get(Calendar.YEAR);
+                Log.v("Baron", "Data is " + sameDay);
+                return sameDay;
+            }catch (Exception e){
+
+            }
+        }
+        return false;
     }
 }

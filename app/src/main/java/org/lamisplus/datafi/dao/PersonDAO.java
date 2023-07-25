@@ -57,4 +57,14 @@ public class PersonDAO {
         return person;
     }
 
+    public static String getPersonUuid(Integer personId){
+        if(personId != null) {
+            Person person = new Select().from(Person.class).where("personId=?", personId).executeSingle();
+            if (person != null) {
+                return person.getPersonUuId();
+            }
+        }
+        return null;
+    }
+
 }

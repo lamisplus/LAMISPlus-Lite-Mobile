@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -144,9 +146,12 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
     private int mFakeDetectionLevel = 1;
     private Biometrics biometrics;
     private FloatingActionButton fabBiometricsCapture;
+    private TextInputLayout edReasonTIL;
+    private EditText edReason;
     List<BiometricsClass.BiometricsClassFingers> biometricsClassFingers;
 
     private ImageView imgViewLeftThumbFinger, imgViewLeftIndexFinger, imgViewLeftMiddleFinger, imgViewLeftRingFinger, imgViewLeftLittleFinger, imgViewRightThumbFinger, imgViewRightIndexFinger, imgViewRightMiddleFinger, imgViewRightRingFinger, imgViewRightLittleFinger;
+    private TextView qualityViewLeftThumbFinger, qualityViewLeftIndexFinger, qualityViewLeftMiddleFinger, qualityViewLeftRingFinger, qualityViewLeftLittleFinger, qualityViewRightThumbFinger, qualityViewRightIndexFinger, qualityViewRightMiddleFinger, qualityViewRightRingFinger, qualityViewRightLittleFinger;
 
     @Nullable
     @Override
@@ -165,6 +170,7 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                 patientId = savedInstanceState.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
             }
 
+
             biometrics = new Biometrics();
             biometricsClassFingers = new ArrayList<>();
 
@@ -181,11 +187,6 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
     }
 
     public void createViewObject(View root) {
-        if (!mPresenter.isClientRecapturing()) {
-            ToastUtil.success("This patient did not come for recapturing");
-        } else {
-            ToastUtil.success("This patient came for recapturing");
-        }
         //Selecting Different Fingers
         //Declare the variables for the different fingers
         imgViewLeftThumbFinger = root.findViewById(R.id.imgViewLeftThumbFinger);
@@ -198,6 +199,21 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         imgViewRightMiddleFinger = root.findViewById(R.id.imgViewRightMiddleFinger);
         imgViewRightRingFinger = root.findViewById(R.id.imgViewRightRingFinger);
         imgViewRightLittleFinger = root.findViewById(R.id.imgViewRightLittleFinger);
+
+        qualityViewLeftThumbFinger = root.findViewById(R.id.qualityViewLeftThumbFinger);
+        qualityViewLeftIndexFinger = root.findViewById(R.id.qualityViewLeftIndexFinger);
+        qualityViewLeftMiddleFinger = root.findViewById(R.id.qualityViewLeftMiddleFinger);
+        qualityViewLeftRingFinger = root.findViewById(R.id.qualityViewLeftRingFinger);
+        qualityViewLeftLittleFinger = root.findViewById(R.id.qualityViewLeftLittleFinger);
+        qualityViewRightThumbFinger = root.findViewById(R.id.qualityViewRightThumbFinger);
+        qualityViewRightIndexFinger = root.findViewById(R.id.qualityViewRightIndexFinger);
+        qualityViewRightMiddleFinger = root.findViewById(R.id.qualityViewRightMiddleFinger);
+        qualityViewRightRingFinger = root.findViewById(R.id.qualityViewRightRingFinger);
+        qualityViewRightLittleFinger = root.findViewById(R.id.qualityViewRightLittleFinger);
+
+        edReasonTIL = root.findViewById(R.id.edReasonTIL);
+        edReason = root.findViewById(R.id.edReason);
+
         autoFingerprintSelect = root.findViewById(R.id.autoFingerprintSelect);
         mButtonRegister = root.findViewById(R.id.buttonRegister);
         mButtonSaveCapture = root.findViewById(R.id.btnSavePrints);
@@ -210,8 +226,6 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         fabBiometricsCapture.setOnClickListener(this);
 
         mButtonClearUnsyncFingerPrint.setOnClickListener(this);
-        //mButtonClearUnsyncFingerPrint.setVisibility(View.GONE);
-
 
         mNumFakeThresholds = new int[1];
         mDefaultFakeThreshold = new int[1];
@@ -342,12 +356,12 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                     } else {
                         //save to temp list to be discard later
                         biometricsClassFingers.add(new BiometricsClass.BiometricsClassFingers(template, ViewUtils.getInput(autoFingerprintSelect), hashed, imageQuality));
-                        bindDrawableResources(getImageView(ViewUtils.getInput(autoFingerprintSelect)));
+                        bindDrawableResources(getImageView(ViewUtils.getInput(autoFingerprintSelect), imageQuality));
 
                     }
                 } else {
                     //color warning. this capture is not counted
-                    unbindDrawableResources(getImageView(ViewUtils.getInput(autoFingerprintSelect)));
+                    unbindDrawableResources(getImageView(ViewUtils.getInput(autoFingerprintSelect), imageQuality));
                 }
                 //enable the save button when 6 fingers has been captured
                 if (fingerPrintCaptureCount >= 6) {
@@ -431,28 +445,34 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                     biometrics.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
                 }
                 biometrics.setIso(true);
-                biometrics.setDeviceName("Secugen");
+                biometrics.setDeviceName("Secugen Mobile");
                 biometrics.setBiometricType("FINGERPRINT");
                 biometrics.setCapturedBiometricsList(biometricsList);
                 biometrics.setType("SUCCESS");
                 biometrics.setDateTime(DateUtils.currentDate());
                 biometrics.save();
             } else {
-                CustomDebug("Saved successfully", false);
-                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-                String biometricsList = gson.toJson(biometricsClassFingers);
-                BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
-                biometricsRecapture.setPerson(mPresenter.getPatientId());
-                if (BiometricsDAO.getPatientId(mPresenter.getPatientId()) != null) {
-                    biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
+                if (fingerPrintCaptureCount < 10 && StringUtils.isBlank(ViewUtils.getInput(edReason))) {
+                    edReasonTIL.setVisibility(View.VISIBLE);
+                    CustomDebug("Captured fingerprints is less than 10 for recapture. Enter the reason on the box shown", false);
+                } else {
+                    CustomDebug("Saved successfully", false);
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    String biometricsList = gson.toJson(biometricsClassFingers);
+                    BiometricsRecapture biometricsRecapture = new BiometricsRecapture();
+                    biometricsRecapture.setPerson(mPresenter.getPatientId());
+                    if (BiometricsDAO.getPatientId(mPresenter.getPatientId()) != null) {
+                        biometricsRecapture.setPatientId(BiometricsDAO.getPatientId(mPresenter.getPatientId()));
+                    }
+                    biometricsRecapture.setIso(true);
+                    biometricsRecapture.setDeviceName("Secugen Mobile");
+                    biometricsRecapture.setBiometricType("FINGERPRINT");
+                    biometricsRecapture.setCapturedBiometricsList(biometricsList);
+                    biometricsRecapture.setType("SUCCESS");
+                    biometricsRecapture.setReason(ViewUtils.getInput(edReason));
+                    biometricsRecapture.setDateTime(DateUtils.currentDate());
+                    biometricsRecapture.save();
                 }
-                biometricsRecapture.setIso(true);
-                biometricsRecapture.setDeviceName("Secugen");
-                biometricsRecapture.setBiometricType("FINGERPRINT");
-                biometricsRecapture.setCapturedBiometricsList(biometricsList);
-                biometricsRecapture.setType("SUCCESS");
-                biometricsRecapture.setDateTime(DateUtils.currentDate());
-                biometricsRecapture.save();
             }
         }
 
@@ -789,6 +809,52 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
         sgfplib.Close();
         super.onDestroy();
         Log.d(TAG, "Exit onDestroy()");
+    }
+
+    private ImageView getImageView(String fingerpos, Integer imageQuality) {
+        ImageView mView = null;
+        if (fingerpos.equals("Left Thumb Finger")) {
+            mView = imgViewLeftThumbFinger;
+            qualityViewLeftThumbFinger.setVisibility(View.VISIBLE);
+            qualityViewLeftThumbFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Left Index Finger")) {
+            mView = imgViewLeftIndexFinger;
+            qualityViewLeftIndexFinger.setVisibility(View.VISIBLE);
+            qualityViewLeftIndexFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Left Middle Finger")) {
+            mView = imgViewLeftMiddleFinger;
+            qualityViewLeftMiddleFinger.setVisibility(View.VISIBLE);
+            qualityViewLeftMiddleFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Left Ring Finger")) {
+            mView = imgViewLeftRingFinger;
+            qualityViewLeftRingFinger.setVisibility(View.VISIBLE);
+            qualityViewLeftRingFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Left Little Finger")) {
+            mView = imgViewLeftLittleFinger;
+            qualityViewLeftLittleFinger.setVisibility(View.VISIBLE);
+            qualityViewLeftLittleFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Right Thumb Finger")) {
+            mView = imgViewRightThumbFinger;
+            qualityViewRightThumbFinger.setVisibility(View.VISIBLE);
+            qualityViewRightThumbFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Right Index Finger")) {
+            mView = imgViewRightIndexFinger;
+            qualityViewRightIndexFinger.setVisibility(View.VISIBLE);
+            qualityViewRightIndexFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Right Middle Finger")) {
+            mView = imgViewRightMiddleFinger;
+            qualityViewRightMiddleFinger.setVisibility(View.VISIBLE);
+            qualityViewRightMiddleFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Right Ring Finger")) {
+            mView = imgViewRightRingFinger;
+            qualityViewRightRingFinger.setVisibility(View.VISIBLE);
+            qualityViewRightRingFinger.setText(imageQuality + "");
+        } else if (fingerpos.equals("Right Little Finger")) {
+            mView = imgViewRightLittleFinger;
+            qualityViewRightLittleFinger.setVisibility(View.VISIBLE);
+            qualityViewRightLittleFinger.setText(imageQuality + "");
+        }
+        return mView;
     }
 
     private ImageView getImageView(String fingerpos) {

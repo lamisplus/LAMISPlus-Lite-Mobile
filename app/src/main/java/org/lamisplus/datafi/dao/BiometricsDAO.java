@@ -40,9 +40,11 @@ public class BiometricsDAO {
      * @return person id integer
      */
     public static Integer getPatientId(Integer personId) {
-        Person person = new Select().from(Person.class).where("id = ?", personId).executeSingle();
-        if (person != null) {
-            return person.getPersonId();
+        if(personId != null) {
+            Person person = new Select().from(Person.class).where("id = ?", personId).executeSingle();
+            if (person != null) {
+                return person.getPersonId();
+            }
         }
         return null;
     }
@@ -64,8 +66,27 @@ public class BiometricsDAO {
         return null;
     }
 
+    public static List<BiometricsList> getFingerPrintsRecapture(Integer personId) {
+        BiometricsRecapture biometrics = new Select().from(BiometricsRecapture.class).where("person = ?", personId).executeSingle();
+        if (biometrics != null) {
+            Type type = new TypeToken<List<BiometricsList>>() {
+            }.getType();
+            List<BiometricsList> biometricsLists = new Gson().fromJson(biometrics.getCapturedBiometricsList(), type);
+            return biometricsLists;
+        }
+        return null;
+    }
+
     public static Biometrics getFingerPrintsForUser(Integer personId) {
         Biometrics biometrics = new Select().from(Biometrics.class).where("person = ?", personId).executeSingle();
+        if (biometrics != null) {
+            return biometrics;
+        }
+        return null;
+    }
+
+    public static BiometricsRecapture getFingerPrintsForUserRecapture(Integer personId) {
+        BiometricsRecapture biometrics = new Select().from(BiometricsRecapture.class).where("person = ?", personId).executeSingle();
         if (biometrics != null) {
             return biometrics;
         }

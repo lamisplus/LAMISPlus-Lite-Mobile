@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.google.gson.Gson;
+
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.details.PatientDashboardDetailsPresenter;
@@ -21,9 +23,15 @@ import org.lamisplus.datafi.activities.patientdashboard.followupvisits.PatientDa
 import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.formdetails.PatientDashboardFormDetailsPresenter;
 import org.lamisplus.datafi.dao.CodesetsDAO;
+import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.models.ANC;
+import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.DateUtils;
+
+import java.util.Objects;
 
 class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
 
@@ -101,10 +109,21 @@ class PatientDashboardPagerAdapter extends FragmentPagerAdapter {
     private boolean checkPMTCTEligibility() {
         Person person = PersonDAO.findPersonById(mPatientId);
         if(person != null){
-            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10;
+            return CodesetsDAO.findCodesetsDisplayById(person.getGenderId()).equals("Female") && DateUtils.getAgeFromBirthdateString(person.getDateOfBirth()) > 10 && checkANCStatus();
         }
         return false;
         //return false;
+    }
+
+    private boolean checkANCStatus() {
+        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ANC_FORM, mPatientId);
+        if (encounter != null) {
+            ANC anc = new Gson().fromJson(Objects.requireNonNull(encounter).getDataValues(), ANC.class);
+            if(anc != null) {
+                return anc.getStaticHivStatus().equals("Positive");
+            }
+        }
+        return false;
     }
 
 

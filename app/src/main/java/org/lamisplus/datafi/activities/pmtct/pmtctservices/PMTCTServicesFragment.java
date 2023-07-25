@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.pmtct.pmtctservices;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.gson.Gson;
 
 import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
@@ -27,12 +30,16 @@ import org.lamisplus.datafi.activities.forms.pmtct.labourdelivery.LabourDelivery
 import org.lamisplus.datafi.activities.forms.pmtct.partners.PartnersActivity;
 import org.lamisplus.datafi.activities.forms.pmtct.pmtctenrollment.PMTCTEnrollmentActivity;
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardActivity;
+import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.models.ANC;
 import org.lamisplus.datafi.models.Encounter;
+import org.lamisplus.datafi.models.LabourDelivery;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContract.Presenter> implements PMTCTServicesContract.View, View.OnClickListener {
 
@@ -121,45 +128,65 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
                 if (!checkANCFormExists()) {
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC Form first");
                 } else {
-                    Intent intentClin = new Intent(getActivity(), PMTCTEnrollmentActivity.class);
-                    intentClin.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
-                    startActivity(intentClin);
+                    if (checkEligiblePMTCT()) {
+                        Intent intentClin = new Intent(getActivity(), PMTCTEnrollmentActivity.class);
+                        intentClin.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                        startActivity(intentClin);
+                    } else {
+                        ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Not eligible for PMTCT");
+                    }
                 }
                 break;
             case R.id.lvLabourDeliveryFormView:
                 if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
                 } else {
-                    Intent intentPreTest = new Intent(getActivity(), LabourDeliveryActivity.class);
-                    intentPreTest.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
-                    startActivity(intentPreTest);
+                    if (checkEligiblePMTCT()) {
+                        Intent intentPreTest = new Intent(getActivity(), LabourDeliveryActivity.class);
+                        intentPreTest.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                        startActivity(intentPreTest);
+                    } else {
+                        ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Not eligible for PMTCT");
+                    }
                 }
                 break;
             case R.id.lvInfantInformationFormView:
                 if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
                 } else {
-                    Intent intentInfantReg = new Intent(getActivity(), InfantRegistrationActivity.class);
-                    intentInfantReg.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
-                    startActivity(intentInfantReg);
+                    if (checkEligiblePMTCT() && checkEligibleInfantInformation()) {
+                        Intent intentInfantReg = new Intent(getActivity(), InfantRegistrationActivity.class);
+                        intentInfantReg.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                        startActivity(intentInfantReg);
+                    } else {
+                        ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Not eligible");
+                    }
                 }
                 break;
             case R.id.lvPartnersFormView:
                 if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
                 } else {
-                    Intent intentPartners = new Intent(getActivity(), PartnersActivity.class);
-                    intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
-                    startActivity(intentPartners);
+                    if (checkEligiblePMTCT()) {
+                        Intent intentPartners = new Intent(getActivity(), PartnersActivity.class);
+                        intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                        startActivity(intentPartners);
+                    } else {
+                        ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Not eligible for PMTCT");
+                    }
                 }
                 break;
             case R.id.patientDashboardButton:
                 if (!checkANCFormExists() || !checkPMTCTEnrollFormExists()) {
                     ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Please enter the ANC && PMTCT Enrollment Forms first before proceeding to this stage");
                 } else {
-                    Intent intentPartners = new Intent(getActivity(), PatientDashboardActivity.class);
-                    intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
-                    startActivity(intentPartners);
+                    if (checkEligiblePMTCT()) {
+                        Intent intentPartners = new Intent(getActivity(), PatientDashboardActivity.class);
+                        intentPartners.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, mPresenter.getPatientId());
+                        startActivity(intentPartners);
+                    } else {
+                        ToastUtil.showLongToast(getContext(), ToastUtil.ToastType.ERROR, "Not eligible for PMTCT");
+                    }
                 }
                 break;
             default:
@@ -168,6 +195,16 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
         }
     }
 
+    private boolean checkEligiblePMTCT() {
+        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId());
+        if (encounter != null) {
+            ANC anc = new Gson().fromJson(Objects.requireNonNull(encounter).getDataValues(), ANC.class);
+            if(anc != null) {
+                return anc.getStaticHivStatus().equals("Positive");
+            }
+        }
+        return false;
+    }
 
     private boolean checkANCFormExists() {
         Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.ANC_FORM, mPresenter.getPatientId());
@@ -175,6 +212,15 @@ public class PMTCTServicesFragment extends LamisBaseFragment<PMTCTServicesContra
             return false;
         }
         return true;
+    }
+
+    private boolean checkEligibleInfantInformation() {
+        Encounter encounter = EncounterDAO.findFormByPatient(ApplicationConstants.Forms.LABOUR_DELIVERY_FORM, mPresenter.getPatientId());
+        if (encounter == null) {
+            return false;
+        }
+        LabourDelivery labourDelivery = new Gson().fromJson(Objects.requireNonNull(encounter).getDataValues(), LabourDelivery.class);
+        return !CodesetsDAO.findCodesetsDisplayByCode(labourDelivery.getChildStatus()).equals("Still Birth");
     }
 
     private boolean checkPMTCTEnrollFormExists() {

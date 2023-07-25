@@ -52,8 +52,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="80dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:elevation="3dp"
                     android:src="@drawable/ic_avatar"
                     app:civ_border_color="@android:color/white"
@@ -64,10 +63,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
                     android:text="Biometrics Not Capture"
-                    android:layout_marginTop="225dp"
-                    android:paddingEnd="15dp">
+                    android:layout_below="@+id/imageView"
+                    android:paddingEnd="15dp"
+                    android:visibility="visible">
 
                 </TextView>
 

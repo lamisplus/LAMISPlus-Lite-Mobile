@@ -20,7 +20,7 @@ public class BiometricsClass{
         String template;
         String templateType;
         String hashed;
-        Integer imageQuality;
+        Integer imageQuality = null;
 
         public BiometricsClassFingers(String template, String templateType, String hashed, Integer imageQuality) {
             this.template = template;

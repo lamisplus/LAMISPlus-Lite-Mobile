@@ -10,13 +10,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/hashBiometrics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hash Biometrics" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/biometricsStatusRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_long"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="@dimen/margin_long"
             android:layout_marginRight="@dimen/margin_long"
+            android:layout_marginBottom="@dimen/margin_long"
             android:gravity="center_vertical">
 
             <TextView
@@ -26,7 +38,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:textSize="@dimen/big_heading"
-                android:text="Biometrics Status: "
+                android:text="Device Biometrics Status: "
                 android:textStyle="bold" />
 
             <TextView
@@ -44,6 +56,46 @@
 
     <TextView
         android:id="@+id/listCapturedBiometrics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/recaptureBiometricsStatusRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="@dimen/margin_long"
+        android:layout_marginRight="@dimen/margin_long"
+        android:layout_marginBottom="@dimen/margin_long"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/recaptureBiometricsStatusName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/big_heading"
+            android:text="Device Biometrics Recapture Status: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/recaptureBiometricsStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@+id/recaptureBiometricsStatusName"
+            android:layout_toRightOf="@+id/recaptureBiometricsStatusName"
+            android:gravity="end"
+            android:textSize="@dimen/small_heading" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/listReCapturedBiometrics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

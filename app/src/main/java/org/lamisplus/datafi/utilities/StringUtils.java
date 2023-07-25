@@ -183,4 +183,11 @@ public class StringUtils {
         return "";
     }
 
+    public static boolean changeBooleanStringtoBoolean(String s){
+        if(s.toLowerCase().equals("true")){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -53,8 +53,9 @@ public interface RestApi {
     @GET("hiv/non-biometric-patient/enrollment/{facilityId}")
     Call<Object> getAllPatientWithoutBiomentic(@Path ("facilityId") int facilityId);
 
-    @POST("biometrics/enrollment")
-    Call<Object> createBiometricsRecapture(@Body Object biometricsPayload, @Query("reader") String reader, @Query("isNew") Boolean isNew, @Query("recapture") Boolean recapture);
+    @GET("patient/getall-patients-with-biometric")
+    Call<Object> getAllPatientWithBiometric(@Query("searchParam") String searchParam,
+                                            @Query("pageNo") Integer pageNo, @Query("pageSize") Integer pageSize);
 
     @POST("pmtct/anc/anc-enrollement")
     Call<Object> createANCEnrollement(@Body Object ancPayload);

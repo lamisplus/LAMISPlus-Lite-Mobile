@@ -16,7 +16,7 @@ public class ANCContract {
 
         void setErrorsVisibility(boolean ancNo, boolean dateOfEnrollment, boolean parity, boolean gravida, boolean lmp, boolean gaweeks, boolean sourceRef, boolean testedSyphilis, boolean hivStatus);
 
-        void setErrorsVisibilityPatient(boolean dateOfRegisterError, boolean hospitalError, boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError, boolean maritalNull, boolean educationNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError,
+        void setErrorsVisibilityPatient(boolean dateOfRegisterError, boolean hospitalError, boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError, boolean maritalNull, boolean educationNull, boolean employmentStatusNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError,
                                         boolean nokFirstNameError, boolean nokMiddleNameError, boolean nokLastNameError);
     }
 

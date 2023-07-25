@@ -50,6 +50,11 @@ public class BiometricsRecapture extends Model implements Serializable {
     @Expose
     private String type;
 
+    @Column(name = "reason")
+    @SerializedName("reason")
+    @Expose
+    private String reason;
+
     @Column(name = "syncStatus")
     @SerializedName("syncStatus")
     private int SyncStatus;
@@ -121,6 +126,14 @@ public class BiometricsRecapture extends Model implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public String getDateTime() {

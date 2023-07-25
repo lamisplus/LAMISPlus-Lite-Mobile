@@ -8,7 +8,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_location">Location</string>
     <string name="action_submit">Submit</string>
-    <string name="version">Version 1.0.1</string>
+    <string name="version">Version 1.0.2</string>
 
     <!-- ACBase activity -->
     <string name="error_email_subject_app_crashed">LamisPlus Lite android app crashed</string>
@@ -50,6 +50,7 @@
     <string name="connect_to_server">Connect To Server</string>
     <string name="find_patient_server">Find/Download Patient From Server</string>
     <string name="find_patient_with_no_biometrics_server">Find Patients With No Biometrics</string>
+    <string name="find_patient_with_biometrics_server">Find Patients With Biometrics</string>
 
     <!-- Patient Program -->
     <string name="patient_program_label">Patient Program</string>
@@ -487,7 +488,7 @@
     <string name="sync_status">Sync Status</string>
     <string name="hepatitis">Hepatitis</string>
     <string name="pull_patients_without_biometrics">Pull patients without biometrics</string>
-    <string name="search_patients_from_server">Search patients from server</string>
+    <string name="search_patients_from_server"><![CDATA[Search & pull patients from server]]></string>
     <string name="enrolment_amp_follow_up_card_1"><![CDATA[Enrolment & Follow up Card 1]]></string>
     <string name="enrolment_amp_follow_up_card_2"><![CDATA[Enrolment & Follow up Card 2]]></string>
     <string name="regimen_switch">Regimen Switch</string>

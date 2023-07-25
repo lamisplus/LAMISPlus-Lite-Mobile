@@ -32,6 +32,8 @@ import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDash
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsFragment;
 import org.lamisplus.datafi.activities.patientdashboard.fingerprints.PatientDashboardFingerPrintsPresenter;
 import org.lamisplus.datafi.activities.patientprogram.PatientProgramActivity;
+import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.TabUtil;
 import org.lamisplus.datafi.utilities.ToastUtil;
@@ -71,6 +73,10 @@ public class PatientDashboardActivity extends LamisBaseActivity {
 
             resources = getResources();
             setupUpdateDeleteActionFAB();
+            Person person = PersonDAO.findPersonById(mId);
+            if (person.isBiometricStatus()) {
+                pbsFAB.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -192,11 +198,9 @@ public class PatientDashboardActivity extends LamisBaseActivity {
             additionalActionsFAB.setVisibility(View.GONE);
             visitFAB.setVisibility(View.GONE);
             updateFAB.setVisibility(View.GONE);
-            pbsFAB.setVisibility(View.GONE);
         } else {
             additionalActionsFAB.setVisibility(View.VISIBLE);
             visitFAB.setVisibility(View.VISIBLE);
-            pbsFAB.setVisibility(View.VISIBLE);
 
             // will animate back the icon back to its original angle instantaneously
             ObjectAnimator.ofFloat(additionalActionsFAB, "rotation", 180f, 0f).setDuration(0).start();

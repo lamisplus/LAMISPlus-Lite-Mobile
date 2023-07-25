@@ -48,6 +48,7 @@ import org.lamisplus.datafi.models.BiometricsRecapture;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.BiometricsUtil;
+import org.lamisplus.datafi.utilities.DateUtils;
 import org.lamisplus.datafi.utilities.FingerPositions;
 import org.lamisplus.datafi.utilities.NetworkUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
@@ -145,17 +146,18 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
                         String.valueOf(mPresenter.getPatientId()));
                 startActivity(editPatient);
             case R.id.mRecaptureButton:
-                Intent recaptureBtn = new Intent(LamisPlus.getInstance(), BiometricsRecaptureActivity.class);
-                recaptureBtn.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                        String.valueOf(mPresenter.getPatientId()));
-                startActivity(recaptureBtn);
+                Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(Integer.valueOf(mPresenter.getPatientId()));
+                if (biometrics == null || !DateUtils.compareDate(biometrics.getDateTime())) {
+                    Intent recaptureBtn = new Intent(LamisPlus.getInstance(), BiometricsRecaptureActivity.class);
+                    recaptureBtn.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                            String.valueOf(mPresenter.getPatientId()));
+                    startActivity(recaptureBtn);
+                } else {
+                    ToastUtil.error("You can't recapture the same day with the date of capture");
+                }
                 break;
         }
     }
-
-//    private boolean sameDayBiometricCapture(){
-//
-//    }
 
     private void fillFields(View root) {
         Person person = PersonDAO.findPersonById(mPresenter.getPatientId());
@@ -207,12 +209,14 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
 
             }
 
-            if(person.isBiometricStatus()){
-                biometricsStatus.setTextColor(getResources().getColor(R.color.teal_200));
+            if (person.isBiometricStatus()) {
+                biometricsStatus.setTextColor(getResources().getColor(R.color.light_teal));
                 biometricsStatus.setText("Biometrics Captured");
-            }else{
+                mRecaptureButton.setVisibility(View.VISIBLE);
+            } else {
                 biometricsStatus.setTextColor(getResources().getColor(R.color.red));
                 biometricsStatus.setText("Biometrics Not Captured");
+                mRecaptureButton.setVisibility(View.GONE);
             }
         }
     }

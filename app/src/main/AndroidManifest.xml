@@ -168,6 +168,18 @@
         </activity>
 
         <activity
+            android:name=".activities.connectserver.withbiometricspatients.WithBiometricsPatientsServerActivity"
+            android:label="@string/find_patient_with_biometrics_server"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.connectserver.ConnectServerActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.connectserver.ConnectServerActivity" />
+        </activity>
+
+        <activity
             android:name=".activities.patientprogram.PatientProgramActivity"
             android:label="@string/patient_program_label"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"

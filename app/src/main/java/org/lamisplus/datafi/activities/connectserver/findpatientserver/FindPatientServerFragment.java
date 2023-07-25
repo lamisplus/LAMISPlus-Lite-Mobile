@@ -41,6 +41,7 @@ import org.lamisplus.datafi.models.RiskStratification;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
 import org.lamisplus.datafi.utilities.NetworkUtils;
+import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
@@ -175,11 +176,11 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                     if (response.isSuccessful()) {
                         mProgressBar.setVisibility(View.GONE);
                         String values = new Gson().toJson(response.body());
-                        Log.v("Baron", values);
+                        //Log.v("Baron", values);
                         try {
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                             String records = jsonObject.getString("records");
-                            //Log.v("Baron", records);
+                            Log.v("Baron", records);
 
                             JSONArray jsonArray = jsonObject.getJSONArray("records");
                             List<Person> personList = new ArrayList<>();
@@ -199,15 +200,15 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                     person.setDateOfRegistration(objSections.getString("dateOfRegistration"));
                                 }
                                 if (objSections.has("isDateOfBirthEstimated")) {
-                                    person.setDateOfBirthEstimated(Boolean.getBoolean(objSections.getString("isDateOfBirthEstimated")));
+                                    person.setDateOfBirthEstimated(StringUtils.changeBooleanStringtoBoolean(objSections.getString("isDateOfBirthEstimated")));
                                 }
 
                                 if (objSections.has("biometricStatus")) {
-                                    person.setBiometricStatus(Boolean.getBoolean(objSections.getString("biometricStatus")));
+                                    person.setBiometricStatus(StringUtils.changeBooleanStringtoBoolean(objSections.getString("biometricStatus")));
                                 }
 
                                 if (objSections.has("deceased")) {
-                                    person.setDeceased(Boolean.getBoolean(objSections.getString("deceased")));
+                                    person.setDeceased(StringUtils.changeBooleanStringtoBoolean(objSections.getString("deceased")));
                                 }
 
                                 if (objSections.has("gender")) {
@@ -333,6 +334,7 @@ public class FindPatientServerFragment extends LamisBaseFragment<FindPatientServ
                                     }
                                 }
                             }
+                            LamisCustomHandler.showJson(personList);
                             updateListVisibility(true);
                             updateAdapter(personList);
                         } catch (Exception e) {

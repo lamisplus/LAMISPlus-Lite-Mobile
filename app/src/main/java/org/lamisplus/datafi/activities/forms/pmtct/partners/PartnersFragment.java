@@ -9,10 +9,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,7 @@ public class PartnersFragment extends LamisBaseFragment<PartnersContract.Present
     private AutoCompleteTextView autoPartnerHIVStatus;
     private EditText edFullName;
     private EditText edAge;
+    private EditText edReferredToOthers;
     private AutoCompleteTextView autoPretestCounseled;
     private AutoCompleteTextView autoPartnerAcceptsHIVTest;
     private AutoCompleteTextView autoPostTestCounseled;
@@ -57,6 +60,7 @@ public class PartnersFragment extends LamisBaseFragment<PartnersContract.Present
     private TextInputLayout partnerFullNameTIL;
     private TextInputLayout edAgeTIL;
     private TextInputLayout autoPretestCounseledTIL;
+    private LinearLayout edReferredToOthersView;
     private String packageName;
 
 
@@ -97,14 +101,27 @@ public class PartnersFragment extends LamisBaseFragment<PartnersContract.Present
         autoHCStatus = root.findViewById(R.id.autoHCStatus);
         autoSyphilisStatus = root.findViewById(R.id.autoSyphilisStatus);
         autoReferredTo = root.findViewById(R.id.autoReferredTo);
+        edReferredToOthers = root.findViewById(R.id.edReferredToOthers);
 
         partnerFullNameTIL = root.findViewById(R.id.partnerFullNameTIL);
         edAgeTIL = root.findViewById(R.id.edAgeTIL);
         autoPretestCounseledTIL = root.findViewById(R.id.autoPretestCounseledTIL);
+        edReferredToOthersView = root.findViewById(R.id.edReferredToOthersView);
     }
 
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
+
+        autoReferredTo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (autoReferredTo.getText().toString().equals("OTHERS")) {
+                    edReferredToOthersView.setVisibility(View.VISIBLE);
+                } else {
+                    edReferredToOthersView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void autoPopulateFieldsFromANC() {
@@ -186,6 +203,14 @@ public class PartnersFragment extends LamisBaseFragment<PartnersContract.Present
             if (partnerRegistration.getReferredTo() != null) {
                 autoReferredTo.setText(partnerRegistration.getReferredTo(), false);
             }
+
+            if (partnerRegistration.getReferredTo().equals("OTHERS")) {
+                edReferredToOthersView.setVisibility(View.VISIBLE);
+            }
+
+            if (partnerRegistration.getReferredToOthers() != null) {
+                edReferredToOthers.setText(partnerRegistration.getReferredToOthers());
+            }
         }
     }
 
@@ -245,6 +270,11 @@ public class PartnersFragment extends LamisBaseFragment<PartnersContract.Present
         if (!ViewUtils.isEmpty(autoReferredTo)) {
             partnerRegistration.setReferredTo(ViewUtils.getInput(autoReferredTo));
         }
+
+        if (!ViewUtils.isEmpty(edReferredToOthers)) {
+            partnerRegistration.setReferredToOthers(ViewUtils.getInput(edReferredToOthers));
+        }
+
         return partnerRegistration;
     }
 
