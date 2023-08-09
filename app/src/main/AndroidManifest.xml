@@ -453,6 +453,18 @@
         </activity>
 
         <activity
+            android:name=".activities.testconnection.TestConnectionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:parentActivityName=".activities.preferences.PrefrencesActivity"
+            android:label="@string/test_connection">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.preferences.PrefrencesActivity" />
+        </activity>
+
+        <activity
             android:name=".activities.syncstatus.SyncStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:parentActivityName=".activities.dashboard.DashboardActivity">

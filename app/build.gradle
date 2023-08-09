@@ -116,6 +116,16 @@ dependencies {
     implementation files('libs/AlCamera.jar')
     implementation files('libs/FDxSDKProFDAndroid.jar')
 
+    implementation files('libs/pmml-agent-1.5.16.jar')
+    implementation files('libs/pmml-evaluator-1.5.16-sources.jar')
+    implementation files('libs/pmml-evaluator-1.5.16.jar')
+    implementation files('libs/pmml-evaluator-extension-1.5.16.jar')
+    implementation files('libs/pmml-model-1.5.16.jar')
+    implementation files('libs/jaxb-api.jar')
+    //implementation files('libs/jaxb-impl-2.2.6.jar')
+
+    //implementation 'javax.xml.bind:jaxb-api:2.2.8'
+
     implementation ":neurotec-biometrics-client-android"
     implementation ":neurotec-devices-fscanners-futronic-android"
     //implementation ":neurotec-devices-fscanners-secugen-android"
@@ -168,6 +178,8 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'nl.joery.animatedbottombar:library:1.0.4'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    //implementation 'com.github.ndpgroup:jaxb-android:0.2.0'
 }
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {

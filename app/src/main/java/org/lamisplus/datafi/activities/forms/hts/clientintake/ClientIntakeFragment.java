@@ -778,7 +778,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
 
     @Override
     public void setErrorsVisibilityPatient(boolean firstNameError, boolean lastNameError, boolean middleNameError, boolean dateOfBirthError, boolean genderError,
-                                           boolean maritalNull, boolean phoneNull, boolean stateError, boolean provinceError, boolean addressError) {
+                                           boolean maritalNull, boolean stateError, boolean provinceError, boolean addressError) {
         if (firstNameError) {
             edfirstNameTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
             edfirstNameTIL.setError("Enter the First Name or check they do not contain symbols and numbers");
@@ -809,10 +809,10 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             fillMaritalStatusTIL.setError("Select the Marital Status");
         }
 
-        if (phoneNull) {
-            edPhoneTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
-            edPhoneTIL.setError("Enter the Phone Number");
-        }
+//        if (phoneNull) {
+//            edPhoneTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+//            edPhoneTIL.setError("Enter the Phone Number");
+//        }
 
         if (stateError) {
             fillStateTIL.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));

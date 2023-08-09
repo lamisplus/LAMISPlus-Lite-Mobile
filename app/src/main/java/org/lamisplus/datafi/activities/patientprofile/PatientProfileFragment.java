@@ -145,6 +145,7 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
                 editPatient.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                         String.valueOf(mPresenter.getPatientId()));
                 startActivity(editPatient);
+                break;
             case R.id.mRecaptureButton:
                 Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(Integer.valueOf(mPresenter.getPatientId()));
                 if (biometrics == null || !DateUtils.compareDate(biometrics.getDateTime())) {
@@ -189,7 +190,7 @@ public class PatientProfileFragment extends LamisBaseFragment<PatientProfileCont
             if (person.getEducationId() != null) {
                 tvEducationLevel.setText(CodesetsDAO.findCodesetsDisplayById(person.getEducationId()));
             }
-            if (person.pullContactPointList() != null) {
+            if (person.pullContactPointList() != null && person.pullContactPointList().size() > 0) {
                 tvPhoneNumber.setText(person.pullContactPointList().get(0).getValue());
             }
 

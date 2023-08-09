@@ -2,6 +2,7 @@ package org.lamisplus.datafi.activities.preferences;
 
 import static java.lang.reflect.Modifier.TRANSIENT;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.findpatient.FindPatientActivity;
+import org.lamisplus.datafi.activities.testconnection.TestConnectionActivity;
 import org.lamisplus.datafi.api.BearerApi;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
@@ -61,11 +63,12 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
     private Button btnSaveServerURL;
     private Button btnSaveLocation;
     private Button btnSavePCRLab;
+    private Button testConnection;
     private TextView tvcurrentServerURL;
     private AutoCompleteTextView autoLocation;
     private AutoCompleteTextView autoPCRLab;
 
-    private LamisPlus  lamisPlus = LamisPlus.getInstance();
+    private LamisPlus lamisPlus = LamisPlus.getInstance();
 
     @Nullable
     @Override
@@ -89,23 +92,18 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSaveServerURL = root.findViewById(R.id.btnSaveServerURL);
         btnSaveLocation = root.findViewById(R.id.btnSaveLocation);
         btnSavePCRLab = root.findViewById(R.id.btnSavePCRLab);
+        testConnection = root.findViewById(R.id.testConnection);
         tvcurrentServerURL = root.findViewById(R.id.tvcurrentServerURL);
         autoLocation = root.findViewById(R.id.autoLocation);
         autoPCRLab = root.findViewById(R.id.autoPCRLab);
     }
 
-    private void fillFields(){
-//        Person person = PersonDAO.findPersonById("1");
-//        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-//                .excludeFieldsWithModifiers(TRANSIENT).disableHtmlEscaping().create();
-//        String personList = gson.toJson(person);
-//        final String payload = personList.replaceAll("u003c", "<").replaceAll("u003d", "=").replaceAll("u003e", ">").replaceAll("\\\\", "").replaceAll("\"\\[\\{", "[{").replaceAll("\\}\\]\"", "}]");
-
+    private void fillFields() {
         tvcurrentServerURL.setText(lamisPlus.getServerUrl());
 
         List<Account> accounts = AccountDAO.getAllAccounts();
         List<String> allAccounts = new ArrayList<>();
-        for(Account acc : accounts){
+        for (Account acc : accounts) {
             allAccounts.add(acc.getCurrentOrganisationUnitName());
         }
 
@@ -113,14 +111,14 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         autoLocation.setAdapter(adapterLocations);
 
         Account account = AccountDAO.getDefaultLocation();
-        if(account != null) {
+        if (account != null) {
             autoLocation.setText(account.getCurrentOrganisationUnitName(), false);
         }
 
 
         List<Lab> labs = LabDAO.getAllLabs();
         List<String> allLabs = new ArrayList<>();
-        for(Lab lab : labs){
+        for (Lab lab : labs) {
             allLabs.add(lab.getName());
         }
 
@@ -128,7 +126,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         autoPCRLab.setAdapter(adapterLabs);
 
         Lab lab = LabDAO.getDefaultLab();
-        if(lab != null) {
+        if (lab != null) {
             autoPCRLab.setText(lab.getName(), false);
         }
     }
@@ -137,6 +135,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSaveServerURL.setOnClickListener(this);
         btnSaveLocation.setOnClickListener(this);
         btnSavePCRLab.setOnClickListener(this);
+        testConnection.setOnClickListener(this);
     }
 
     @Override
@@ -166,22 +165,25 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
                 break;
             case R.id.btnSaveLocation:
                 String selectedFacility = ViewUtils.getInput(autoLocation);
-                if(!StringUtils.isBlank(selectedFacility)) {
+                if (!StringUtils.isBlank(selectedFacility)) {
                     AccountDAO.setLocation(selectedFacility);
                     lamisPlus.setFacilityId(AccountDAO.getUserDetails().getCurrentOrganisationUnitId());
                     ToastUtil.success("Location saved successfully as " + selectedFacility);
-                }else{
+                } else {
                     ToastUtil.error("Please select a Facility before saving");
                 }
                 break;
             case R.id.btnSavePCRLab:
                 String selectedLab = ViewUtils.getInput(autoPCRLab);
-                if(!StringUtils.isBlank(selectedLab)) {
+                if (!StringUtils.isBlank(selectedLab)) {
                     LabDAO.setLab(selectedLab);
                     ToastUtil.success("Lab saved successfully as " + selectedLab);
-                }else{
+                } else {
                     ToastUtil.error("Please select a Lab before saving");
                 }
+            case R.id.testConnection:
+                Intent intentTest = new Intent(getActivity(), TestConnectionActivity.class);
+                startActivity(intentTest);
             default:
 
                 break;

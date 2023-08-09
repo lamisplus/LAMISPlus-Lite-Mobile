@@ -135,7 +135,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="15dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/mPMTCTButton"

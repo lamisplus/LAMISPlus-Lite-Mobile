@@ -241,7 +241,7 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject objSections = jsonArray.getJSONObject(j);
 
-                            Integer imageQuality = 0;
+                            Integer imageQuality = 60;
                             String template = objSections.getString("template");
                             String templateType = objSections.getString("templateType");
 

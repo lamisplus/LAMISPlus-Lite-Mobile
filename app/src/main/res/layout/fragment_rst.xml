@@ -552,6 +552,23 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/saveMlButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableRight="@drawable/arrow_forward"
+                android:text="Calculate Machine Learning Score"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
                 android:id="@+id/saveContinueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

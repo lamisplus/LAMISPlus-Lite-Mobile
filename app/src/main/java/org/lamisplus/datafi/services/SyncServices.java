@@ -292,6 +292,8 @@ public class SyncServices extends IntentService {
                 } else {
                     syncANC();
                     syncPMTCTEnrollment();
+                    syncLabourDelivery();
+                    syncInfantRegistration();
                     if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) == 0 && EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.CLIENT_INTAKE_FORM) == 0) {
                         syncOtherHTSForms();
                     }
@@ -442,6 +444,73 @@ public class SyncServices extends IntentService {
                         Encounter encounter = it.next();
                         if (encounter != null && !encounter.isSynced()) {
                             getPMTCTEnrollmentAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+
+    private synchronized void getLabourDeliveryAndSync(Encounter encounter) {
+        new PMTCTRepository().syncLabourDelivery(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncLabourDelivery() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterLabourDeliveryList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.LABOUR_DELIVERY_FORM);
+                final ListIterator<Encounter> it = encounterLabourDeliveryList.listIterator();
+                if (encounterLabourDeliveryList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getLabourDeliveryAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+    private synchronized void getInfantRegistrationAndSync(Encounter encounter) {
+        new PMTCTRepository().syncLabourDelivery(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncInfantRegistration() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterInfantRegistrationList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.INFANT_INFORMATION_FORM);
+                final ListIterator<Encounter> it = encounterInfantRegistrationList.listIterator();
+                if (encounterInfantRegistrationList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getInfantRegistrationAndSync(encounter);
                         }
                     }
                 }

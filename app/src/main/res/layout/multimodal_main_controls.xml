@@ -23,31 +23,22 @@
             android:text="@string/msg_capture" />
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edReasonTIL"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+
+    <EditText
+        android:id="@+id/edReason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="12dp"
-        android:layout_weight="1"
-        android:hint="Enter reason here*"
-        app:errorEnabled="true"
-        app:helperText="Enter reason here *"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/edReason"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_design"
-            android:gravity="top|start"
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:maxLines="10"
-            android:minLines="3"
-            android:scrollbars="vertical" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_design"
+        android:gravity="top|start"
+        android:hint="Enter Reason here"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="10"
+        android:minLines="3"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/multimodal_success_controls"
@@ -80,16 +71,16 @@
                 android:layout_weight="1"
                 android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
                 android:text="Discard"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/fingerPositionSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/edit_text_background"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginRight="10dp">
+                android:paddingRight="10dp">
 
             </Spinner>
 

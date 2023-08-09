@@ -46,7 +46,7 @@
 			android:title="@string/preferences_quality_threshold"
 			seekbar:min="0"
 			android:max="100"
-			android:defaultValue="39"/>
+			android:defaultValue="60"/>
 
 		<CheckBoxPreference
 			android:key="finger_fast_extraction"
