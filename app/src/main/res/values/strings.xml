@@ -11,7 +11,7 @@
     <string name="version">Version 1.0.3</string>
 
     <!-- ACBase activity -->
-    <string name="error_email_subject_app_crashed">LamisPlus Lite android app crashed</string>
+    <string name="error_email_subject_app_crashed">LamisPlus Mobile android app crashed</string>
     <string name="choose_a_email_client">Choose an Email client :</string>
 
 
@@ -494,6 +494,7 @@
     <string name="enrolment_amp_follow_up_card_2"><![CDATA[Enrolment & Follow up Card 2]]></string>
     <string name="regimen_switch">Regimen Switch</string>
     <string name="recapture_biometrics">Recapture Biometrics</string>
+    <string name="biometrics_recapture_status">Biometrics Recapture Status:</string>
 
 
 </resources>

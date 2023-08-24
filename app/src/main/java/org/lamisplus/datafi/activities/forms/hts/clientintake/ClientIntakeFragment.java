@@ -69,8 +69,12 @@ import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
+import java.security.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract.Presenter> implements ClientIntakeContract.View, View.OnClickListener {
@@ -328,7 +332,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                 noWivesTIL.setVisibility(View.GONE);
             }
 
-            if(person.getPersonId() != null){
+            if (person.getPersonId() != null) {
                 createPatientView.setVisibility(View.GONE);
             }
         }
@@ -649,9 +653,9 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                     mPresenter.confirmUpdate(updateEncounter(updatedClientIntake), updatedForm);
                 } else {
                     //If the mPresenter.getPatientId is not null then this user is already exisiting and needs the details updated
-                    if(mPresenter.getPatientId() != null && !mPresenter.getPatientId().equals("")) {
+                    if (mPresenter.getPatientId() != null && !mPresenter.getPatientId().equals("")) {
                         mPresenter.confirmCreate(createEncounter(), packageName);
-                    }else{
+                    } else {
                         mPresenter.confirmCreate(createEncounter(), createPatient(), packageName);
                     }
                 }
@@ -709,12 +713,52 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                 autoTargetGroup.setText(CodesetsDAO.findCodesetsDisplayByCode(rst.getTargetGroup()), false);
             }
 
+            if (rst.getModality() != null) {
+                edClientCode.setText(modalityCode(rstForm));
+            }
+
+
+
             edVisitDate.setText(rst.getVisitDate());
             edRegistrationDate.setText(rst.getVisitDate());
             edDateofBirth.setText(rst.getDob());
-            edAge.setText(rst.getAge()+"");
+            edAge.setText(rst.getAge() + "");
         }
 
+    }
+
+    private String modalityCode(String rstForm) {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        Integer month =  calendar.get(Calendar.MONTH);
+        Integer year =  calendar.get(Calendar.YEAR);
+
+        String modalityCode = "";
+        RiskStratification rst = new Gson().fromJson(rstForm, RiskStratification.class);
+        if (rst.getModality().toUpperCase().contains("STI")) {
+            modalityCode = "STI";
+        } else if (rst.getModality().toUpperCase().contains("EMERGENCY")) {
+            modalityCode = "EME";
+        } else if (rst.getModality().toUpperCase().contains("INDEX")) {
+            modalityCode = "IND";
+        } else if (rst.getModality().toUpperCase().contains("INPATIENT")) {
+            modalityCode = "INP";
+        } else if (rst.getModality().toUpperCase().contains("PMTCT")) {
+            modalityCode = "PMTCT";
+        } else if (rst.getModality().toUpperCase().contains("TB")) {
+            modalityCode = "TB";
+        } else if (rst.getModality().toUpperCase().contains("VCT")) {
+            modalityCode = "VCT";
+        } else if (rst.getModality().toUpperCase().contains("MOBILE")) {
+            modalityCode = "MOB";
+        } else if (rst.getModality().toUpperCase().contains("SNS")) {
+            modalityCode = "SNS";
+        } else if (rst.getModality().toUpperCase().contains("OTHER")) {
+            modalityCode = "OTH";
+        }
+        return "C" + LamisPlus.getInstance().getFacilityId() + "/" + modalityCode + "/" + month + "/" + year + "/" + System.currentTimeMillis();
     }
 
     @Override
@@ -916,7 +960,7 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
                     noWivesTIL.setVisibility(View.VISIBLE);
                 }
 
-                if(autoGender.getText().toString().equals("Female")) {
+                if (autoGender.getText().toString().equals("Female")) {
                     noWivesTIL.setVisibility(View.GONE);
                 }
             }
@@ -960,31 +1004,6 @@ public class ClientIntakeFragment extends LamisBaseFragment<ClientIntakeContract
             mDatePicker.setTitle(getString(R.string.date_picker_title));
             mDatePicker.show();
         });
-
-//        edDateofBirth.setOnClickListener(v -> {
-//            int cYear;
-//            int cMonth;
-//            int cDay;
-//
-//            Calendar currentDate = Calendar.getInstance();
-//            cYear = currentDate.get(Calendar.YEAR);
-//            cMonth = currentDate.get(Calendar.MONTH);
-//            cDay = currentDate.get(Calendar.DAY_OF_MONTH);
-//
-//            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-//                int adjustedMonth = selectedMonth + 1;
-//                String stringMonth = String.format("%02d", adjustedMonth);
-//                String stringDay = String.format("%02d", selectedDay);
-//                edDateofBirth.setText(selectedYear + "-" + stringMonth + "-" + stringDay);
-//
-//                int age = DateUtils.getAgeFromBirthdateString(selectedYear + "-" + stringMonth + "-" + stringDay);
-//
-//                edAge.setText(age + "");
-//            }, cYear, cMonth, cDay);
-//            mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-//            mDatePicker.setTitle(getString(R.string.date_picker_title));
-//            mDatePicker.show();
-//        });
     }
 
 

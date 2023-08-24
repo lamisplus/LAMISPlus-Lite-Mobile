@@ -47,6 +47,11 @@ public class PMTCTEnrollmentPresenter extends LamisBasePresenter implements PMTC
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.PMTCT_ENROLLMENT_FORM);
             encounter.setPerson(String.valueOf(patientId));
+            //Get the person id and save along
+            Person personPMTCTEnroll = PersonDAO.findPersonById(patientId);
+            if(personPMTCTEnroll != null && personPMTCTEnroll.getPersonId() != null) {
+                encounter.setPersonId(personPMTCTEnroll.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(pmtctEncounter);
             encounter.save();

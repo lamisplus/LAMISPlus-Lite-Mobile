@@ -50,6 +50,11 @@ public class InfantRegistrationPresenter extends LamisBasePresenter implements I
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.INFANT_INFORMATION_FORM);
             encounter.setPerson(String.valueOf(patientId));
+            //Get the person id and save along
+            Person personInfant = PersonDAO.findPersonById(patientId);
+            if(personInfant != null && personInfant.getPersonId() != null) {
+                encounter.setPersonId(personInfant.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(infantRegistrationEncounter);
             encounter.save();

@@ -57,6 +57,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_design"
                     android:hint="Client Code*"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>

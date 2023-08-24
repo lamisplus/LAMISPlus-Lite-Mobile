@@ -50,7 +50,7 @@
             android:value="@integer/aadbversion" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="org.lamisplus.datafi.models.Encounter, org.lamisplus.datafi.models.Person, org.lamisplus.datafi.models.Codesets, org.lamisplus.datafi.models.Account, org.lamisplus.datafi.models.OrganizationUnit, org.lamisplus.datafi.models.Biometrics, org.lamisplus.datafi.models.BiometricsRecapture, org.lamisplus.datafi.models.Lab, org.lamisplus.datafi.models.Settings" />
+            android:value="org.lamisplus.datafi.models.Encounter, org.lamisplus.datafi.models.Person, org.lamisplus.datafi.models.Codesets, org.lamisplus.datafi.models.Account, org.lamisplus.datafi.models.OrganizationUnit, org.lamisplus.datafi.models.Biometrics, org.lamisplus.datafi.models.BiometricsRecapture, org.lamisplus.datafi.models.Lab, org.lamisplus.datafi.models.Settings, org.lamisplus.datafi.models.Regimen" />
         <meta-data
             android:name="buildVersion"
             android:value="0" />
@@ -585,6 +585,11 @@
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="org.lamisplus.datafi"
             android:exported="false" />
+
+<!--        <provider-->
+<!--            android:name="androidx.startup.InitializationProvider"-->
+<!--            android:authorities="${applicationId}.androidx-startup"-->
+<!--            tools:node="remove" />-->
 
 <!--        <service-->
 <!--            android:name=".services.PatientService"-->

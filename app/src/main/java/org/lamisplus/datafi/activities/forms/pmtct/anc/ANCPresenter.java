@@ -53,7 +53,7 @@ public class ANCPresenter extends LamisBasePresenter implements ANCContract.Pres
                 Encounter encounter = new Encounter();
                 encounter.setName(ApplicationConstants.Forms.ANC_FORM);
                 encounter.setPerson(String.valueOf(patientId));
-                //Get the person ANC and save along
+                //Get the person id and save along
                 Person personANC = PersonDAO.findPersonById(patientId);
                 if(personANC != null && personANC.getPersonId() != null) {
                     encounter.setPersonId(personANC.getPersonId());

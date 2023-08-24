@@ -468,9 +468,9 @@
         <item>None</item>
     </string-array>
     <string-array name="original_regimen_line">
-        <item>ART First Line Adult</item>
-        <item>ART Second Line Adult</item>
-        <item>Third Line</item>
+        <item>Adult 1st Line</item>
+        <item>Adult 2nd Line</item>
+        <item>Adult 3rd Line</item>
     </string-array>
 
     <string-array name="first_line_original_regimen">

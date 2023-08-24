@@ -38,9 +38,11 @@ import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.AccountDAO;
 import org.lamisplus.datafi.dao.LabDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.dao.SettingsDAO;
 import org.lamisplus.datafi.models.Account;
 import org.lamisplus.datafi.models.Lab;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.models.Settings;
 import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.ImageUtils;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
@@ -63,9 +65,12 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
     private Button btnSaveServerURL;
     private Button btnSaveLocation;
     private Button btnSavePCRLab;
+    private Button btnSaveDeviceID;
     private Button testConnection;
     private TextView tvcurrentServerURL;
+    private TextView tvDeviceID;
     private AutoCompleteTextView autoLocation;
+    private EditText edDeviceId;
     private AutoCompleteTextView autoPCRLab;
 
     private LamisPlus lamisPlus = LamisPlus.getInstance();
@@ -92,10 +97,14 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSaveServerURL = root.findViewById(R.id.btnSaveServerURL);
         btnSaveLocation = root.findViewById(R.id.btnSaveLocation);
         btnSavePCRLab = root.findViewById(R.id.btnSavePCRLab);
+        btnSaveDeviceID = root.findViewById(R.id.btnSaveDeviceID);
+
         testConnection = root.findViewById(R.id.testConnection);
         tvcurrentServerURL = root.findViewById(R.id.tvcurrentServerURL);
+        tvDeviceID = root.findViewById(R.id.tvDeviceID);
         autoLocation = root.findViewById(R.id.autoLocation);
         autoPCRLab = root.findViewById(R.id.autoPCRLab);
+        edDeviceId = root.findViewById(R.id.edDeviceId);
     }
 
     private void fillFields() {
@@ -129,6 +138,11 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         if (lab != null) {
             autoPCRLab.setText(lab.getName(), false);
         }
+
+        String deviceId = SettingsDAO.getSettings(ApplicationConstants.Settings.DEVICE_ID);
+        if (deviceId != null){
+            tvDeviceID.setText(deviceId);
+        }
     }
 
     private void setListeners() {
@@ -136,6 +150,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSaveLocation.setOnClickListener(this);
         btnSavePCRLab.setOnClickListener(this);
         testConnection.setOnClickListener(this);
+        btnSaveDeviceID.setOnClickListener(this);
     }
 
     @Override
@@ -181,9 +196,20 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
                 } else {
                     ToastUtil.error("Please select a Lab before saving");
                 }
+                break;
+            case R.id.btnSaveDeviceID:
+                String deviceIdString = ViewUtils.getInput(edDeviceId);
+                if (!StringUtils.isBlank(deviceIdString)) {
+                    SettingsDAO.setSetting(ApplicationConstants.Settings.DEVICE_ID, deviceIdString);
+                    ToastUtil.success("Device ID saved successfully as " + deviceIdString);
+                } else {
+                    ToastUtil.error("Please enter a Device ID before saving");
+                }
+                break;
             case R.id.testConnection:
                 Intent intentTest = new Intent(getActivity(), TestConnectionActivity.class);
                 startActivity(intentTest);
+                break;
             default:
 
                 break;

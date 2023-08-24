@@ -38,7 +38,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:textSize="@dimen/big_heading"
-                android:text="Device Biometrics Status: "
+                android:text="Biometrics Status: "
                 android:textStyle="bold" />
 
             <TextView
@@ -78,7 +78,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/big_heading"
-            android:text="Device Biometrics Recapture Status: "
+            android:text="@string/biometrics_recapture_status"
             android:textStyle="bold" />
 
         <TextView

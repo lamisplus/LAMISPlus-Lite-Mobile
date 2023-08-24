@@ -48,6 +48,11 @@ public class PartnersPresenter extends LamisBasePresenter implements PartnersCon
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.PARTNERS_FORM);
             encounter.setPerson(String.valueOf(patientId));
+            //Get the person Id and save along
+            Person personPartner = PersonDAO.findPersonById(patientId);
+            if(personPartner != null && personPartner.getPersonId() != null) {
+                encounter.setPersonId(personPartner.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(partnersRegistrationEncounter);
             encounter.save();

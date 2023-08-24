@@ -50,6 +50,11 @@ public class LabourDeliveryPresenter extends LamisBasePresenter implements Labou
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.LABOUR_DELIVERY_FORM);
             encounter.setPerson(String.valueOf(patientId));
+            //Get the person Id and save along
+            Person personLabour = PersonDAO.findPersonById(patientId);
+            if(personLabour != null && personLabour.getPersonId() != null) {
+                encounter.setPersonId(personLabour.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(labourDeliveryEncounter);
             encounter.save();

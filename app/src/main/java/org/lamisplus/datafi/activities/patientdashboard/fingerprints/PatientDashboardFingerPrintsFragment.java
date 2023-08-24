@@ -32,6 +32,7 @@ import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardContract
 import org.lamisplus.datafi.activities.patientdashboard.PatientDashboardFragment;
 import org.lamisplus.datafi.classes.BiometricsClass;
 import org.lamisplus.datafi.dao.BiometricsDAO;
+import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.models.Address;
 import org.lamisplus.datafi.models.Biometrics;
 import org.lamisplus.datafi.models.BiometricsList;
@@ -80,20 +81,29 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     }
 
     private void setViewFingerprints() {
-        if(mPresenter.getPatientId() != 0) {
+        if (mPresenter.getPatientId() != 0) {
             Long l = new Long(mPresenter.getPatientId());
             if (l != null) {
                 Integer patientId = l.intValue();
                 Biometrics biometrics = BiometricsDAO.getFingerPrintsForUser(patientId);
-                if (biometrics == null) {
-                    biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                    biometricsStatusText.setText("Not captured");
-                } else if (biometrics.getSyncStatus() == 0) {
-                    biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.snooper_yellow));
-                    biometricsStatusText.setText("Captured but not synced");
-                } else if (biometrics.getSyncStatus() == 1) {
+
+                Person person = PersonDAO.findPersonById(String.valueOf(mPresenter.getPatientId()));
+
+                if (person.isBiometricStatus()) {
                     biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                    biometricsStatusText.setText("Captured and synced");
+                    biometricsStatusText.setText("Captured");
+                } else {
+
+                    if (biometrics == null) {
+                        biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                        biometricsStatusText.setText("Not captured");
+                    } else if (biometrics.getSyncStatus() == 0) {
+                        biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.snooper_yellow));
+                        biometricsStatusText.setText("Captured but not synced");
+                    } else if (biometrics.getSyncStatus() == 1) {
+                        biometricsStatusText.setTextColor(ContextCompat.getColor(getContext(), R.color.light_teal));
+                        biometricsStatusText.setText("Captured and synced");
+                    }
                 }
 
                 List<BiometricsList> biometricsLists = BiometricsDAO.getFingerPrints(patientId);
@@ -109,7 +119,7 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     }
 
     private void setViewRecaptureFingerprints() {
-        if(mPresenter.getPatientId() != 0) {
+        if (mPresenter.getPatientId() != 0) {
             Long l = new Long(mPresenter.getPatientId());
             if (l != null) {
                 Integer patientId = l.intValue();
@@ -228,13 +238,13 @@ public class PatientDashboardFingerPrintsFragment extends PatientDashboardFragme
     }
 
 
-    public void hashBiometrics(){
+    public void hashBiometrics() {
         hashBiometrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<Biometrics> biometrics = BiometricsDAO.getUnsyncedBiometrics(); // new Select().from(Biometrics.class).where("syncStatus = ?", 1).execute();
                 assert biometrics != null;
-                for(Biometrics b : biometrics){
+                for (Biometrics b : biometrics) {
                     try {
                         JSONArray jsonArray = new JSONArray(b.getCapturedBiometricsList());
                         List<BiometricsClass.BiometricsClassFingers> biometricsClassFingers = new ArrayList<>();

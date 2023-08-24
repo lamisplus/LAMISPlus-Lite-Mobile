@@ -11,6 +11,10 @@ public class ANC implements Serializable {
     @SerializedName("personId")
     private String personId;
 
+    //ANC id
+    @SerializedName("ancId")
+    private Integer ancId;
+
     @SerializedName("ancNo")
     @Expose
     private String ancNo;
@@ -101,6 +105,14 @@ public class ANC implements Serializable {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    public Integer getAncId() {
+        return ancId;
+    }
+
+    public void setAncId(Integer ancId) {
+        this.ancId = ancId;
     }
 
     public String getAncNo() {

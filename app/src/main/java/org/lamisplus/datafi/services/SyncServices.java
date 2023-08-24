@@ -294,6 +294,9 @@ public class SyncServices extends IntentService {
                     syncPMTCTEnrollment();
                     syncLabourDelivery();
                     syncInfantRegistration();
+                    syncPartnerInformation();
+                    syncChildFollowUpVisit();
+                    syncMotherFollowUpVisit();
                     if (EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.RISK_STRATIFICATION_FORM) == 0 && EncounterDAO.countUnsyncedEncounters(ApplicationConstants.Forms.CLIENT_INTAKE_FORM) == 0) {
                         syncOtherHTSForms();
                     }
@@ -487,7 +490,7 @@ public class SyncServices extends IntentService {
     }
 
     private synchronized void getInfantRegistrationAndSync(Encounter encounter) {
-        new PMTCTRepository().syncLabourDelivery(encounter, new DefaultCallbackListener() {
+        new PMTCTRepository().syncInfantRegistration(encounter, new DefaultCallbackListener() {
             @Override
             public void onResponse() {
 
@@ -511,6 +514,106 @@ public class SyncServices extends IntentService {
                         Encounter encounter = it.next();
                         if (encounter != null && !encounter.isSynced()) {
                             getInfantRegistrationAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+
+    private synchronized void getPartnerInformationAndSync(Encounter encounter) {
+        new PMTCTRepository().syncPartnerInformation(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncPartnerInformation() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterPartnerInformationList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.PARTNERS_FORM);
+                final ListIterator<Encounter> it = encounterPartnerInformationList.listIterator();
+                if (encounterPartnerInformationList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getPartnerInformationAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+    private synchronized void getChildFollowUpVisitAndSync(Encounter encounter) {
+        new PMTCTRepository().syncChildFollowupVisit(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncChildFollowUpVisit() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterChildFollowUpList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.CHILD_FOLLOW_UP_VISIT_FORM);
+                final ListIterator<Encounter> it = encounterChildFollowUpList.listIterator();
+                if (encounterChildFollowUpList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getChildFollowUpVisitAndSync(encounter);
+                        }
+                    }
+                }
+            }
+        });
+        rstThread.start();
+    }
+
+    private synchronized void getMotherFollowUpVisitAndSync(Encounter encounter) {
+        new PMTCTRepository().syncMotherFollowupVisit(encounter, new DefaultCallbackListener() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onErrorResponse(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void syncMotherFollowUpVisit() {
+        Thread rstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Encounter> encounterMotherFollowUpList = EncounterDAO.getUnsyncedEncounters(ApplicationConstants.Forms.MOTHER_FOLLOW_UP_VISIT_FORM);
+                final ListIterator<Encounter> it = encounterMotherFollowUpList.listIterator();
+                if (encounterMotherFollowUpList.size() > 0) {
+                    while (it.hasNext()) {
+                        Encounter encounter = it.next();
+                        if (encounter != null && !encounter.isSynced()) {
+                            getMotherFollowUpVisitAndSync(encounter);
                         }
                     }
                 }

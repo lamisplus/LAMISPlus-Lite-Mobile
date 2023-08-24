@@ -1,5 +1,6 @@
 package org.lamisplus.datafi.activities.hts.htsprogram;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +23,13 @@ import org.lamisplus.datafi.R;
 import org.lamisplus.datafi.activities.LamisBaseFragment;
 import org.lamisplus.datafi.activities.addeditpatient.AddEditPatientActivity;
 import org.lamisplus.datafi.activities.forms.hts.rst.RSTActivity;
+import org.lamisplus.datafi.activities.preferences.PrefrencesActivity;
+import org.lamisplus.datafi.dao.SettingsDAO;
 import org.lamisplus.datafi.models.Person;
+import org.lamisplus.datafi.utilities.ApplicationConstants;
 import org.lamisplus.datafi.utilities.FontsUtil;
 import org.lamisplus.datafi.utilities.LamisCustomHandler;
+import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,13 +71,29 @@ public class HTSProgramFragment extends LamisBaseFragment<HTSProgramContract.Pre
         return new HTSProgramFragment();
     }
 
-    private void setListener(){
+    private void setListener() {
         mCreateHTSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), RSTActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                String deviceId = SettingsDAO.getSettings(ApplicationConstants.Settings.DEVICE_ID);
+                if (deviceId != null) {
+                    Intent intent = new Intent(getContext(), RSTActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                } else {
+                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(requireActivity());
+                    dlgAlert.setMessage("Device ID Not Set. Please set the Device ID at the Settings page");
+                    dlgAlert.setTitle("Device ID");
+                    dlgAlert.setPositiveButton("OK",
+                            (dialog, whichButton) -> {
+                                //getActivity().finish();
+                                Intent intent = new Intent(getActivity(), PrefrencesActivity.class);
+                                startActivity(intent);
+                            }
+                    );
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.create().show();
+                }
             }
         });
     }
@@ -95,7 +116,7 @@ public class HTSProgramFragment extends LamisBaseFragment<HTSProgramContract.Pre
         mHTSProgramRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    public void updateView(){
+    public void updateView() {
         getActivity().runOnUiThread(new Runnable() {
 
             @Override

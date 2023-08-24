@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,12 +34,17 @@ import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.URLValidator;
 
-public class TestConnectionFragment extends LamisBaseFragment<TestConnectionContract.Presenter> implements TestConnectionContract.View{
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Objects;
+
+public class TestConnectionFragment extends LamisBaseFragment<TestConnectionContract.Presenter> implements TestConnectionContract.View {
 
     private View root;
 
     private WebView webView;
     static ProgressBar progressBar;
+    static TextView connectionStatus;
 
     final private String initialUrl = LamisPlus.getInstance().getServerUrl();
     protected LamisPlus lamisPlus = LamisPlus.getInstance();
@@ -47,7 +53,7 @@ public class TestConnectionFragment extends LamisBaseFragment<TestConnectionCont
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         root = inflater.inflate(R.layout.fragment_test_connection, container, false);
+        root = inflater.inflate(R.layout.fragment_test_connection, container, false);
         if (root != null) {
             initiateFragmentViews(root);
             setHasOptionsMenu(true);
@@ -61,11 +67,13 @@ public class TestConnectionFragment extends LamisBaseFragment<TestConnectionCont
     }
 
 
-
-    public void initiateFragmentViews(View root){
+    public void initiateFragmentViews(View root) {
         webView = root.findViewById(R.id.webView);
         progressBar = root.findViewById(R.id.progressBar);
+        connectionStatus = root.findViewById(R.id.connectionStatus);
         webView.setWebViewClient(new WebViewClient());
+
+        loadIpAddress();
 
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -77,9 +85,32 @@ public class TestConnectionFragment extends LamisBaseFragment<TestConnectionCont
     }
 
 
-    @Override
+    //@Override
     public void loadIpAddress() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(initialUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
 
+                    int code = connection.getResponseCode();
+                    if(code == 200){
+                        connectionStatus.setText("Connected");
+                        connectionStatus.setTextColor(getResources().getColor(R.color.light_teal));
+                    }else{
+                        connectionStatus.setText("Not Connected");
+                        connectionStatus.setTextColor(getResources().getColor(R.color.red));
+                    }
+                    Log.v("Baron",code + " is the code");
+                } catch (Exception e) {
+                    Log.v("Baron", Objects.requireNonNull(e.getMessage()));
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private static class WebViewClient extends android.webkit.WebViewClient {
