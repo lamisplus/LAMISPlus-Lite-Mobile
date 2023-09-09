@@ -321,4 +321,9 @@ public class EncounterDAO {
         return encounter.size();
     }
 
+    public static List<Encounter> allEncounters() {
+        List<Encounter> encounter = new Select().from(Encounter.class).execute();
+        return encounter;
+    }
+
 }

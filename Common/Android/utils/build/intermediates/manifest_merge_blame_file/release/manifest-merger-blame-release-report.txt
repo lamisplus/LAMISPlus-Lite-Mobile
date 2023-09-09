@@ -5,7 +5,7 @@
 5    android:versionName="12.4.0.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="19"
+8        android:minSdkVersion="21"
 8-->/Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml
 9        android:targetSdkVersion="33" />
 9-->/Users/baronearl/AndroidStudioProjects/UpdatedLamisMobile/Common/Android/utils/src/main/AndroidManifest.xml

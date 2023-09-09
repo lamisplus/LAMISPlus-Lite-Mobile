@@ -34,12 +34,15 @@ import org.lamisplus.datafi.activities.testconnection.TestConnectionActivity;
 import org.lamisplus.datafi.api.BearerApi;
 import org.lamisplus.datafi.api.RestApi;
 import org.lamisplus.datafi.api.RestServiceBuilder;
+import org.lamisplus.datafi.application.LamisCustomFileHandler;
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.AccountDAO;
+import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.LabDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
 import org.lamisplus.datafi.dao.SettingsDAO;
 import org.lamisplus.datafi.models.Account;
+import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Lab;
 import org.lamisplus.datafi.models.Person;
 import org.lamisplus.datafi.models.Settings;
@@ -67,6 +70,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
     private Button btnSavePCRLab;
     private Button btnSaveDeviceID;
     private Button testConnection;
+    private Button debugBtn;
     private TextView tvcurrentServerURL;
     private TextView tvDeviceID;
     private AutoCompleteTextView autoLocation;
@@ -98,6 +102,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSaveLocation = root.findViewById(R.id.btnSaveLocation);
         btnSavePCRLab = root.findViewById(R.id.btnSavePCRLab);
         btnSaveDeviceID = root.findViewById(R.id.btnSaveDeviceID);
+        debugBtn = root.findViewById(R.id.debugBtn);
 
         testConnection = root.findViewById(R.id.testConnection);
         tvcurrentServerURL = root.findViewById(R.id.tvcurrentServerURL);
@@ -140,7 +145,7 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         }
 
         String deviceId = SettingsDAO.getSettings(ApplicationConstants.Settings.DEVICE_ID);
-        if (deviceId != null){
+        if (deviceId != null) {
             tvDeviceID.setText(deviceId);
         }
     }
@@ -151,6 +156,8 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
         btnSavePCRLab.setOnClickListener(this);
         testConnection.setOnClickListener(this);
         btnSaveDeviceID.setOnClickListener(this);
+
+        debugBtn.setOnClickListener(this);
     }
 
     @Override
@@ -209,6 +216,13 @@ public class PrefrencesFragment extends LamisBaseFragment<PrefrencesContract.Pre
             case R.id.testConnection:
                 Intent intentTest = new Intent(getActivity(), TestConnectionActivity.class);
                 startActivity(intentTest);
+                break;
+            case R.id.debugBtn:
+                List<Encounter> encounter = EncounterDAO.allEncounters();
+                for(Encounter ec : encounter){
+                    //LamisCustomHandler.showJson(ec);
+                    LamisCustomFileHandler.writeLogToFile(LamisCustomHandler.getJson(ec));
+                }
                 break;
             default:
 

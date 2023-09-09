@@ -33,6 +33,7 @@ import org.lamisplus.datafi.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HTSProgramFragment extends LamisBaseFragment<HTSProgramContract.Presenter> implements HTSProgramContract.View {
 
@@ -75,25 +76,25 @@ public class HTSProgramFragment extends LamisBaseFragment<HTSProgramContract.Pre
         mCreateHTSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String deviceId = SettingsDAO.getSettings(ApplicationConstants.Settings.DEVICE_ID);
-                if (deviceId != null) {
-                    Intent intent = new Intent(getContext(), RSTActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                } else {
-                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(requireActivity());
-                    dlgAlert.setMessage("Device ID Not Set. Please set the Device ID at the Settings page");
-                    dlgAlert.setTitle("Device ID");
-                    dlgAlert.setPositiveButton("OK",
-                            (dialog, whichButton) -> {
-                                //getActivity().finish();
-                                Intent intent = new Intent(getActivity(), PrefrencesActivity.class);
-                                startActivity(intent);
-                            }
-                    );
-                    dlgAlert.setCancelable(false);
-                    dlgAlert.create().show();
-                }
+//                String deviceId = SettingsDAO.getSettings(ApplicationConstants.Settings.DEVICE_ID);
+//                if (deviceId != null) {
+                Intent intent = new Intent(getContext(), RSTActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+//                } else {
+//                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(requireActivity());
+//                    dlgAlert.setMessage("Device ID Not Set. Please set the Device ID at the Settings page");
+//                    dlgAlert.setTitle("Device ID");
+//                    dlgAlert.setPositiveButton("OK",
+//                            (dialog, whichButton) -> {
+//                                //getActivity().finish();
+//                                Intent intent = new Intent(getActivity(), PrefrencesActivity.class);
+//                                startActivity(intent);
+//                            }
+//                    );
+//                    dlgAlert.setCancelable(false);
+//                    dlgAlert.create().show();
+//                }
             }
         });
     }
