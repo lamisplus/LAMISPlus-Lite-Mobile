@@ -74,7 +74,7 @@ public class PatientDashboardActivity extends LamisBaseActivity {
             resources = getResources();
             setupUpdateDeleteActionFAB();
             Person person = PersonDAO.findPersonById(mId);
-            if (person.isBiometricStatus()) {
+            if (person != null && person.isBiometricStatus()) {
                 pbsFAB.setVisibility(View.GONE);
             }
         }

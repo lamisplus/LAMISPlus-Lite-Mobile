@@ -77,6 +77,7 @@ public class HTSRepository extends RetrofitRepository {
                     @Override
                     public void onFailure(Call<RiskStratification> call, Throwable t) {
                         LamisCustomFileHandler.writeLogToFile("RST Failure, Message: " + t.getMessage());
+                        //call.cancel();
                     }
                 });
             }
