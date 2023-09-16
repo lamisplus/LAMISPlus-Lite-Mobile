@@ -31,6 +31,7 @@ import org.lamisplus.datafi.activities.pmtct.pmtctservices.PMTCTServicesActivity
 import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
+import org.lamisplus.datafi.dao.RegimenDAO;
 import org.lamisplus.datafi.models.ANC;
 import org.lamisplus.datafi.models.ChildFollowupVisit;
 import org.lamisplus.datafi.models.Encounter;
@@ -290,11 +291,11 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String[] originalRegimen = {};
-                if (autoOriginalRegimenLine.getText().toString().equals("ART First Line Adult")) {
+                if (autoOriginalRegimenLine.getText().toString().equals("Adult 1st Line")) {
                     originalRegimen = getResources().getStringArray(R.array.first_line_original_regimen);
-                } else if (autoOriginalRegimenLine.getText().toString().equals("ART Second Line Adult")) {
+                } else if (autoOriginalRegimenLine.getText().toString().equals("Adult 2nd Line")) {
                     originalRegimen = getResources().getStringArray(R.array.second_line_original_regimen);
-                } else if (autoOriginalRegimenLine.getText().toString().equals("Third Line")) {
+                } else if (autoOriginalRegimenLine.getText().toString().equals("Adult 3rd Line")) {
                     originalRegimen = getResources().getStringArray(R.array.third_line_original_regimen);
                 } else {
                     originalRegimen = null;
@@ -394,16 +395,16 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
             childFollowupVisit.getInfantMotherArtDto().setMotherArtRegimen("");
 
             if (childFollowupVisit.getInfantMotherArtDto().getRegimenTypeId() != null) {
-                autoOriginalRegimenLine.setText(childFollowupVisit.getInfantMotherArtDto().getRegimenTypeId(), false);
+                autoOriginalRegimenLine.setText(RegimenDAO.findRegimenDescriptionByRegimenTypeId(childFollowupVisit.getInfantMotherArtDto().getRegimenTypeId()), false);
             }
 
             if (childFollowupVisit.getInfantMotherArtDto().getRegimenId() != null) {
-                autoOriginalRegimen.setText(childFollowupVisit.getInfantMotherArtDto().getRegimenId(), false);
+                autoOriginalRegimen.setText(RegimenDAO.findRegimenDescriptionById(childFollowupVisit.getInfantMotherArtDto().getRegimenId()), false);
             }
 
             //infantPCRTestDto
             if (childFollowupVisit.getInfantPCRTestDto().getAgeAtTest() != null) {
-                edAgeAtTestMonths.setText(childFollowupVisit.getInfantPCRTestDto().getAgeAtTest());
+                edAgeAtTestMonths.setText(childFollowupVisit.getInfantPCRTestDto().getAgeAtTest()+"");
             }
 
 
@@ -431,8 +432,6 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
                 autoSampleType.setText(childFollowupVisit.getInfantPCRTestDto().getTestType(), false);
             }
 
-        } else {
-            Log.v("Baron", "CFV is null");
         }
     }
 
@@ -456,7 +455,7 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
         }
 
         if (!ViewUtils.isEmpty(edMotherANCNumber)) {
-            Log.v("Baron", "ANC is " + ViewUtils.getInput(edMotherANCNumber));
+//            Log.v("Baron", "ANC is " + ViewUtils.getInput(edMotherANCNumber));
             infantVisitRequestDto.setAncNumber(ViewUtils.getInput(edMotherANCNumber));
         }
 
@@ -493,6 +492,15 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
             infantArvDto.setAgeAtCtx(CodesetsDAO.findCodesetsCodeByDisplay(ViewUtils.getInput(autoAgeCTXInitiation)));
         }
 
+        if (!ViewUtils.isEmpty(edDateVisit)) {
+            infantArvDto.setVisitDate(ViewUtils.getInput(edDateVisit));
+        }
+
+        if (!ViewUtils.isEmpty(autoInfantHospitalNumber)) {
+            String[] splitNameHosp = Objects.requireNonNull(ViewUtils.getInput(autoInfantHospitalNumber)).split("-");
+            infantArvDto.setInfantHospitalNumber(splitNameHosp[1]);
+        }
+
         if (!ViewUtils.isEmpty(edMotherANCNumber)) {
             infantArvDto.setAncNumber(ViewUtils.getInput(edMotherANCNumber));
         }
@@ -523,11 +531,11 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
         infantMotherArtDto.setMotherArtRegimen("");
 
         if (!ViewUtils.isEmpty(autoOriginalRegimenLine)) {
-            infantMotherArtDto.setRegimenTypeId(ViewUtils.getInput(autoOriginalRegimenLine));
+            infantMotherArtDto.setRegimenTypeId(RegimenDAO.findRegimenTypeIdByDescription(ViewUtils.getInput(autoOriginalRegimenLine)));
         }
 
         if (!ViewUtils.isEmpty(autoOriginalRegimen)) {
-            infantMotherArtDto.setRegimenId(ViewUtils.getInput(autoOriginalRegimen));
+            infantMotherArtDto.setRegimenId(RegimenDAO.findRegimenIdByDescription(ViewUtils.getInput(autoOriginalRegimen)));
         }
 
         childFollowupVisit.setInfantMotherArtDto(infantMotherArtDto);
@@ -535,7 +543,16 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
         //infantPCRTestDto
         ChildFollowupVisit.InfantPCRTestDto infantPCRTestDto = new ChildFollowupVisit.InfantPCRTestDto();
         if (!ViewUtils.isEmpty(edAgeAtTestMonths)) {
-            infantPCRTestDto.setAgeAtTest(ViewUtils.getInput(edAgeAtTestMonths));
+            infantPCRTestDto.setAgeAtTest(Integer.parseInt(Objects.requireNonNull(ViewUtils.getInput(edAgeAtTestMonths))));
+        }
+
+        if (!ViewUtils.isEmpty(edDateVisit)) {
+            infantPCRTestDto.setVisitDate(ViewUtils.getInput(edDateVisit));
+        }
+
+        if (!ViewUtils.isEmpty(autoInfantHospitalNumber)) {
+            String[] splitNameHosp = Objects.requireNonNull(ViewUtils.getInput(autoInfantHospitalNumber)).split("-");
+            infantPCRTestDto.setInfantHospitalNumber(splitNameHosp[1]);
         }
 
         infantPCRTestDto.setAncNumber(ViewUtils.getInput(edMotherANCNumber));
@@ -581,7 +598,7 @@ public class ChildFollowUpVisitFragment extends LamisBaseFragment<ChildFollowUpV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_delete:
-                mPresenter.confirmDeleteEncounter(ApplicationConstants.Forms.PMTCT_ENROLLMENT_FORM, mPresenter.getPatientId());
+                mPresenter.confirmDeleteEncounter(ApplicationConstants.Forms.CHILD_FOLLOW_UP_VISIT_FORM, mPresenter.getPatientId());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -83,6 +83,22 @@ public class DateUtils {
         return 0;
     }
 
+    public static Integer testInfantAge(String dateOfBirth, String dateAtTest) {
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            formatter = formatter.withLocale(Locale.US);  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+
+            LocalDate birthDate = LocalDate.parse(dateOfBirth, formatter);
+            LocalDate testDate = LocalDate.parse(dateAtTest, formatter);
+
+            int td = (int) ChronoUnit.MONTHS.between(birthDate, testDate);
+            if (td < 0) td = 0;
+            return td;
+        }
+        return 0;
+    }
+
 
     //   public int calculateGA2(String hospitalNumber, LocalDate visitDate) {
 //        Calendar a = new GregorianCalendar();

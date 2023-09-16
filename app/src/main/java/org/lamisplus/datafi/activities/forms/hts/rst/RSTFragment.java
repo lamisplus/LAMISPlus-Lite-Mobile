@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -41,6 +42,7 @@ import org.lamisplus.datafi.application.LamisPlus;
 import org.lamisplus.datafi.dao.CodesetsDAO;
 import org.lamisplus.datafi.dao.EncounterDAO;
 import org.lamisplus.datafi.dao.PersonDAO;
+import org.lamisplus.datafi.ml.controller.MlController;
 import org.lamisplus.datafi.models.Codesets;
 import org.lamisplus.datafi.models.Encounter;
 import org.lamisplus.datafi.models.Person;
@@ -53,6 +55,7 @@ import org.lamisplus.datafi.utilities.StringUtils;
 import org.lamisplus.datafi.utilities.ToastUtil;
 import org.lamisplus.datafi.utilities.ViewUtils;
 
+import java.io.InputStream;
 import java.util.Calendar;
 
 public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implements RSTContract.View, View.OnClickListener {
@@ -87,6 +90,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
     private boolean isAdult = false;
 
     private Button mSaveContinueButton;
+    private Button mSaveMlButton;
 
     private boolean isUpdateRst = false;
     private Encounter updatedForm;
@@ -163,6 +167,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
         riskAssessmentLayout = root.findViewById(R.id.riskAssessmentLayout);
         autocommunityEntryPointLayout = root.findViewById(R.id.autocommunityEntryPointLayout);
         mSaveContinueButton = root.findViewById(R.id.saveContinueButton);
+        mSaveMlButton = root.findViewById(R.id.saveMlButton);
         edAge = root.findViewById(R.id.edAge);
         rpDateofBirth = root.findViewById(R.id.rgdateOfBirthSelect);
         edDateofBirthTIL = root.findViewById(R.id.edDateofBirthTIL);
@@ -181,6 +186,7 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
 
     private void setListeners() {
         mSaveContinueButton.setOnClickListener(this);
+        mSaveMlButton.setOnClickListener(this);
 
         String[] communityEntry = getResources().getStringArray(R.array.community_entry_point);
         ArrayAdapter<String> adapterCommunityEntryPoint = new ArrayAdapter<>(getActivity(), R.layout.form_dropdown, communityEntry);
@@ -617,6 +623,22 @@ public class RSTFragment extends LamisBaseFragment<RSTContract.Presenter> implem
                     mPresenter.confirmUpdate(updateEncounter(updatedRst), updatedForm);
                 } else {
                     mPresenter.confirmCreate(createEncounter(), packageName);
+                }
+                break;
+            case R.id.saveMlButton:
+                try {
+                    InputStream is = getResources().openRawResource(R.raw.ml);
+
+                    int size = is.available();
+                    byte[] buffer = new byte[size];
+                    is.read(buffer);
+                    is.close();
+
+                   String jsonString = new String(buffer, "UTF-8");
+                   String ss = new Gson().toJson(jsonString);
+                    MlController.processModel(ss);
+                }catch (Exception e){
+
                 }
                 break;
             default:

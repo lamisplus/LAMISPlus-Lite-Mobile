@@ -175,7 +175,7 @@ public class NoBiometricsPatientsServerFragment extends LamisBaseFragment<NoBiom
                         LamisCustomHandler.showJson(response.body());
                         try {
                             JSONArray jsonArray = new JSONArray(new Gson().toJson(response.body()));
-
+                            Log.v("Baron", "Total number of positive is " + jsonArray.length());
                             List<Person> personList = new ArrayList<>();
                             for (int j = 0; j < jsonArray.length(); j++) {
                                 JSONObject objSections = jsonArray.getJSONObject(j);

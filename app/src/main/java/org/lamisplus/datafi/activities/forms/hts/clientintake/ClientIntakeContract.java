@@ -28,7 +28,6 @@ public class ClientIntakeContract {
                                  boolean dateOfBirthError,
                                  boolean genderError,
                                  boolean maritalNull,
-                                 boolean phoneNull,
                                  boolean stateError,
                                  boolean provinceError, boolean addressError);
     }

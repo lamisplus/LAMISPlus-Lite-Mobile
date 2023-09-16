@@ -166,6 +166,12 @@ public class ChildFollowupVisit implements Serializable {
         @SerializedName("ageAtCtx")
         private String ageAtCtx;
 
+        @SerializedName("visitDate")
+        private String visitDate;
+
+        @SerializedName("infantHospitalNumber")
+        private String infantHospitalNumber;
+
         @SerializedName("ancNumber")
         private String ancNumber;
 
@@ -188,6 +194,22 @@ public class ChildFollowupVisit implements Serializable {
 
         public String getAncNumber() {
             return ancNumber;
+        }
+
+        public String getVisitDate() {
+            return visitDate;
+        }
+
+        public void setVisitDate(String visitDate) {
+            this.visitDate = visitDate;
+        }
+
+        public String getInfantHospitalNumber() {
+            return infantHospitalNumber;
+        }
+
+        public void setInfantHospitalNumber(String infantHospitalNumber) {
+            this.infantHospitalNumber = infantHospitalNumber;
         }
 
         public void setAncNumber(String ancNumber) {
@@ -230,10 +252,10 @@ public class ChildFollowupVisit implements Serializable {
         private String motherArtRegimen;
 
         @SerializedName("regimenTypeId")
-        private String regimenTypeId;
+        private Integer regimenTypeId;
 
         @SerializedName("regimenId")
-        private String regimenId;
+        private Integer regimenId;
 
         public String getAncNumber() {
             return ancNumber;
@@ -259,26 +281,32 @@ public class ChildFollowupVisit implements Serializable {
             this.motherArtRegimen = motherArtRegimen;
         }
 
-        public String getRegimenTypeId() {
+        public Integer getRegimenTypeId() {
             return regimenTypeId;
         }
 
-        public void setRegimenTypeId(String regimenTypeId) {
+        public void setRegimenTypeId(Integer regimenTypeId) {
             this.regimenTypeId = regimenTypeId;
         }
 
-        public String getRegimenId() {
+        public Integer getRegimenId() {
             return regimenId;
         }
 
-        public void setRegimenId(String regimenId) {
+        public void setRegimenId(Integer regimenId) {
             this.regimenId = regimenId;
         }
     }
 
     public static class InfantPCRTestDto implements Serializable {
         @SerializedName("ageAtTest")
-        private String ageAtTest;
+        private Integer ageAtTest = 0;
+
+        @SerializedName("visitDate")
+        private String visitDate;
+
+        @SerializedName("infantHospitalNumber")
+        private String infantHospitalNumber;
 
         @SerializedName("ancNumber")
         private String ancNumber;
@@ -301,12 +329,28 @@ public class ChildFollowupVisit implements Serializable {
         @SerializedName("testType")
         private String testType;
 
-        public String getAgeAtTest() {
+        public Integer getAgeAtTest() {
             return ageAtTest;
         }
 
-        public void setAgeAtTest(String ageAtTest) {
+        public void setAgeAtTest(Integer ageAtTest) {
             this.ageAtTest = ageAtTest;
+        }
+
+        public String getVisitDate() {
+            return visitDate;
+        }
+
+        public void setVisitDate(String visitDate) {
+            this.visitDate = visitDate;
+        }
+
+        public String getInfantHospitalNumber() {
+            return infantHospitalNumber;
+        }
+
+        public void setInfantHospitalNumber(String infantHospitalNumber) {
+            this.infantHospitalNumber = infantHospitalNumber;
         }
 
         public String getAncNumber() {

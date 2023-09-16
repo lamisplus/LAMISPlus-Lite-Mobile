@@ -120,7 +120,6 @@ public final class FingerActivity extends BiometricActivity {
     private PendingIntent mPermissionIntent;
     private IntentFilter filter;
     Boolean recapture = false;
-    private TextInputLayout edReasonTIL;
     private EditText edReason;
     // ===========================================================
     // Private methods
@@ -249,7 +248,6 @@ public final class FingerActivity extends BiometricActivity {
             imgViewRightRingFinger = findViewById(R.id.imgViewRightRingFinger);
             imgViewRightLittleFinger = findViewById(R.id.imgViewRightLittleFinger);
 
-            edReasonTIL = findViewById(R.id.edReasonTIL);
             edReason = findViewById(R.id.edReason);
 
             mFingerView = new NFingerView(this);
@@ -293,6 +291,7 @@ public final class FingerActivity extends BiometricActivity {
                                 fingerPrintCaptureCount = temporalBiometricsSave.size();
                                 fingerSpinners.setSelection(0);
                                 Integer imageQuality = (int) client.getFingersQualityThreshold();
+                                //ToastUtil.success(imageQuality + " Quality of image");
                                 String hashed = HashUtil.bcryptHash(isoTemplate);
 
                                 //This function was created by me in the BiometricActivity to be able to indicate if the capture was successful then after which it is set back to false to prevent subsequent re-use of the already capture fingerprints
@@ -347,7 +346,7 @@ public final class FingerActivity extends BiometricActivity {
                 biometrics.save();
             } else {
                 if (fingerPrintCaptureCount < 10 && StringUtils.isBlank(ViewUtils.getInput(edReason))) {
-                    edReasonTIL.setVisibility(View.VISIBLE);
+                    edReason.setVisibility(View.VISIBLE);
                     CustomDebug("Captured fingerprints is less than 10 for recapture. Enter the reason on the box shown", false);
                 } else {
                     CustomDebug("Saved successfully", false);
@@ -443,7 +442,9 @@ public final class FingerActivity extends BiometricActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(BUNDLE_KEY_STATUS, TextUtils.isEmpty(mStatus.getText()) ? "" : mStatus.getText().toString());
+        if(mStatus != null) {
+            outState.putString(BUNDLE_KEY_STATUS, TextUtils.isEmpty(mStatus.getText()) ? "" : mStatus.getText().toString());
+        }
     }
 
     @Override
@@ -463,7 +464,6 @@ public final class FingerActivity extends BiometricActivity {
 
     @Override
     protected void updatePreferences(NBiometricClient client) {
-        Log.v("Baron", "The captured Quality is " + client.getFingersQualityThreshold());
         FingerPreferences.updateClient(client, this);
     }
 
@@ -574,7 +574,6 @@ public final class FingerActivity extends BiometricActivity {
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            ToastUtil.success("Receiver called");
             String action = intent.getAction();
             //Log.d(TAG,"Enter mUsbReceiver.onReceive()");
             if (ACTION_USB_PERMISSION.equals(action)) {

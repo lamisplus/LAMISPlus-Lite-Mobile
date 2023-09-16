@@ -59,4 +59,8 @@ public class ApplicationConstants {
         public static final String CHILD_FOLLOW_UP_VISIT_FORM = "Child Follow Up Visit Form";
     }
 
+    public abstract static class Settings{
+        public static final String DEVICE_ID = "deviceID";
+    }
+
 }

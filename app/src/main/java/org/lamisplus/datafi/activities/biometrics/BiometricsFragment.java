@@ -724,11 +724,7 @@ public class BiometricsFragment extends LamisBaseFragment<BiometricsContract.Pre
                 }
                 if (hasPermission) {
                     debugMessage("Opening SecuGen Device\n");
-                    try {
-                        error = sgfplib.OpenDevice(0);
-                    } catch (Exception e) {
-                        ToastUtil.success(e.getMessage());
-                    }
+                    error = sgfplib.OpenDevice(0);
                     debugMessage("OpenDevice() ret: " + error + "\n");
                     if (error == SGFDxErrorCode.SGFDX_ERROR_NONE) {
                         bSecuGenDeviceOpened = true;

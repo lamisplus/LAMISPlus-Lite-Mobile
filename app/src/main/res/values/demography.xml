@@ -90,17 +90,42 @@
 
 
     <string-array name="ct">
-        <item>STI</item>
         <item>Emergency</item>
-        <item>Index</item>
+        <item>HTS</item>
         <item>Inpatient</item>
         <item>PMTCT</item>
+        <item>STI</item>
         <item>TB</item>
         <item>VCT</item>
     </string-array>
 
+    <string-array name="malnutrition_clinic">
+        <item>Malnutrition Clinic</item>
+    </string-array>
+
+    <string-array name="others">
+        <item>Blood Bank</item>
+        <item>Community Mobilization</item>
+        <item>HTS</item>
+        <item>Pediatric &lt;5 Clinic</item>
+        <item>PMTCT (ANC1 Only)</item>
+        <item>PMTCT (Post ANC1: Pregnancy/L&amp;D/BF)</item>
+    </string-array>
+
     <string-array name="tb">
         <item>TB</item>
+    </string-array>
+
+    <string-array name="snt">
+        <item>SNT</item>
+    </string-array>
+
+    <string-array name="pns">
+        <item>PNS</item>
+    </string-array>
+
+    <string-array name="self_testing">
+        <item>Self Testing</item>
     </string-array>
 
     <string-array name="sti">
@@ -113,6 +138,7 @@
 
     <string-array name="opd">
         <item>Emergency</item>
+        <item>HTS</item>
         <item>Malnutrition</item>
         <item>Other PITC</item>
         <item>STI</item>
@@ -126,7 +152,7 @@
     </string-array>
 
     <string-array name="outreach">
-        <item>Index</item>
+        <item>HTS</item>
         <item>Mobile</item>
         <item>Other Community</item>
         <item>SNS</item>
@@ -143,7 +169,7 @@
 
     <string-array name="standalone_hts">
         <item>Emergency</item>
-        <item>Index</item>
+        <item>HTS</item>
         <item>Inpatient</item>
         <item>PMTCT (ANC1 Only)</item>
         <item>PMTCT (Post ANC1: Pregnancy/L&amp;D/BF)</item>
@@ -468,9 +494,9 @@
         <item>None</item>
     </string-array>
     <string-array name="original_regimen_line">
-        <item>ART First Line Adult</item>
-        <item>ART Second Line Adult</item>
-        <item>Third Line</item>
+        <item>Adult 1st Line</item>
+        <item>Adult 2nd Line</item>
+        <item>Adult 3rd Line</item>
     </string-array>
 
     <string-array name="first_line_original_regimen">

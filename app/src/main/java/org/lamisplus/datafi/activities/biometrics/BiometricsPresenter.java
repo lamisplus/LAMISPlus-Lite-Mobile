@@ -9,7 +9,7 @@ import org.lamisplus.datafi.utilities.ToastUtil;
 public class BiometricsPresenter extends LamisBasePresenter implements BiometricsContract.Presenter {
 
     private final BiometricsContract.View biometricsInfoView;
-    private String patientId;
+    private String patientId = "";
     private Boolean isClientRecapturing = false;
 
     public BiometricsPresenter(BiometricsContract.View biometricsInfoView, String patientId, Boolean recapture) {
@@ -26,7 +26,10 @@ public class BiometricsPresenter extends LamisBasePresenter implements Biometric
 
     @Override
     public Integer getPatientId() {
-        return Integer.parseInt(patientId);
+        if(patientId != null) {
+            return Integer.parseInt(patientId);
+        }
+        return null;
     }
 
     @Override

@@ -48,6 +48,11 @@ public class ChildFollowUpVisitPresenter extends LamisBasePresenter implements C
             Encounter encounter = new Encounter();
             encounter.setName(ApplicationConstants.Forms.CHILD_FOLLOW_UP_VISIT_FORM);
             encounter.setPerson(String.valueOf(patientId));
+            //Get the person id and save along
+            Person personChild = PersonDAO.findPersonById(patientId);
+            if(personChild != null && personChild.getPersonId() != null) {
+                encounter.setPersonId(personChild.getPersonId());
+            }
             encounter.setPackageName(packageName);
             encounter.setDataValues(motherFollowupVisitEncounter);
             encounter.save();

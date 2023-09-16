@@ -46,7 +46,9 @@ public class HTSRepository extends RetrofitRepository {
     public void syncRst(Encounter encounter, @Nullable final DefaultCallbackListener callbackListener) {
         if(encounter != null) {
             RiskStratification riskStratification = new Gson().fromJson(encounter.getDataValues(), RiskStratification.class);
-            riskStratification.setPersonId(encounter.getPersonId());
+            if(encounter.getPersonId() != null) {
+                riskStratification.setPersonId(encounter.getPersonId());
+            }
 
             String formValues = new Gson().toJson(riskStratification);
             final String payload = formValues.replaceAll("\u003c", "<").replaceAll("\u003d", "=").replaceAll("\u003e", ">");
@@ -75,6 +77,7 @@ public class HTSRepository extends RetrofitRepository {
                     @Override
                     public void onFailure(Call<RiskStratification> call, Throwable t) {
                         LamisCustomFileHandler.writeLogToFile("RST Failure, Message: " + t.getMessage());
+                        //call.cancel();
                     }
                 });
             }

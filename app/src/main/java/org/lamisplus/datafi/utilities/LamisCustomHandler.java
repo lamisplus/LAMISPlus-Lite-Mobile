@@ -37,7 +37,7 @@ public class LamisCustomHandler {
     }
 
     public static String getJson(Object object) {
-        Gson gson = new GsonBuilder()
+        Gson gson = new GsonBuilder().disableHtmlEscaping()
                 .excludeFieldsWithoutExposeAnnotation()// STATIC|TRANSIENT in the default configuration
                 .create();
         return gson.toJson(object);

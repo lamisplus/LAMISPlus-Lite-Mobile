@@ -69,5 +69,13 @@ public interface RestApi {
     @POST("pmtct/anc/add-infants")
     Call<Object> createInfants(@Body Object ancPayload);
 
+    @PUT("pmtct/anc/update-partnerinformation-in-anc/{id}")
+    Call<Object> updatePartnerInformation(@Path ("id") Integer ancId, @Body Object postPartnerInformationPayload);
+
+    @POST("pmtct/anc/infant-visit-consolidated")
+    Call<Object> updateInfantVisit(@Body Object postInfantVisitPayload);
+
+    @POST("pmtct/anc/pmtct-visit")
+    Call<Object> updateMotherVisit(@Body Object postMotherVisitPayload);
 
 }

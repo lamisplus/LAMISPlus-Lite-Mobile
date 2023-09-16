@@ -487,14 +487,27 @@ public final class MultiModalActivity extends BaseActivity implements ActivityCo
 		} else {
 			patientBundle = getIntent().getExtras();
 		}
+
+		Bundle patientBundleRecapture = savedInstanceState;
+		if(patientBundleRecapture != null){
+			patientBundleRecapture.getBoolean(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+		}else{
+			patientBundleRecapture = getIntent().getExtras();
+		}
+
+		Intent fingerActivity = new Intent(MultiModalActivity.this, FingerActivity.class);
 		if (patientBundle != null) {
 			String patientID = patientBundle.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE);
-
-			Intent fingerActivity = new Intent(MultiModalActivity.this, FingerActivity.class);
 			fingerActivity.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
 					String.valueOf(patientID));
-			startActivityForResult(fingerActivity, MODALITY_CODE_FINGER);
 		}
+
+		if(patientBundleRecapture != null){
+			boolean reCaptureStatus = patientBundleRecapture.getBoolean(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE);
+			fingerActivity.putExtra(ApplicationConstants.BundleKeys.BIOMETRICS_RECAPTURE, reCaptureStatus);
+		}
+
+		startActivityForResult(fingerActivity, MODALITY_CODE_FINGER);
 
 
 //		Button enrollSubject = (Button) findViewById(R.id.multimodal_button_enroll);
